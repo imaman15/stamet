@@ -45,8 +45,18 @@
 
                         <form class="form-signin">
                             <div class="form-label-group">
+                                <input type="text" id="inputFirstName" class="form-control" placeholder="Nama Depan" required autofocus>
+                                <label for="inputFirstName">Nama Depan</label>
+                            </div>
+
+                            <div class="form-label-group">
+                                <input type="text" id="inputLastName" class="form-control" placeholder="Nama Belakang" required>
+                                <label for="inputLastName">Nama Belakang</label>
+                            </div>
+
+                            <div class="form-label-group">
                                 <input type="email" id="inputEmail" class="form-control" placeholder="Email"
-                                    required autofocus>
+                                    required>
                                 <label for="inputEmail">Email</label>
                             </div>
 
@@ -55,20 +65,24 @@
                                     required>
                                 <label for="inputPassword">Kata Sandi</label>
                             </div>
+
+                            <div class="form-label-group">
+                                <input type="password" id="inputConfirmPassword" class="form-control"
+                                    placeholder="Kata Sandi" required>
+                                <label for="inputConfirmPassword">Konfirmasi Kata Sandi</label>
+                            </div>
                             
                             <!-- <div class="custom-control custom-checkbox mb-3">
-                                <input type="checkbox" class="custom-control-input" id="customCheck5">
-                                <label class="custom-control-label" for="customCheck1">Ingat Kata Sandi</label>
+                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                <label class="custom-control-label" for="customCheck1">Saya membaca dan menyetujui
+                                    <a href="#">Ketentuan Pengguna</a></label>
                             </div> -->
 
-                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Masuk</button>
+                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Daftar</button>
 
                             <div class="row mt-2 mb-3">
-                                <div class="col-xl-6 col-lg-5 mb-2">
-                                    <a href="register.html" class="btn btn-outline-danger btn-block">Daftar</a>
-                                </div>
-                                <div class="col-xl-6 col-lg-7">
-                                    <a href="forgot-password.html" class="btn btn-outline-danger btn-block"> Lupa Kata Sandi?</a>
+                                <div class="col-12">
+                                    <a href="../layanan" class="btn btn-outline-danger btn-block">Kembali</a>
                                 </div>
                             </div>
 
