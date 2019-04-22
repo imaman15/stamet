@@ -13,7 +13,7 @@
         content="Informasi Cuaca, Layanan Informasi, Layanan Jasa, Layanan Informasi dan Jasa, Meteorologi, Informasi Meteorologi, Jasa Meteorologi">
     <meta name="author" content="Stasiun Meteorologi Klas I Serang">
     <!-- favicon -->
-    <link rel="shortcut icon" href="../assets/img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../assets/web-layanan/img/favicon.ico" type="image/x-icon">
     <!-- <link rel="apple-touch-icon" href="asset/img/favicon-60@3x.png" />
     <link rel="apple-touch-icon" sizes="60x60" href="asset/img/favicon-60.png" />
     <link rel="apple-touch-icon" sizes="120x120" href="asset/img/favicon-60@2x.png" />
@@ -24,7 +24,8 @@
     <!-- Bootstrap 4 -->
     <link rel="stylesheet" href="../vendor/css/Bootstrap/bootstrap.min.css">
     <!-- My Css -->
-    <link rel="stylesheet" href="../assets/css/mycss.css"></link>
+    <link rel="stylesheet" href="../assets/web-layanan/css/mycss.css">
+    </link>
     <!-- Font Awesome 5.8.1 -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
@@ -38,12 +39,12 @@
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <div class="text-center mb-3">
-                            <img src="../assets/img/bmkg.png"
+                            <img src="../assets/web-layanan/img/bmkg.png"
                                 alt="BMKG" class="img-fluid img-thumbnail">
                             <h1 class="subtitle">Stasiun Meteorologi Kelas I Serang</h1>
                         </div>
 
-                        <form class="form-signin">
+                        <form class="form-signin" action="proses.php" method="POST">
                             <div class="form-label-group">
                                 <input type="text" id="inputFirstName" class="form-control" placeholder="Nama Depan" required autofocus>
                                 <label for="inputFirstName">Nama Depan</label>
