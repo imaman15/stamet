@@ -12,19 +12,19 @@
                         <?= $this->session->flashdata('message');
                          ?>
 
-                        <form class="form-signin" action="proses.php" method="POST">
+                        <form class="form-signin" action="<?= base_url('layanan/auth') ?>" method="POST">
                             <div class="form-label-group">
                                 <input type="text" id="email" name="email" class="form-control"
-                                    placeholder="Email"
-                                    required autofocus>
+                                    placeholder="Email" value="<?= set_value('email')?>">
                                 <label for="email">Email</label>
+                                <?= form_error('email','<small class="text-danger pl-3">','</small>') ?>
                             </div>
 
                             <div class="form-label-group">
                                 <input type="password" id="password" name="password" class="form-control"
-                                    placeholder="Kata Sandi"
-                                    required>
+                                    placeholder="Kata Sandi">
                                 <label for="password">Kata Sandi</label>
+                                <?= form_error('password','<small class="text-danger pl-3">','</small>') ?>
                             </div>
                             
                             <!-- <div class="custom-control custom-checkbox mb-3">

@@ -15,11 +15,71 @@ class Auth extends CI_Controller {
 
     public function index()
     {   
-        $data = array( 
-            'title' => 'Login Page',
-            'content' => 'layanan/auth/login'
-        );
-		$this->load->view('layout/layanan/auth/wrapper', $data, FALSE);
+        $valid = $this->form_validation;
+        $valid->set_rules('email', 'Email', 'trim|required|valid_email',[
+            'required' => 'Email harus diisi.',
+            'valid_email' => 'Format Email tidak benar.'
+        ]);
+        $valid->set_rules('password', 'Kata Sandi', 'trim|required',[
+            'required' => 'Kata Sandi harus diisi.'
+        ]);
+        
+        if ($this->form_validation->run() == FALSE) {
+            $data = array( 
+                'title' => 'Login Page',
+                'content' => 'layanan/auth/login'
+            );
+            $this->load->view('layout/layanan/auth/wrapper', $data, FALSE);
+        } else {
+            // ketika Validasi Sukses
+            $this->_login();
+            // _login() method ini adalah method private yang hanya bisa di akses oleh class ini saja yang nanti tidak bisa di akses lewat URL dengan ditandai "_"
+        }
+    }
+
+    private function _login(){
+        $email = $this->input->post('email');
+        $password = $this->input->post('password');
+        
+        $user = $this->db->get_where('pengguna', ['email' => $email])->row_array();
+        // row_array() itu untuk mendapatkan satu baris saja.
+        
+        //jika usernya ada
+        if ($user) {
+            //jika usernya aktif
+            if ($user['is_active'] == 1) {
+                //cek password
+                // password_verify() untuk menyamakan antara password yang di ketikan di login dengan password yg sudah di hash
+                if (password_verify($password, $user['password'])) {
+                    // password benar
+                    $data = [
+                        'email' => $user['email']
+                    ];
+                    
+                    $this->session->set_userdata( $data );
+                    redirect('layanan/beranda');
+                    
+                    
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                    Password salah!
+                    </div>');
+                    redirect('layanan/auth');
+                }
+            }else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                Email ini belum diaktifkan!
+                </div>');
+                redirect('layanan/auth');
+            }
+
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+            Email tidak terdaftar!
+            </div>');
+            redirect('layanan/auth');
+        }
+        
     }
     
     public function registration()
@@ -43,7 +103,7 @@ class Auth extends CI_Controller {
         ]);
         $valid -> set_rules('confirmPassword', 'Kata Sandi', 'trim|required|matches[password]');
 
-        if ($this->form_validation->run() == false) {
+        if ($this->form_validation->run() == FALSE) {
             $data = [ 
                 'title' => 'User Registration Page',
                 'content' => 'layanan/auth/registration'
@@ -67,9 +127,19 @@ class Auth extends CI_Controller {
             Selamat! Akun anda telah dibuat. Silahkan masuk!
             </div>');
             
-            redirect('layanan/auth','refresh');
+            redirect('layanan/auth');
             
         }
+    }
+
+    public function logout(){
+        
+        $this->session->unset_userdata('email');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+        Anda telah keluar.
+        </div>');
+        
+        redirect('layanan/auth');
     }
 
 }
