@@ -8,9 +8,8 @@ class Login extends CI_Controller
     public function index()
     {
         $data['title'] = 'Halaman Login';
-        $data['content'] = 'login';
 
-        $this->load->view('layout/layanan/wrapper', $data, FALSE);
+        $this->template->auth('template_login', 'auth/login', $data, FALSE);
     }
 }
 

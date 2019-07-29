@@ -15,8 +15,8 @@ class Beranda extends CI_Controller
     // List all your items
     public function index($offset = 0)
     {
-        $data[''] = '';
-        template('Beranda', 'beranda', $data);
+        $data['title'] = 'Beranda';
+        $this->template->load('beranda', $data);
     }
 
     // Add a new item

@@ -8,9 +8,7 @@ class Masuk extends CI_Controller
     public function index()
     {
         $data['title'] = 'Administrator';
-        $data['content'] = 'admin/masuk';
-
-        $this->load->view('layout/admin/wrapper', $data, FALSE);
+        $this->template->auth('template_loginadmin', 'admin/auth/masuk', $data, FALSE);
     }
 }
 

@@ -16,8 +16,10 @@ class Beranda extends CI_Controller
     // List all your items
     public function index($offset = 0)
     {
-        $data['tes'] = 'ada saja';
-        admintemplate('Beranda', 'admin/beranda', $data);
+
+        $data['title'] = 'Beranda';
+        $data['tes'] = 'coy';
+        $this->template->loadadmin('admin/beranda', $data);
     }
 
     // Add a new item
