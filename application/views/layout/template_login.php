@@ -9,7 +9,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><?= $title ?></title>
+    <title>
+        <?php
+        $var = ($title) ? $title . " | " : "";
+        echo $var . "Sistem Informasi Pelayanan Jasa Meteorologi";
+        ?>
+    </title>
     <!-- favicon -->
     <link rel="shortcut icon" href="<?= base_url('assets') ?>/img/favicon.ico" type="image/x-icon">
 

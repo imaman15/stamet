@@ -27,62 +27,27 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        Layanan Data / Informasi
+        Pelayanan
     </div>
 
-    <!-- Nav Item - Tables -->
+    <!-- Nav Item - Data/Informasi -->
     <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-smog"></i>
-            <span>Permintaan Masuk</span></a>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dataInformasi" aria-expanded="true" aria-controls="dataInformasi">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Data / Informasi</span>
+        </a>
+        <div id="dataInformasi" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Data / Informasi :</h6>
+                <a class="collapse-item" href="#">Form Permintaan</a>
+                <a class="collapse-item" href="#">Konfirmasi Permintaan</a>
+                <a class="collapse-item" href="#">Cek Pemabayaran</a>
+                <a class="collapse-item" href="#">Berkas Pengantar</a>
+                <a class="collapse-item" href="#">Berkas Data/Informasi</a>
+                <a class="collapse-item" href="#">Riwayat Permintaan</a>
+            </div>
+        </div>
     </li>
-
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-smog"></i>
-            <span>Daftar Permintaan</span></a>
-    </li>
-
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-smog"></i>
-            <span>Konfirmasi Permintaan</span></a>
-    </li>
-
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-smog"></i>
-            <span>Cek Pembayaran</span></a>
-    </li>
-
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-smog"></i>
-            <span>Berkas Pengantar</span></a>
-    </li>
-
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-smog"></i>
-            <span>Berkas Selesai</span></a>
-    </li>
-
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-smog"></i>
-            <span>Riwayat Permintaan</span></a>
-    </li>
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Layanan Konsultasi Data
-    </div>
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
@@ -91,31 +56,23 @@
             <span>Konsultasi Data</span></a>
     </li>
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Layanan Kunjungan
-    </div>
-
-    <!-- Nav Item - Tables -->
+    <!-- Nav Item - Data/Informasi -->
     <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-comments"></i>
-            <span>Daftar Kunjungan</span></a>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#kunjungan" aria-expanded="true" aria-controls="kunjungan">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Kunjungan</span>
+        </a>
+        <div id="kunjungan" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Kunjungan :</h6>
+                <a class="collapse-item" href="#">Konfirmasi Kunjungan</a>
+                <a class="collapse-item" href="#">Jadwal Kunjungan</a>
+            </div>
+        </div>
     </li>
 
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-comments"></i>
-            <span>Kunjungan Masuk</span></a>
-    </li>
-
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-comments"></i>
-            <span>Jadwal Kunjungan</span></a>
-    </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider">
 
     <!-- Heading -->
     <div class="sidebar-heading">
@@ -150,6 +107,9 @@
             <span>Pesan</span></a>
     </li>
 
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
     <!-- Heading -->
     <div class="sidebar-heading">
         Manajemen
@@ -178,6 +138,11 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Pengaturan
+    </div>
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">

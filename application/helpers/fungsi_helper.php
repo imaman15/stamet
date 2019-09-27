@@ -23,3 +23,14 @@ function admintemplate($title, $content, $data)
     $data['topbar'] = 'admin/topbar';
     return $CI->load->view('layout/wrapper', $data, FALSE);
 }
+
+function url_admin()
+{
+    $CI = &get_instance();
+    return $CI->db->query('select url_admin from konfigurasi')->first_row();
+}
+
+function show($str)
+{
+    echo htmlentities($str, ENT_QUOTES, 'UTF-8');
+}

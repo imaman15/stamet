@@ -7,7 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title><?= $title ?></title>
+    <title>
+        <?php
+        $var = ($title) ? $title . " | " : "";
+        echo $var . "Sistem Informasi Pelayanan Jasa Meteorologi";
+        ?>
+    </title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="<?= base_url('') ?>assets/img/favicon.ico" type="image/x-icon">
@@ -17,6 +22,8 @@
 
     <!-- Custom styles for this template-->
     <link href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Custom styles for this page -->
+    <link href="<?= base_url('assets') ?>/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -78,6 +85,18 @@
 
     <!-- Custom scripts for all pages-->
     <script src="<?= base_url('assets'); ?>/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="<?= base_url('assets'); ?>/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- custom scripts -->
+    <script>
+        // Call the dataTables jQuery plugin
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+        });
+    </script>
 
 </body>
 

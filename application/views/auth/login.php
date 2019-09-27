@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="col-lg-5 mx-auto">
             <div class="card card-signin my-5">
                 <div class="card-body">
                     <div class="text-center mb-3">
@@ -32,19 +32,21 @@
 
                         <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Masuk</button>
 
-                        <div class="row mt-2 mb-3">
-                            <div class="col-xl-6 col-lg-5 mb-2">
-                                <a href="<?= base_url('layanan/auth/registration') ?>" class="btn btn-outline-danger btn-block">Daftar</a>
-                            </div>
-                            <div class="col-xl-6 col-lg-7">
-                                <a href="forgot-password.html" class="btn btn-outline-danger btn-block"> Lupa Kata Sandi?</a>
-                            </div>
+                        <div class="text-center small mt-2">
+                            <a href="<?= base_url('resetpassword') ?>">Lupa Password ?</a>
+                        </div>
+                        <div class="text-center">
+                            <a class="small" href="<?= base_url('registration') ?>">Belum punya akun ? Daftar</a>
                         </div>
 
-                        <hr class="my-4">
+                        <hr class="my-3">
 
-                        <a href="faq.html" class="btn btn-lg btn-information btn-outline-dark btn-block text-uppercase">FAQ <i class="fas fa-question-circle mr-2"></i>
-                        </a>
+                        <div class="text-center small blue">
+                            <a href="#">FAQ</a>
+                            |
+                            <a href="#">Cek Status</a>
+                        </div>
+
                     </form>
                 </div>
             </div>

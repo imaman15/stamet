@@ -52,3 +52,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $route['default_controller'] = 'beranda';
 $route['404_override'] = 'error_page';
 $route['translate_uri_dashes'] = FALSE;
+
+$route['login'] = 'auth/login';
+$route['registration'] = 'auth/registration';
+$route['resetpassword'] = 'auth/forgotpassword';
+
+$route[SITE_ADMIN . '/login'] = 'admin/auth/login';
