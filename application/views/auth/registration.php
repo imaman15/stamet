@@ -130,14 +130,19 @@
                                 </div>
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="invalidCheck2">
-                                    <label class="form-check-label" for="invalidCheck2">
+                                    <input class="form-check-input" type="checkbox" id="checkme" required>
+                                    <label class="form-check-label" for="checkme">
                                         Saya telah membaca dan menyetujui ketentuan Pendaftaran Akun Data Online
                                     </label>
                                 </div>
+                                <div class="form-group mt-3">
+                                    <?php echo $captcha // tampilkan recaptcha 
+                                    ?>
+                                    <?= form_error('g-recaptcha-response', '<small class="text-danger pl-3">', '</small>') ?>
+                                </div>
                             </div>
 
-                            <button class="btn btn-lg btn-primary text-uppercase btn-block mx-lg-5" type="submit">Daftar</button>
+                            <button class="btn btn-lg btn-primary text-uppercase btn-block mx-lg-5" type="submit" id="btnsubmit" disabled>Daftar</button>
                         </div>
 
                         <div class="text-center small mt-2">
@@ -170,3 +175,14 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('#checkme').click(function() {
+        if ($(this).is(':checked')) {
+            $('#btnsubmit').removeAttr('disabled');
+        } else {
+
+            $('#btnsubmit').attr('disabled', 'disabled');
+        }
+    });
+</script>

@@ -53,7 +53,7 @@ class Test extends CI_Controller
         if ($response['success']) {
             return true;
         } else {
-            $this->form_validation->set_message('getResponseCaptcha', '%s is required.');
+            $this->form_validation->set_message('getResponseCaptcha', '%s Harus di isi.');
             return false;
         }
     }

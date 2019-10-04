@@ -12,7 +12,7 @@ class Applicant_model extends CI_Model
     public $photo = "default.jpg";
     public $first_name;
     public $last_name;
-    public $dob;
+    public $nik;
     public $address;
     public $education;
     public $job_category;
@@ -164,9 +164,29 @@ class Applicant_model extends CI_Model
                     'errors' => [
                         'required' => $required
                     ]
+                ],
+
+                [
+                    'field' => 'g-recaptcha-response',
+                    'label' => '<strong>Captcha</strong>',
+                    'rules' => 'callback_getResponseCaptcha'
                 ]
             ]
         ];
+    }
+
+    public function getResponseCaptcha($str)
+    {
+        // $recaptcha = $this->input->post('g-recaptcha-response');
+        // $response = $this->recaptcha->verifyResponse($recaptcha);
+
+        $response = $this->recaptcha->verifyResponse($str);
+        if ($response['success']) {
+            return true;
+        } else {
+            $this->form_validation->set_message('getResponseCaptcha', '%s Harus di isi.');
+            return false;
+        }
     }
 }
 

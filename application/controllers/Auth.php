@@ -21,6 +21,8 @@ class Auth extends CI_Controller
     public function registration()
     {
         $data['title'] = 'Daftar';
+        $data['captcha'] = $this->recaptcha->getWidget(); // menampilkan recaptcha
+        $data['script_captcha'] = $this->recaptcha->getScriptTag(); // javascript recaptcha ditaruh di head
         $this->template->auth('template_login', 'auth/registration', $data, FALSE);
     }
 }

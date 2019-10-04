@@ -5,6 +5,8 @@
 
 body {
 	background: #007bff;
+	background: -webkit-gradient(linear, left top, right top, from(#0062E6), to(#33AEFF));
+	background: -webkit-linear-gradient(left, #0062E6, #33AEFF);
 	background: linear-gradient(to right, #0062E6, #33AEFF);
 }
 
@@ -54,6 +56,7 @@ body {
 	letter-spacing: .1rem;
 	font-weight: bold;
 	padding: 1rem;
+	-webkit-transition: all 0.2s;
 	transition: all 0.2s;
 }
 
@@ -109,6 +112,7 @@ body {
 	color: #495057;
 	border: 1px solid transparent;
 	border-radius: .25rem;
+	-webkit-transition: all .1s ease-in-out;
 	transition: all .1s ease-in-out;
 }
 
@@ -144,7 +148,63 @@ body {
 	color: transparent;
 }
 
+.form-label-group input::-webkit-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group input::-moz-placeholder {
+	color: transparent;
+}
+
+.form-label-group input:-ms-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group input::-ms-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group input::-webkit-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group input::-moz-placeholder {
+	color: transparent;
+}
+
+.form-label-group input:-ms-input-placeholder {
+	color: transparent;
+}
+
 .form-label-group input::placeholder {
+	color: transparent;
+}
+
+.form-label-group textarea::-webkit-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group textarea::-moz-placeholder {
+	color: transparent;
+}
+
+.form-label-group textarea:-ms-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group textarea::-ms-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group textarea::-webkit-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group textarea::-moz-placeholder {
+	color: transparent;
+}
+
+.form-label-group textarea:-ms-input-placeholder {
 	color: transparent;
 }
 
@@ -179,4 +239,32 @@ body {
 .btn-information {
 	color: white;
 	background-color: #2c3136;
+}
+
+
+input[type="checkbox"]:required:invalid+label {
+	color: red;
+}
+
+input[type="checkbox"]:required:valid+label {
+	color: green;
+}
+
+
+input[type="checkbox"]:required {
+	display: none;
+}
+
+input[type="checkbox"]:required:invalid+label:before {
+	content: "\2610";
+	font-size: 1.6em;
+	color: red;
+	vertical-align: -0.16em;
+}
+
+input[type="checkbox"]:required:valid+label:before {
+	content: "\2611";
+	font-size: 1.6em;
+	color: green;
+	vertical-align: -0.16em;
 }
