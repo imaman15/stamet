@@ -8,164 +8,166 @@
                         <h5>STAMET KELAS I SERANG</h5>
                         <h1 class="subtitle">Sistem Informasi Pelayanan Jasa Meteorologi</h1>
                     </div>
+                    <?=
+                        form_open(UA_REGISTRATION, 'class="form-signin"');
+                    ?>
+                    <!-- set_value untuk menyimpan inputan sebelumnya, jadi ketika ada kesalahan pengguna tidak perlu input ulang -->
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12 border-right border-left">
+                            <div class="bg-light p-2 mb-3 bg-4">
 
-                    <form class="form-signin" action="<?= base_url('layanan/auth/registration') ?>" method="POST">
-                        <!-- set_value untuk menyimpan inputan sebelumnya, jadi ketika ada kesalahan pengguna tidak perlu input ulang -->
-                        <div class="row">
-                            <div class="col-lg-6 col-md-12 border-right border-left p-2 bg04">
-                                <div class="bg-light p-2 mb-3 bg-4">
-
-                                    <div class="form-label-group">
-                                        <input type="text" id="name" name="name" class="form-control" placeholder="Nama Depan" value="<?= set_value('name') ?>">
-                                        <label for="name">Nama Depan</label>
-                                        <?= form_error('name', '<small class="text-danger pl-3">', '</small>') ?>
-                                    </div>
-                                    <div class="form-label-group">
-                                        <input type="text" id="name2" name="name2" class="form-control" placeholder="Nama Belakang" value="<?= set_value('name2') ?>">
-                                        <label for="name2">Nama Belakang</label>
-                                        <?= form_error('name2', '<small class="text-danger pl-3">', '</small>') ?>
-                                    </div>
-                                    <div class="form-label-group note4 noteb">
-                                        <small class="pl-2 d-block text-muted">(Jika tidak memiliki nama belakang kosongkan saja)</small>
-                                    </div>
+                                <div class="form-label-group">
+                                    <input type="text" id="first_name" name="first_name" class="form-control" placeholder="Nama Depan" value="<?= set_value('first_name') ?>">
+                                    <label for="first_name">Nama Depan</label>
+                                    <?= form_error('first_name'); ?>
                                 </div>
-
-                                <div class="p-2 bg-4">
-
-                                    <div class="form-label-group">
-                                        <input type="number" id="nik" name="nik" class="form-control" placeholder="No. Identitas (KTP)" value="<?= set_value('nik') ?>">
-                                        <label for="nik">No. Identitas (KTP)</label>
-                                        <?= form_error('nik', '<small class="text-danger pl-3">', '</small>') ?>
-                                    </div>
-
-                                    <div class="form-label-group">
-                                        <textarea class="form-control" name="alamat" id="alamat" rows="3" placeholder="Alamat Lengkap"></textarea>
-                                        <label for="alamat">Alamat Lengkap</label>
-                                    </div>
-
-                                    <div class="form-label-group note4">
-                                        <small class="pl-3 d-block text-muted"> (Alamat Harus Lengkap) </small>
-                                    </div>
-
-                                    <div class="form-label-group">
-                                        <input type="number" id="nohp" name="nohp" class="form-control" placeholder="No. Handphone" value="<?= set_value('nohp') ?>">
-                                        <label for="nohp">No. Handphone</label>
-                                        <?= form_error('nohp', '<small class="text-danger pl-3">', '</small>') ?>
-                                    </div>
-
-                                    <div class="form-label-group note4">
-                                        <small class="pl-3 d-block text-muted"> (No. handphone harus diawali dengan kode area negara, contoh: 62xxxxxxxxxxx) </small>
-                                    </div>
-
+                                <div class="form-label-group">
+                                    <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Nama Belakang" value="<?= set_value('last_name') ?>">
+                                    <label for="last_name">Nama Belakang</label>
+                                    <small class="pl-3 font-weight-light d-block text-muted">(Jika tidak memiliki nama belakang kosongkan saja)</small>
+                                    <?= form_error('last_name'); ?>
                                 </div>
 
                             </div>
 
-                            <div class="col-lg-6 col-md-12 border-left border-right">
-                                <div class="p-2 bg-4">
+                            <div class="p-2 bg-4">
 
-                                    <div class="input-group mb-3 ">
-                                        <div class="input-group-prepend">
-                                            <label class="input-group-text bs-4" for="inputGroupSelect01">Pendidikan</label>
-                                        </div>
-                                        <select class="custom-select bs-4" id="inputGroupSelect01" style="height: 50px">
-                                            <option selected>Pilih...</option>
-                                            <option value="1">Doktor (S3)</option>
-                                            <option value="2">Pascasarjana (S2)</option>
-                                            <option value="3">Sarjana (S1)</option>
-                                            <option value="4">SMA</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="input-group mb-3 ">
-                                        <div class="input-group-prepend">
-                                            <label class="input-group-text bs-4" for="inputGroupSelect02">Kategori Pekerjaan</label>
-                                        </div>
-                                        <select class="custom-select bs-4" id="inputGroupSelect02" style="height: 50px">
-                                            <option selected>Pilih...</option>
-                                            <option value="1">BUMN</option>
-                                            <option value="2">Instansi pemerintah</option>
-                                            <option value="3">Mahasiswa</option>
-                                            <option value="4">SMA</option>
-                                            <option value="5">Peneliti</option>
-                                            <option value="6">Swasta</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-label-group">
-                                        <input type="text" id="instansi" name="instansi" class="form-control" placeholder="Nama Instansi" value="<?= set_value('instansi') ?>">
-                                        <label for="instansi">Nama Instansi</label>
-                                        <?= form_error('instansi', '<small class="text-danger pl-3">', '</small>') ?>
-                                    </div>
-
+                                <div class="form-label-group">
+                                    <input type="text" onkeypress="return numberOnly(event)" maxlength="16" id="nin" name="nin" class="form-control" placeholder="No. Identitas (KTP)" value="<?= set_value('nin') ?>">
+                                    <label for="nin">No. Identitas (KTP)</label>
+                                    <?= form_error('nin'); ?>
                                 </div>
 
-                                <div class="bg-light p-2 bg-4">
-                                    <div class="form-label-group">
-                                        <input type="text" id="email" name="email" class="form-control" placeholder="Email" value="<?= set_value('email') ?>">
-                                        <label for="email">Email</label>
-                                        <?= form_error('email', '<small class="text-danger pl-3">', '</small>') ?>
+                                <div class="form-label-group">
+                                    <textarea class="form-control" name="address" id="address" rows="3" placeholder="Alamat Lengkap"></textarea>
+                                    <label for="address">Alamat Lengkap</label>
+                                    <small class="pl-3 font-weight-light d-block text-muted"> (Alamat harus lengkap sesuai dengan No. Identitas/KTP) </small>
+                                    <?= form_error('address'); ?>
+                                </div>
+
+                                <div class="form-label-group">
+                                    <input type="number" id="phone" name="phone" class="form-control" placeholder="No. Handphone" value="<?= set_value('phone') ?>">
+                                    <label for="phone">No. Handphone</label>
+                                    <?= form_error('phone') ?>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-6 col-md-12 border-left border-right">
+                            <div class="p-2 bg-4">
+
+                                <div class="input-group mb-3 ">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text bs-4" for="education">Pendidikan</label>
                                     </div>
-                                    <div class="form-label-group">
-                                        <input type="password" id="password" name="password" class="form-control" placeholder="Kata Sandi">
-                                        <label for="password">Kata Sandi</label>
-                                        <?= form_error('password', '<small class="text-danger pl-3">', '</small>') ?>
+                                    <select class="custom-select bs-4" id="education" style="height: 50px">
+                                        <option selected>Pilih...</option>
+                                        <option value="1">Doktor (S3)</option>
+                                        <option value="2">Pascasarjana (S2)</option>
+                                        <option value="3">Sarjana (S1)</option>
+                                        <option value="4">SMA</option>
+                                    </select>
+                                    <div class="input-group">
+                                        <?= form_error('education') ?>
                                     </div>
-                                    <div class="form-label-group">
-                                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Konfrimasi Kata Sandi">
-                                        <label for="confirmPassword">Konfirmasi Kata Sandi</label>
+                                </div>
+                                <div class="input-group mb-3 ">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text bs-4" for="job_category">Kategori Pekerjaan</label>
                                     </div>
-                                    <div class="form-label-group note4 noteb">
-                                        <small class="pl-2 d-block text-muted">(Kata sandi minimal 6 karakter dan berisi kombinasi dari huruf kecil, huruf besar, dan simbol)</small>
+                                    <select class="custom-select bs-4" id="job_category" style="height: 50px">
+                                        <option selected>Pilih...</option>
+                                        <option value="1">BUMN</option>
+                                        <option value="2">Instansi pemerintah</option>
+                                        <option value="3">Mahasiswa</option>
+                                        <option value="4">SMA</option>
+                                        <option value="5">Peneliti</option>
+                                        <option value="6">Swasta</option>
+                                    </select>
+                                    <div class="input-group">
+                                        <?= form_error('job_category') ?>
                                     </div>
+                                </div>
+
+                                <div class="form-label-group">
+                                    <input type="text" id="institute" name="institute" class="form-control" placeholder="Nama Instansi" value="<?= set_value('institute') ?>">
+                                    <label for="institute">Nama Instansi</label>
+                                    <small class="pl-3 font-weight-light d-block text-muted">(Nama Instansi / Nama Perusahaan / Nama Sekolah / Nama Universitas)</small>
+                                    <?= form_error('institute') ?>
+                                </div>
+
+                                <div class="form-label-group">
+                                    <input type="text" id="email" name="email" class="form-control" placeholder="Email" value="<?= set_value('email') ?>">
+                                    <label for="email">Email</label>
+                                    <small class="pl-3 font-weight-light d-block text-muted"> (Pastikan email anda aktif, email anda akan digunakan sebagai nama pengguna untuk masuk ke aplikasi) </small>
+                                    <?= form_error('email') ?>
                                 </div>
 
                             </div>
 
-                            <div class="form-group p-2 my-3">
-                                <div class="alert alert-info bg-4">
-                                    Untuk mendukung manajemen pengguna layanan Data Online BMKG dalam rangka meningkatkan layanan, pendaftar harus memberikan informasi data diri secara benar dan memperbarui data diri ketika terdapat perubahan. <br>
-                                    Informasi pendaftar bersifat rahasia sehingga harus dilindungi dan hanya boleh dimanfaatkan untuk peningkatan layanan Data Online. <br><br>
-                                    Khusus untuk tujuan penelitian, pengguna harus menyertakan referensi data yang didapatkan dari Data Online.
+                            <div class="bg-light p-2 bg-4">
+
+                                <div class="form-label-group">
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="Kata Sandi">
+                                    <label for="password">Kata Sandi</label>
+                                    <small class="pl-3 font-weight-light d-block text-muted">(Kata sandi minimal 6 karakter dan berisi kombinasi dari huruf kecil, huruf besar, angka dan simbol)</small>
+                                    <?= form_error('password') ?>
+                                </div>
+                                <div class="form-label-group">
+                                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Konfrimasi Kata Sandi">
+                                    <label for="confirmPassword">Konfirmasi Kata Sandi</label>
                                 </div>
 
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="checkme" required>
-                                    <label class="form-check-label" for="checkme">
-                                        Saya telah membaca dan menyetujui ketentuan Pendaftaran Akun Data Online
-                                    </label>
-                                </div>
-                                <div class="form-group mt-3">
-                                    <?php echo $captcha // tampilkan recaptcha 
-                                    ?>
-                                    <?= form_error('g-recaptcha-response', '<small class="text-danger pl-3">', '</small>') ?>
-                                </div>
                             </div>
 
-                            <button class="btn btn-lg btn-primary text-uppercase btn-block mx-lg-5" type="submit" id="btnsubmit" disabled>Daftar</button>
                         </div>
 
-                        <div class="text-center small mt-2">
-                            <a href="<?= base_url('resetpassword') ?>">Lupa Password ?</a>
+                        <div class="form-group m-3">
+                            <div class="alert alert-info bg-4">
+                                Untuk mendukung manajemen pengguna layanan Data Online BMKG dalam rangka meningkatkan layanan, pendaftar harus memberikan informasi data diri secara benar dan memperbarui data diri ketika terdapat perubahan. <br>
+                                Informasi pendaftar bersifat rahasia sehingga harus dilindungi dan hanya boleh dimanfaatkan untuk peningkatan layanan Data Online. <br><br>
+                                Khusus untuk tujuan penelitian, pengguna harus menyertakan referensi data yang didapatkan dari Data Online.
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="checkme" required>
+                                <label class="form-check-label" for="checkme">
+                                    Saya telah membaca dan menyetujui ketentuan Pendaftaran Akun Data Online
+                                </label>
+                            </div>
+                            <div class="form-group mt-3">
+                                <?php echo $captcha // tampilkan recaptcha 
+                                ?>
+                                <?= form_error('g-recaptcha-response') ?>
+                            </div>
                         </div>
-                        <div class="text-center">
-                            <a class="small" href="<?= base_url('login') ?>">Sudah punya akun ? Masuk</a>
-                        </div>
-                    </form>
+
+                        <button class="btn btn-lg btn-primary text-uppercase btn-block mx-lg-5" type="submit" id="btnsubmit" disabled>Daftar</button>
+                    </div>
+
+                    <div class="text-center small mt-2">
+                        <a href="<?= base_url(UA_RESETPASSWORD) ?>">Lupa Password ?</a>
+                    </div>
+                    <div class="text-center">
+                        <a class="small" href="<?= base_url(UA_LOGIN) ?>">Sudah punya akun ? Masuk</a>
+                    </div>
+                    <?=
+                        form_close();
+                    ?>
 
                     <hr class="my-3">
-
                     <div class="text-center small blue">
-                        <a href="#">FAQ</a>
+                        <a href="<?= base_url(UA_FAQ); ?>">FAQ</a>
                         |
-                        <a href="#">Cek Status</a>
+                        <a href="<?= base_url(UA_CHECKSTATUS); ?>">Cek Status</a>
                     </div>
 
                     <!-- Footer -->
                     <footer class="sticky-footer bg-white">
                         <div class="container">
                             <div class="copyright text-center small">
-                                <span>Copyright &copy; SIPJAMET <?= date('Y') ?></span>
+                                <span>Copyright &copy; <? cr(); ?>, Sistem Informasi Pelayanan Jasa Meteorologi </span>
                             </div>
                         </div>
                     </footer>
@@ -181,8 +183,17 @@
         if ($(this).is(':checked')) {
             $('#btnsubmit').removeAttr('disabled');
         } else {
-
             $('#btnsubmit').attr('disabled', 'disabled');
         }
     });
+</script>
+
+<script>
+    function numberOnly(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+            return false;
+        return true;
+    }
 </script>

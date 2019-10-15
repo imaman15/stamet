@@ -53,8 +53,8 @@ $route['default_controller'] = 'beranda';
 $route['404_override'] = 'error_page';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['login'] = 'auth/login';
-$route['registration'] = 'auth/registration';
-$route['resetpassword'] = 'auth/forgotpassword';
+$route[UA_LOGIN] = 'auth/login';
+$route[UA_REGISTRATION] = 'auth/registration';
+$route[UA_RESETPASSWORD] = 'auth/forgotpassword';
 
-$route[SITE_ADMIN . '/login'] = 'admin/auth/login';
+$route[UE_ADMIN . '/login'] = 'admin/auth/login';

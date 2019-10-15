@@ -87,9 +87,19 @@ defined('EXIT__AUTO_MAX')      or define('EXIT__AUTO_MAX', 125); // highest auto
 
 /*
 |--------------------------------------------------------------------------
-| Constants For Site
+| Constants For URL
 |--------------------------------------------------------------------------
 |
 */
-$url_admin = 'XyZda';
-define('SITE_ADMIN', strtolower($url_admin));
+
+// URL Applicant (UA)
+define('UA_LOGIN', strtolower('login'));
+define('UA_REGISTRATION', strtolower('register'));
+define('UA_RESETPASSWORD', strtolower('resetpassword'));
+define('UA_FAQ', strtolower('faq'));
+define('UA_CHECKSTATUS', strtolower('checkstatus'));
+
+
+
+//URL Employee (UE)
+define('UE_ADMIN', strtolower('administrator'));

@@ -14,12 +14,28 @@ defined('BASEPATH') or exit('No direct script access allowed');
             margin-top: 100px;
         }
     </style>
-    <?php echo $script_captcha; // javascript recaptcha 
+    <?php //echo $script_captcha; // javascript recaptcha 
     ?>
 </head>
 
 <body>
     <?= $this->session->flashdata('message');
+    ?>
+
+    <?php
+    $number = "089671843158";
+    $number2 = "0896 7184 3158";
+    $number3 = "0896-7184-3158";
+    $number4 = "(0896) 7184 3158";
+    $number5 = "6289671843158";
+    $number6 = "+628967184158";
+    echo $number . " = " . phoneNumber($number) . "<br><br>";
+    echo $number2 . " = " . phoneNumber($number2) . "<br><br>";
+    echo $number3 . " = " . phoneNumber($number3) . "<br><br>";
+    echo $number4 . " = " . phoneNumber($number4) . "<br><br>";
+    echo $number5 . " = " . phoneNumber($number5) . "<br><br>";
+    echo $number6 . " = " . phoneNumber($number6) . "<br><br>";
+
     ?>
 
     <script>

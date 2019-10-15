@@ -81,14 +81,6 @@ body {
 	border-radius: 1rem;
 }
 
-.note4 {
-	margin-top: -0.8rem;
-}
-
-.noteb {
-	margin-bottom: -0.2rem;
-}
-
 .form-label-group textarea {
 	height: auto;
 	border-radius: 1.5rem;
@@ -267,4 +259,8 @@ input[type="checkbox"]:required:valid+label:before {
 	font-size: 1.6em;
 	color: green;
 	vertical-align: -0.16em;
+}
+
+#btnsubmit {
+	margin-top: -10px;
 }

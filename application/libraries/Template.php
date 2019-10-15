@@ -1,10 +1,12 @@
 <?php
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 class Template
 {
 
-    var $template_data = array();
-    var $CI;
+    public $template_data = array();
+    protected $CI;
 
 
     public function __construct()

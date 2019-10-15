@@ -1,36 +1,73 @@
 <?php
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-function template($title, $content, $data)
-{
-    $CI = &get_instance();
-
-    $data['bgcolor'] = 'primary';
-    $data['title'] = $title;
-    $data['content'] = $content;
-    $data['sidebar'] = 'sidebar';
-    $data['topbar'] = 'topbar';
-    return $CI->load->view('layout/wrapper', $data, FALSE);
-}
-function admintemplate($title, $content, $data)
-{
-    $CI = &get_instance();
-
-    $data['bgcolor'] = 'info';
-    $data['title'] = $title;
-    $data['content'] = $content;
-    $data['sidebar'] = 'admin/sidebar';
-    $data['topbar'] = 'admin/topbar';
-    return $CI->load->view('layout/wrapper', $data, FALSE);
-}
-
-function url_admin()
-{
-    $CI = &get_instance();
-    return $CI->db->query('select url_admin from konfigurasi')->first_row();
-}
-
-function show($str)
+function secho($str)
 {
     echo htmlentities($str, ENT_QUOTES, 'UTF-8');
+}
+
+function app_already_login()
+{
+    $CI = &get_instance();
+    $user_session = $CI->$this->session->userdata('userid');
+    if ($user_session) {
+        redirect('dashboard');
+    }
+}
+
+function app_not_login()
+{
+    $CI = &get_instance();
+    $user_session = $CI->$this->session->userdata('userid');
+    if (!$user_session) {
+        redirect('auth/login');
+    }
+}
+
+function cr()
+{
+    $year = 2018;
+    $yearnow = date('Y');
+    if ($yearnow == $year) {
+        echo $yearnow;
+    } else {
+        echo $year . ' - ' . $yearnow;
+    }
+}
+
+function phoneNumber($number)
+{
+    // situs http://agussaputra.com/read-article-40-mengubah+62+menjadi+0+dan+0+menjadi+62++sms.html
+
+    $hp = "";
+    // kadang ada penulisan no hp 0811 239 345
+    $number = str_replace(" ", "", $number);
+    // kadang ada penulisan no hp (0274) 778787
+    $number = str_replace("(", "", $number);
+    // kadang ada penulisan no hp (0274) 778787
+    $number = str_replace(")", "", $number);
+    // kadang ada penulisan no hp 0811.239.345
+    $number = str_replace(".", "", $number);
+    // kadang ada penulisan no hp 0811-239-345
+    $number = str_replace("-", "", $number);
+
+    // cek apakah no hp mengandung karakter + dan 0-9
+    if (!preg_match('/[^+0-9]/', trim($number))) {
+        // cek apakah no hp karakter 1-3 adalah +62
+        if (substr(trim($number), 0, 3) == '+62') {
+            $hp = trim($number);
+        }
+        // cek apakah no hp karakter 1 adalah 0
+        elseif (substr(trim($number), 0, 1) == '0') {
+            $hp = '+62' . substr(trim($number), 1);
+        }
+        // cek apakah no hp karakter 1 adalah 62
+        elseif (substr(trim($number), 0, 2) == '62') {
+            $hp = '+' . trim($number);
+        }
+    }
+    return $hp;
+    // Dan berikut untuk menampilkan kembali "+62" menjadi "0":
+    // $hp0 = substr_replace($hp,'0',0,3);
+
 }

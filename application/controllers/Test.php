@@ -15,7 +15,6 @@ class Test extends CI_Controller
             'username' => set_value('username'),
             'password' => set_value('password'),
             'captcha' => $this->recaptcha->getWidget(), // menampilkan recaptcha
-            'script_captcha' => $this->recaptcha->getScriptTag(), // javascript recaptcha ditaruh di head
         );
         $this->load->view('test', $data);
     }
