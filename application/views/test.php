@@ -36,6 +36,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     echo $number5 . " = " . phoneNumber($number5) . "<br><br>";
     echo $number6 . " = " . phoneNumber($number6) . "<br><br>";
 
+    echo tes('2323');
     ?>
 
     <script>

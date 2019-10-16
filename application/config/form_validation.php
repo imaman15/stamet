@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
 $required = '%s tidak boleh kosong.';
-$nin_unique = '%s sudah digunakan. jika anda belum pernah mendaftar pada aplikasi ini dan %s anda digunakan oleh orang lain silahkan <a href="' . site_url(UA_FAQ) . '">hubungi kami!</a>';
+$nin_unique = '%s sudah terdaftar. jika anda merasa belum pernah mendaftarkan Nomor Identitas (KTP) di aplikasi ini silahkan <a href="' . site_url(UA_FAQ) . '">hubungi kami!</a>';
 
 $config = array(
     'signup_applicant' => array(
@@ -19,10 +19,7 @@ $config = array(
         array(
             'field' => 'last_name',
             'label' => '<strong>Nama Belakang</strong>',
-            'rules' => 'trim|required',
-            'errors' => [
-                'required' => $required
-            ]
+            'rules' => 'trim'
         ),
         array(
             'field' => 'nin',
@@ -46,15 +43,17 @@ $config = array(
         array(
             'field' => 'phone',
             'label' => '<strong>Nomor Handphone</strong>',
-            'rules' => 'trim|required',
+            'rules' => 'trim|required|max_length[15]|numeric',
             'errors' => [
-                'required' => $required
+                'required' => $required,
+                'max_length' => '%s maksimal 15 digit',
+                'numeric' => '%s harus berupa angka',
             ]
         ),
         array(
             'field' => 'education',
             'label' => '<strong>Pendidikan</strong>',
-            'rules' => 'trim|required',
+            'rules' => 'required',
             'errors' => [
                 'required' => $required
             ]
@@ -62,7 +61,7 @@ $config = array(
         array(
             'field' => 'job_category',
             'label' => '<strong>Kategori Pekerjaan</strong>',
-            'rules' => 'trim|required',
+            'rules' => 'required',
             'errors' => [
                 'required' => $required
             ]
@@ -88,21 +87,32 @@ $config = array(
         array(
             'field' => 'password',
             'label' => '<strong>Kata Sandi</strong>',
-            'rules' => 'trim|required|min_length[6]|callback_valid_password', 'errors' => [
-                'required' => $required,
-                'min_length' => '%s minimal 6 karakter'
+            'rules' => 'callback_vallid_passworrd',
+            'errors' => [
+                'required' => $required
             ]
         ),
         array(
             'field' => 'confirmPassword',
             'label' => '<strong>Konfirmasi Kata Sandi</strong>',
-            'rules' => 'matches[password]',
-            'errors' => ['matches' => 'Kata sandi tidak sama.']
+            'rules' => 'trim|required|matches[password]',
+            'errors' => [
+                'required' => $required,
+                'matches' => '%s tidak cocok.'
+            ]
+        ),
+        array(
+            'field' => 'checkme',
+            'label' => '<strong>Ketentuan Pendaftaran</strong>',
+            'rules' => 'required',
+            'errors' => [
+                'required' => '%s harus di centang'
+            ]
         ),
         array(
             'field' => 'g-recaptcha-response',
             'label' => '<strong>Captcha</strong>',
-            'rules' => 'callback_getResponseCaptcha'
+            'rules' => 'callback_getRresponseCcaptcha'
         )
     ),
     'signin_applicant' => array(

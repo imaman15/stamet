@@ -33,18 +33,18 @@
                         <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Masuk</button>
 
                         <div class="text-center small mt-2">
-                            <a href="<?= base_url('resetpassword') ?>">Lupa Password ?</a>
+                            <a href="<?= site_url(UA_RESETPASSWORD) ?>">Lupa Password ?</a>
                         </div>
                         <div class="text-center">
-                            <a class="small" href="<?= base_url('registration') ?>">Belum punya akun ? Daftar</a>
+                            <a class="small" href="<?= site_url(UA_REGISTRATION) ?>">Belum punya akun ? Daftar</a>
                         </div>
 
                         <hr class="my-3">
 
                         <div class="text-center small blue">
-                            <a href="#">FAQ</a>
+                            <a href="<?= site_url(UA_FAQ) ?>">FAQ</a>
                             |
-                            <a href="#">Cek Status</a>
+                            <a href="<?= site_url(UA_CHECKSTATUS) ?>">Cek Status</a>
                         </div>
 
                     </form>

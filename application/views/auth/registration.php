@@ -8,21 +8,25 @@
                         <h5>STAMET KELAS I SERANG</h5>
                         <h1 class="subtitle">Sistem Informasi Pelayanan Jasa Meteorologi</h1>
                     </div>
+
+                    <?= $this->session->flashdata('failed');
+                    ?>
+
                     <?=
                         form_open(UA_REGISTRATION, 'class="form-signin"');
                     ?>
                     <!-- set_value untuk menyimpan inputan sebelumnya, jadi ketika ada kesalahan pengguna tidak perlu input ulang -->
                     <div class="row">
                         <div class="col-lg-6 col-md-12 border-right border-left">
-                            <div class="bg-light p-2 mb-3 bg-4">
+                            <div class="bg-light p-2 bg-4">
 
                                 <div class="form-label-group">
-                                    <input type="text" id="first_name" name="first_name" class="form-control" placeholder="Nama Depan" value="<?= set_value('first_name') ?>">
+                                    <input type="text" id="first_name" name="first_name" class="form-control <?= form_error('first_name') ? 'is-invalid' : null ?>" placeholder="Nama Depan" value="<?= set_value('first_name') ?>" autofocus>
                                     <label for="first_name">Nama Depan</label>
                                     <?= form_error('first_name'); ?>
                                 </div>
                                 <div class="form-label-group">
-                                    <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Nama Belakang" value="<?= set_value('last_name') ?>">
+                                    <input type="text" id="last_name" name="last_name" class="form-control <?= form_error('last_name') ? 'is-invalid' : null ?>" placeholder="Nama Belakang" value="<?= set_value('last_name') ?>">
                                     <label for="last_name">Nama Belakang</label>
                                     <small class="pl-3 font-weight-light d-block text-muted">(Jika tidak memiliki nama belakang kosongkan saja)</small>
                                     <?= form_error('last_name'); ?>
@@ -33,22 +37,39 @@
                             <div class="p-2 bg-4">
 
                                 <div class="form-label-group">
-                                    <input type="text" onkeypress="return numberOnly(event)" maxlength="16" id="nin" name="nin" class="form-control" placeholder="No. Identitas (KTP)" value="<?= set_value('nin') ?>">
+                                    <input type="text" onkeypress="return numberOnly(event)" maxlength="16" id="nin" name="nin" class="form-control <?= form_error('nin') ? 'is-invalid' : null ?>" placeholder="No. Identitas (KTP)" value="<?= set_value('nin') ?>">
                                     <label for="nin">No. Identitas (KTP)</label>
                                     <?= form_error('nin'); ?>
                                 </div>
 
                                 <div class="form-label-group">
-                                    <textarea class="form-control" name="address" id="address" rows="3" placeholder="Alamat Lengkap"></textarea>
+                                    <textarea class="form-control <?= form_error('address') ? 'is-invalid' : null ?>" name="address" id="address" rows=" 3" placeholder="Alamat Lengkap"><?= set_value('address') ?></textarea>
                                     <label for="address">Alamat Lengkap</label>
                                     <small class="pl-3 font-weight-light d-block text-muted"> (Alamat harus lengkap sesuai dengan No. Identitas/KTP) </small>
                                     <?= form_error('address'); ?>
                                 </div>
 
                                 <div class="form-label-group">
-                                    <input type="number" id="phone" name="phone" class="form-control" placeholder="No. Handphone" value="<?= set_value('phone') ?>">
+                                    <input type="number" id="phone" name="phone" class="form-control <?= form_error('phone') ? 'is-invalid' : null ?>" placeholder="No. Handphone" value="<?= set_value('phone') ?>">
                                     <label for="phone">No. Handphone</label>
+                                    <small class="pl-3 font-weight-light d-block text-muted"> (Pastikan nomor handpone anda aktif dan gunakan nomor yang sudah terdaftar di whatsapp jika ada.) </small>
                                     <?= form_error('phone') ?>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text bs-4" for="education">Pendidikan</label>
+                                    </div>
+                                    <select class="custom-select bs-4 <?= form_error('education') ? 'is-invalid' : null ?>" id="education" name="education" style="height: 50px">
+                                        <option value="">Pilih...</option>
+                                        <option value="1" <?= (set_value("education") == 1) ? "selected" : null; ?>>Doktor (S3)</option>
+                                        <option value="2" <?= (set_value("education") == 2) ? "selected" : null; ?>>Pascasarjana (S2)</option>
+                                        <option value="3" <?= (set_value("education") == 3) ? "selected" : null; ?>>Sarjana (S1)</option>
+                                        <option value="4" <?= (set_value("education") == 4) ? "selected" : null; ?>>SMA</option>
+                                    </select>
+                                    <div class="input-group">
+                                        <?= form_error('education') ?>
+                                    </div>
                                 </div>
                             </div>
 
@@ -56,34 +77,18 @@
 
                         <div class="col-lg-6 col-md-12 border-left border-right">
                             <div class="p-2 bg-4">
-
-                                <div class="input-group mb-3 ">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text bs-4" for="education">Pendidikan</label>
-                                    </div>
-                                    <select class="custom-select bs-4" id="education" style="height: 50px">
-                                        <option selected>Pilih...</option>
-                                        <option value="1">Doktor (S3)</option>
-                                        <option value="2">Pascasarjana (S2)</option>
-                                        <option value="3">Sarjana (S1)</option>
-                                        <option value="4">SMA</option>
-                                    </select>
-                                    <div class="input-group">
-                                        <?= form_error('education') ?>
-                                    </div>
-                                </div>
                                 <div class="input-group mb-3 ">
                                     <div class="input-group-prepend">
                                         <label class="input-group-text bs-4" for="job_category">Kategori Pekerjaan</label>
                                     </div>
-                                    <select class="custom-select bs-4" id="job_category" style="height: 50px">
-                                        <option selected>Pilih...</option>
-                                        <option value="1">BUMN</option>
-                                        <option value="2">Instansi pemerintah</option>
-                                        <option value="3">Mahasiswa</option>
-                                        <option value="4">SMA</option>
-                                        <option value="5">Peneliti</option>
-                                        <option value="6">Swasta</option>
+                                    <select class="custom-select bs-4 <?= form_error('job_category') ? 'is-invalid' : null ?>" id="job_category" name="job_category" style="height: 50px">
+                                        <option value="">Pilih...</option>
+                                        <option value="1" <?= (set_value("job_category") == 1) ? "selected" : null; ?>>BUMN</option>
+                                        <option value="2" <?= (set_value("job_category") == 2) ? "selected" : null; ?>>Instansi pemerintah</option>
+                                        <option value="3" <?= (set_value("job_category") == 3) ? "selected" : null; ?>>Mahasiswa</option>
+                                        <option value="4" <?= (set_value("job_category") == 4) ? "selected" : null; ?>>SMA</option>
+                                        <option value="5" <?= (set_value("job_category") == 5) ? "selected" : null; ?>>Peneliti</option>
+                                        <option value="6" <?= (set_value("job_category") == 6) ? "selected" : null; ?>>Swasta</option>
                                     </select>
                                     <div class="input-group">
                                         <?= form_error('job_category') ?>
@@ -91,14 +96,14 @@
                                 </div>
 
                                 <div class="form-label-group">
-                                    <input type="text" id="institute" name="institute" class="form-control" placeholder="Nama Instansi" value="<?= set_value('institute') ?>">
+                                    <input type="text" id="institute" name="institute" class="form-control <?= form_error('institute') ? 'is-invalid' : null ?>" placeholder="Nama Instansi" value="<?= set_value('institute') ?>">
                                     <label for="institute">Nama Instansi</label>
                                     <small class="pl-3 font-weight-light d-block text-muted">(Nama Instansi / Nama Perusahaan / Nama Sekolah / Nama Universitas)</small>
                                     <?= form_error('institute') ?>
                                 </div>
 
                                 <div class="form-label-group">
-                                    <input type="text" id="email" name="email" class="form-control" placeholder="Email" value="<?= set_value('email') ?>">
+                                    <input type="text" id="email" name="email" class="form-control <?= form_error('email') ? 'is-invalid' : null ?>" placeholder="Email" value="<?= set_value('email') ?>">
                                     <label for="email">Email</label>
                                     <small class="pl-3 font-weight-light d-block text-muted"> (Pastikan email anda aktif, email anda akan digunakan sebagai nama pengguna untuk masuk ke aplikasi) </small>
                                     <?= form_error('email') ?>
@@ -109,21 +114,22 @@
                             <div class="bg-light p-2 bg-4">
 
                                 <div class="form-label-group">
-                                    <input type="password" id="password" name="password" class="form-control" placeholder="Kata Sandi">
+                                    <input type="password" id="password" name="password" class="form-control <?= form_error('password') ? 'is-invalid' : null ?>" placeholder="Kata Sandi">
                                     <label for="password">Kata Sandi</label>
-                                    <small class="pl-3 font-weight-light d-block text-muted">(Kata sandi minimal 6 karakter dan berisi kombinasi dari huruf kecil, huruf besar, angka dan simbol)</small>
+                                    <small class="pl-3 font-weight-light d-block text-muted">(Kata sandi minimal 6 karakter dan berisi kombinasi dari huruf kecil, huruf besar, angka dan simbol !@#$%^&*()\-_=+{};:,<.>§~ )</small>
                                     <?= form_error('password') ?>
                                 </div>
                                 <div class="form-label-group">
-                                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Konfrimasi Kata Sandi">
+                                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control <?= form_error('confirmPassword') ? 'is-invalid' : null ?>" placeholder="Konfrimasi Kata Sandi">
                                     <label for="confirmPassword">Konfirmasi Kata Sandi</label>
+                                    <?= form_error('confirmPassword') ?>
                                 </div>
 
                             </div>
 
                         </div>
 
-                        <div class="form-group m-3">
+                        <div class="form-group mx-auto my-3">
                             <div class="alert alert-info bg-4">
                                 Untuk mendukung manajemen pengguna layanan Data Online BMKG dalam rangka meningkatkan layanan, pendaftar harus memberikan informasi data diri secara benar dan memperbarui data diri ketika terdapat perubahan. <br>
                                 Informasi pendaftar bersifat rahasia sehingga harus dilindungi dan hanya boleh dimanfaatkan untuk peningkatan layanan Data Online. <br><br>
@@ -131,7 +137,7 @@
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="checkme" required>
+                                <input class="form-check-input" type="checkbox" id="checkme" name="checkme" required>
                                 <label class="form-check-label" for="checkme">
                                     Saya telah membaca dan menyetujui ketentuan Pendaftaran Akun Data Online
                                 </label>
@@ -146,11 +152,11 @@
                         <button class="btn btn-lg btn-primary text-uppercase btn-block mx-lg-5" type="submit" id="btnsubmit" disabled>Daftar</button>
                     </div>
 
-                    <div class="text-center small mt-2">
-                        <a href="<?= base_url(UA_RESETPASSWORD) ?>">Lupa Password ?</a>
+                    <div class="text-center mt-2">
+                        <a class="small" href="<?= site_url(UA_LOGIN) ?>">Sudah punya akun ? Masuk</a>
                     </div>
                     <div class="text-center">
-                        <a class="small" href="<?= base_url(UA_LOGIN) ?>">Sudah punya akun ? Masuk</a>
+                        <a class="small" href="<?= site_url(UA_RESETPASSWORD) ?>">Lupa Password ?</a>
                     </div>
                     <?=
                         form_close();
@@ -158,9 +164,9 @@
 
                     <hr class="my-3">
                     <div class="text-center small blue">
-                        <a href="<?= base_url(UA_FAQ); ?>">FAQ</a>
+                        <a href="<?= site_url(UA_FAQ); ?>">FAQ</a>
                         |
-                        <a href="<?= base_url(UA_CHECKSTATUS); ?>">Cek Status</a>
+                        <a href="<?= site_url(UA_CHECKSTATUS); ?>">Cek Status</a>
                     </div>
 
                     <!-- Footer -->
