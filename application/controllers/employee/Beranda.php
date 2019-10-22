@@ -20,7 +20,7 @@ class Beranda extends CI_Controller
 
         $data['title'] = 'Beranda';
         $data['tes'] = 'coy';
-        $this->template->loadadmin('admin/beranda', $data);
+        $this->template->loadadmin(UE_FOLDER . '/beranda', $data);
     }
 
     // Add a new item

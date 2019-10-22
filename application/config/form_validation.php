@@ -5,6 +5,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 $required = '%s tidak boleh kosong.';
 $nin_unique = '%s sudah terdaftar. jika anda merasa belum pernah mendaftarkan Nomor Identitas (KTP) di aplikasi ini silahkan <a href="' . site_url(UA_FAQ) . '">hubungi kami!</a>';
+$valid_email = '%s harus berupa alamat surel yang valid.';
 
 $config = array(
     'signup_applicant' => array(
@@ -80,17 +81,14 @@ $config = array(
             'rules' => 'trim|required|valid_email|is_unique[applicant.email]',
             'errors' => [
                 'required' => $required,
-                'valid_email' => '%s harus berupa alamat surel yang valid.',
+                'valid_email' => $valid_email,
                 'is_unique' => '%s sudah terdaftar.'
             ]
         ),
         array(
             'field' => 'password',
             'label' => '<strong>Kata Sandi</strong>',
-            'rules' => 'callback_vallid_passworrd',
-            'errors' => [
-                'required' => $required
-            ]
+            'rules' => 'callback_vallid_passworrd'
         ),
         array(
             'field' => 'confirmPassword',
@@ -117,14 +115,26 @@ $config = array(
     ),
     'signin_applicant' => array(
         array(
-            'field' => 'emailaddress',
-            'label' => '<strong>EmailAddress</strong>',
-            'rules' => 'required|valid_email'
+            'field' => 'email',
+            'label' => '<strong>Email</strong>',
+            'rules' => 'trim|required|valid_email',
+            'errors' => [
+                'required' => $required,
+                'valid_email' => $valid_email
+            ]
         ),
         array(
-            'field' => 'name',
-            'label' => '<strong>Name</strong>',
-            'rules' => 'required|alpha'
+            'field' => 'password',
+            'label' => '<strong>Password</strong>',
+            'rules' => 'required|trim',
+            'errors' => [
+                'required' => $required,
+            ]
+        ),
+        array(
+            'field' => 'g-recaptcha-response',
+            'label' => '<strong>Captcha</strong>',
+            'rules' => 'callback_getRresponseCcaptcha'
         )
     )
 );

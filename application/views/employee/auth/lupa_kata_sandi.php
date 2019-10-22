@@ -20,7 +20,7 @@
             </form>
             <hr>
             <div class="text-center">
-              <a class="small" href="<?= base_url("admin/masuk"); ?>">Batal</a>
+              <a class="small" href="<?= site_url(UE_FOLDER . "/masuk"); ?>">Batal</a>
             </div>
           </div>
         </div>

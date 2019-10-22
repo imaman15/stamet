@@ -7,6 +7,7 @@ class Applicant_model extends CI_Model
 
     private $_table = "applicant";
 
+    public $app_id;
     public $email;
     public $password;
     public $photo = "default.jpg";
@@ -21,30 +22,36 @@ class Applicant_model extends CI_Model
     public $is_active = 1;
     public $date_created;
 
-    public function getAll()
+    public function login($post)
     {
-        return $this->db->get($this->_table)->result();
-        // result() fungsi untuk mengambil semua data hasil query
+        $this->email = $post["email"];
+        return $this->db->get_where($this->_table, ["email" => $this->email])->row();
+        // row() fungsi untuk mengambil satu data dari hasil query
     }
 
-    public function getById($id)
+    public function getData($user = NULL)
     {
-        return $this->db->get_where($this->_table, ["applicant_id" => $id])->row();
-        // row() fungsi untuk mengambil satu data dari hasil query
+        $this->app_id = $user;
+        $this->db->from($this->_table);
+        if ($this->app_id != NULL) {
+            $this->db->where('applicant_id', $this->app_id);
+        }
+        $query = $this->db->get();
+        return $query;
     }
 
     public function add($post)
     {
-        $this->email = $post["email"];
+        $this->email = htmlspecialchars($post["email"]);
         $this->password = password_hash($post["password"], PASSWORD_DEFAULT);
         $this->photo;
-        $this->first_name = ucwords($post["first_name"]);
-        $this->last_name = ucwords($post["last_name"]);
+        $this->first_name = htmlspecialchars(ucwords($post["first_name"]));
+        $this->last_name = htmlspecialchars(ucwords($post["last_name"]));
         $this->nin = $post["nin"];
-        $this->address = $post["address"] != "" ? $post["address"] : null;
+        $this->address = $post["address"] != "" ? htmlspecialchars($post["address"]) : null;
         $this->education = $post["education"];
         $this->job_category = $post["job_category"];
-        $this->institute = $post['institute'] != "" ? ucwords($post["institute"]) : null;
+        $this->institute = $post['institute'] != "" ? htmlspecialchars(ucwords($post["institute"])) : null;
         $this->phone = phoneNumber($post["phone"]);
         $this->is_active;
         $this->date_created = time();

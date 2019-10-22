@@ -15,8 +15,8 @@ class Error_page extends CI_Controller
     {
         $uri = $this->uri->segment(1);
 
-        if ($uri == "admin") {
-            $uri = "admin";
+        if ($uri == UE_ADMIN or $uri == UE_FOLDER) {
+            $uri = UE_ADMIN;
             $this->_page($uri);
         } else {
             $uri = "";

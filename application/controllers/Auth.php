@@ -12,16 +12,65 @@ class Auth extends CI_Controller
         $this->load->model("applicant_model");
     }
 
-
     public function login()
     {
-        $data['title'] = 'Login';
-        $this->template->auth('template_login', 'auth/login', $data, FALSE);
+        app_already_login();
+        if ($this->form_validation->run('signin_applicant') == FALSE) {
+            $data['title'] = 'Login';
+            $data['captcha'] = $this->recaptcha->getWidget(); // menampilkan recaptcha
+            $this->template->auth('template_login', 'auth/login', $data, FALSE);
+        } else {
+            $post = $this->input->post(null, TRUE);
+            $password = $post["password"];
+            $user = $this->applicant_model->login($post);
+
+            //jika usernya ada
+            if ($user) {
+                //jika usernya aktif
+                if ($user->is_active == 1) {
+                    //cek password
+                    // password_verify() untuk menyamakan antara password yang di ketikan di login dengan password yg sudah di hash
+                    if (password_verify($password, $user->password)) {
+                        // password benar
+                        $data = [
+                            'applicant_id' => $user->applicant_id,
+                            'logged_in' => TRUE
+                        ];
+
+                        $this->session->set_userdata($data);
+
+                        redirect(site_url());
+                    } else {
+                        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                    <strong>Password</strong> salah!
+                    </div>');
+                        redirect(site_url(UA_LOGIN));
+                    }
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                <strong>Email</strong> ini belum diaktifkan!
+                </div>');
+                    redirect(site_url(UA_LOGIN));
+                }
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                <strong>Email</strong> tidak terdaftar! </div>');
+                redirect(site_url(UA_LOGIN));
+            }
+        }
+    }
+
+    public function logout()
+    {
+        $this->session->unset_userdata('applicant_id');
+        $this->session->unset_userdata('logged_in');
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Anda telah keluar! </div>');
+        redirect(site_url(UA_LOGIN));
     }
 
     public function registration()
     {
-        if ($this->form_validation->run('signup_applicant') == false) {
+        if ($this->form_validation->run('signup_applicant') == FALSE) {
             $data['title'] = 'Daftar';
             $data['captcha'] = $this->recaptcha->getWidget(); // menampilkan recaptcha
             $this->template->auth('template_login', 'auth/registration', $data, FALSE);
@@ -33,7 +82,7 @@ class Auth extends CI_Controller
                 <strong>Selamat!</strong> Akun anda berhasil dibuat. Silahkan login.</div>');
                 redirect(UA_LOGIN);
             }
-            $this->session->set_flashdata('failed', '<div class="alert alert-danger" role="alert">
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                 <strong>Maaf!</strong> Akun anda gagal dibuat. Silahkan daftar kembali.</div>');
             redirect(UA_REGISTRATION);
         }

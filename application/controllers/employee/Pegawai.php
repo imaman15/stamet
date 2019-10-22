@@ -9,7 +9,7 @@ class Pegawai extends CI_Controller
     {
         $data['title'] = 'Data Pegawai';
         $data['tes'] = 'coy';
-        $this->template->loadadmin('admin/pegawai', $data);
+        $this->template->loadadmin(UE_FOLDER . '/pegawai', $data);
     }
 }
 

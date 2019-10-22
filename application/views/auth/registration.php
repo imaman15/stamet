@@ -9,7 +9,7 @@
                         <h1 class="subtitle">Sistem Informasi Pelayanan Jasa Meteorologi</h1>
                     </div>
 
-                    <?= $this->session->flashdata('failed');
+                    <?= $this->session->flashdata('message');
                     ?>
 
                     <?=

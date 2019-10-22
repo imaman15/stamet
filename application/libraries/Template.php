@@ -30,8 +30,8 @@ class Template
 
     function loadadmin($view, $view_data = array(), $return = FALSE)
     {
-        $this->set('sidebar', $this->CI->load->view('admin/sidebar', $view_data, TRUE));
-        $this->set('topbar', $this->CI->load->view('admin/topbar', $view_data, TRUE));
+        $this->set('sidebar', $this->CI->load->view(UE_FOLDER . '/sidebar', $view_data, TRUE));
+        $this->set('topbar', $this->CI->load->view(UE_FOLDER . '/topbar', $view_data, TRUE));
         $this->set('content', $this->CI->load->view($view, $view_data, TRUE));
         return $this->CI->load->view('layout/template_utama', $this->template_data, $return);
     }

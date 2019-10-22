@@ -9,7 +9,7 @@ class Auth extends CI_Controller
     {
         $this->load->library('form_validation');
         $data['title'] = 'Administrator';
-        $this->template->auth('template_loginadmin', 'admin/auth/masuk', $data, FALSE);
+        $this->template->auth('template_loginadmin', UE_FOLDER . '/auth/masuk', $data, FALSE);
     }
 }
 

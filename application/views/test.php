@@ -23,6 +23,24 @@ defined('BASEPATH') or exit('No direct script access allowed');
     ?>
 
     <?php
+    var_dump($user);
+
+
+    $text = '<a href=index.php>belajar</a> <?php echo "inject ah"; ?>';
+    $a = htmlentities($text);
+    $b = htmlspecialchars($text);
+    $c = strip_tags($text);
+    echo $text;
+    echo "<br><br>";
+    echo $a;
+    echo "<br><br>";
+    echo $b;
+    echo "<br><br>";
+    echo $c;
+    echo "<br><br>";
+    ?>
+
+    <?php
     $number = "089671843158";
     $number2 = "0896 7184 3158";
     $number3 = "0896-7184-3158";
@@ -36,7 +54,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
     echo $number5 . " = " . phoneNumber($number5) . "<br><br>";
     echo $number6 . " = " . phoneNumber($number6) . "<br><br>";
 
-    echo tes('2323');
     ?>
 
     <script>

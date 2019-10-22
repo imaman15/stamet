@@ -9,18 +9,21 @@ function secho($str)
 function app_already_login()
 {
     $CI = &get_instance();
-    $user_session = $CI->$this->session->userdata('userid');
-    if ($user_session) {
-        redirect('dashboard');
+    $user_session = $CI->session->userdata('applicant_id');
+    $logged_in = $CI->session->userdata('logged_in');
+
+    if ($user_session && $logged_in == TRUE) {
+        redirect(site_url());
     }
 }
 
 function app_not_login()
 {
     $CI = &get_instance();
-    $user_session = $CI->$this->session->userdata('userid');
-    if (!$user_session) {
-        redirect('auth/login');
+    $user_session = $CI->session->userdata('applicant_id');
+    $logged_in = $CI->session->userdata('logged_in');
+    if (!$user_session && $logged_in !== TRUE) {
+        redirect(UA_LOGIN);
     }
 }
 

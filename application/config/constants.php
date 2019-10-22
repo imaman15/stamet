@@ -94,6 +94,7 @@ defined('EXIT__AUTO_MAX')      or define('EXIT__AUTO_MAX', 125); // highest auto
 
 // URL Applicant (UA)
 define('UA_LOGIN', strtolower('login'));
+define('UA_LOGOUT', strtolower('logout'));
 define('UA_REGISTRATION', strtolower('register'));
 define('UA_RESETPASSWORD', strtolower('resetpassword'));
 define('UA_FAQ', strtolower('faq'));
@@ -102,4 +103,5 @@ define('UA_CHECKSTATUS', strtolower('checkstatus'));
 
 
 //URL Employee (UE)
+define('UE_FOLDER', strtolower('employee'));
 define('UE_ADMIN', strtolower('administrator'));

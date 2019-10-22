@@ -6,7 +6,8 @@ class Test extends CI_Controller
     {
         parent::__construct();
         $this->load->helper(array('url', 'form'));
-        $this->load->library(array('form_validation', 'recaptcha'));
+        $this->load->library(array('form_validation', 'recaptcha', 'UserApplicant'));
+        $this->load->model('applicant_model');
     }
     public function index()
     {
@@ -14,6 +15,7 @@ class Test extends CI_Controller
             'action' => site_url('test/login'),
             'username' => set_value('username'),
             'password' => set_value('password'),
+            'user' => $this->UserApplicant->applicant(),
             'captcha' => $this->recaptcha->getWidget(), // menampilkan recaptcha
         );
         $this->load->view('test', $data);

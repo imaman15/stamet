@@ -3,20 +3,21 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Beranda extends CI_Controller
+class Dashboard extends CI_Controller
 {
 
     public function __construct()
     {
         parent::__construct();
-        $this->load->helper('fungsi');
+        app_not_login();
     }
 
     // List all your items
-    public function index($offset = 0)
+    public function index()
     {
-        $data['title'] = 'Beranda';
-        $this->template->load('beranda', $data);
+        $data['title'] = 'Dashboard';
+        $data['user'] = $this->users->applicant();
+        $this->template->load('dashboard', $data);
     }
 
     // Add a new item
@@ -32,4 +33,4 @@ class Beranda extends CI_Controller
     { }
 }
 
-/* End of file Beranda.php */
+/* End of file Dashboard.php */
