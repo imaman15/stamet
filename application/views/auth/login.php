@@ -26,11 +26,15 @@
                         <label for="password">Kata Sandi</label>
                         <?= form_error('password') ?>
                     </div>
+
                     <div class="form-group mt-3">
-                                <?php echo $captcha // tampilkan recaptcha 
-                                ?>
-                                <?= form_error('g-recaptcha-response') ?>
-                            </div>
+                        <?=
+                            $captcha // tampilkan recaptcha
+                        ?>
+                        <?=
+                            form_error('g-recaptcha-response')
+                        ?>
+                    </div>
                     <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Masuk</button>
 
                     <div class="text-center small mt-2">
@@ -56,3 +60,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    var status = document.getElementById('kondisi')
+    setInterval(function() {
+        status.className = navigator.onLine ? 'online' : 'offline';
+        status.innerHTML = navigator.onLine ? 'online' : 'offline';
+    }, 100);
+</script>

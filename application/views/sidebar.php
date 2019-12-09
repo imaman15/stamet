@@ -17,7 +17,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="#">
+        <a class="nav-link hvr-wobble-horizontal" href="#">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -32,28 +32,28 @@
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link hvr-wobble-horizontal" href="#">
             <i class="fas fa-fw fa-smog"></i>
             <span>Data Harian</span></a>
     </li>
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link hvr-wobble-horizontal" id="link" href="#">
             <i class="fas fa-fw fa-poo-storm"></i>
             <span>Data Ekstrem</span></a>
     </li>
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link hvr-wobble-horizontal" href="#">
             <i class="fas fa-fw fa-mountain"></i>
             <span>Data Gempa Bumi</span></a>
     </li>
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link hvr-wobble-horizontal" href="#">
             <i class="fas fa-fw fa-money-bill-wave"></i>
             <span>Data Berbayar</span></a>
     </li>
@@ -65,14 +65,14 @@
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link hvr-wobble-horizontal" href="#">
             <i class="fas fa-fw fa-comments"></i>
             <span>Konsultasi Data</span></a>
     </li>
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link hvr-wobble-horizontal" href="#">
             <i class="fa fa-fw fa-question-circle"></i>
             <span>FAQ</span></a>
     </li>

@@ -7,7 +7,7 @@ class Applicant_model extends CI_Model
 
     private $_table = "applicant";
 
-    public $app_id;
+    public $applicant_id;
     public $email;
     public $password;
     public $photo = "default.jpg";
@@ -31,10 +31,10 @@ class Applicant_model extends CI_Model
 
     public function getData($user = NULL)
     {
-        $this->app_id = $user;
+        $this->applicant_id = $user;
         $this->db->from($this->_table);
-        if ($this->app_id != NULL) {
-            $this->db->where('applicant_id', $this->app_id);
+        if ($this->applicant_id != NULL) {
+            $this->db->where('applicant_id', $this->applicant_id);
         }
         $query = $this->db->get();
         return $query;
@@ -42,16 +42,16 @@ class Applicant_model extends CI_Model
 
     public function add($post)
     {
-        $this->email = htmlspecialchars($post["email"]);
+        $this->email = htmlspecialchars($post["email"], true);
         $this->password = password_hash($post["password"], PASSWORD_DEFAULT);
         $this->photo;
-        $this->first_name = htmlspecialchars(ucwords($post["first_name"]));
-        $this->last_name = htmlspecialchars(ucwords($post["last_name"]));
+        $this->first_name = htmlspecialchars(ucwords($post["first_name"]), true);
+        $this->last_name = htmlspecialchars(ucwords($post["last_name"]), true);
         $this->nin = $post["nin"];
-        $this->address = $post["address"] != "" ? htmlspecialchars($post["address"]) : null;
+        $this->address = $post["address"] != "" ? htmlspecialchars($post["address"], true) : null;
         $this->education = $post["education"];
         $this->job_category = $post["job_category"];
-        $this->institute = $post['institute'] != "" ? htmlspecialchars(ucwords($post["institute"])) : null;
+        $this->institute = $post['institute'] != "" ? htmlspecialchars(ucwords($post["institute"]), true) : null;
         $this->phone = phoneNumber($post["phone"]);
         $this->is_active;
         $this->date_created = time();

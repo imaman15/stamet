@@ -58,5 +58,5 @@ $route[UA_LOGOUT] = 'auth/logout';
 $route[UA_REGISTRATION] = 'auth/registration';
 $route[UA_RESETPASSWORD] = 'auth/forgotpassword';
 
-$route[UE_ADMIN] = UE_FOLDER;
-$route[UE_ADMIN . '/login'] = 'employee/auth/login';
+$route[UE_ADMIN] = UE_FOLDER . '/beranda';
+$route[UE_ADMIN . '/login'] = UE_FOLDER . '/auth/login';
