@@ -22,18 +22,18 @@ class Template
 
     function load($view, $view_data = array(), $return = FALSE)
     {
-        $this->set('sidebar', $this->CI->load->view('sidebar', $view_data, TRUE));
-        $this->set('topbar', $this->CI->load->view('topbar', $view_data, TRUE));
+        $this->set('head', $this->CI->load->view('layout/head', $view_data, TRUE));
         $this->set('content', $this->CI->load->view($view, $view_data, TRUE));
+        $this->set('jsbody', $this->CI->load->view('layout/jsbody', $view_data, TRUE));
         return $this->CI->load->view('layout/template_utama', $this->template_data, $return);
     }
 
     function loadadmin($view, $view_data = array(), $return = FALSE)
     {
-        $this->set('sidebar', $this->CI->load->view(UE_FOLDER . '/sidebar', $view_data, TRUE));
-        $this->set('topbar', $this->CI->load->view(UE_FOLDER . '/topbar', $view_data, TRUE));
+        $this->set('head', $this->CI->load->view('layout/head', $view_data, TRUE));
         $this->set('content', $this->CI->load->view($view, $view_data, TRUE));
-        return $this->CI->load->view('layout/template_utama', $this->template_data, $return);
+        $this->set('jsbody', $this->CI->load->view('layout/jsbody', $view_data, TRUE));
+        return $this->CI->load->view('layout/template_admin', $this->template_data, $return);
     }
 
     function auth($tpl_view, $view, $view_data = array(), $return = FALSE)

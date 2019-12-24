@@ -10,7 +10,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
@@ -38,41 +38,27 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Data Meteorologi
+                Pelayanan
             </div>
 
-            <!-- Nav Item - Tables -->
+            <!-- Nav Item - Data/Informasi -->
             <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-smog"></i>
-                    <span>Data Harian</span></a>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dataInformasi" aria-expanded="true" aria-controls="dataInformasi">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Data / Informasi</span>
+                </a>
+                <div id="dataInformasi" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Data / Informasi :</h6>
+                        <a class="collapse-item hvr-wobble-horizontal" href="#">Form Permintaan</a>
+                        <a class="collapse-item hvr-wobble-horizontal" href="#">Konfirmasi Permintaan</a>
+                        <a class="collapse-item hvr-wobble-horizontal" href="#">Cek Pemabayaran</a>
+                        <a class="collapse-item hvr-wobble-horizontal" href="#">Berkas Pengantar</a>
+                        <a class="collapse-item hvr-wobble-horizontal" href="#">Berkas Data/Informasi</a>
+                        <a class="collapse-item hvr-wobble-horizontal" href="#">Riwayat Permintaan</a>
+                    </div>
+                </div>
             </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" id="link" href="#">
-                    <i class="fas fa-fw fa-poo-storm"></i>
-                    <span>Data Ekstrem</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-mountain"></i>
-                    <span>Data Gempa Bumi</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-money-bill-wave"></i>
-                    <span>Data Berbayar</span></a>
-            </li>
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Informasi
-            </div>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
@@ -81,11 +67,99 @@
                     <span>Konsultasi Data</span></a>
             </li>
 
+            <!-- Nav Item - Data/Informasi -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#kunjungan" aria-expanded="true" aria-controls="kunjungan">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Kunjungan</span>
+                </a>
+                <div id="kunjungan" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Kunjungan :</h6>
+                        <a class="collapse-item hvr-wobble-horizontal" href="#">Konfirmasi Kunjungan</a>
+                        <a class="collapse-item hvr-wobble-horizontal" href="#">Jadwal Kunjungan</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Hubungan Pengguna
+            </div>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link hvr-wobble-horizontal" href="#">
+                    <i class="fas fa-fw fa-comments"></i>
+                    <span>Survei Pelanggan</span></a>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link hvr-wobble-horizontal" href="#">
+                    <i class="fas fa-fw fa-comments"></i>
+                    <span>Kritik & Saran</span></a>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link hvr-wobble-horizontal" href="#">
+                    <i class="fas fa-fw fa-comments"></i>
+                    <span>Komplain</span></a>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link hvr-wobble-horizontal" href="#">
+                    <i class="fas fa-fw fa-comments"></i>
+                    <span>Pesan</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Manajemen
+            </div>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link hvr-wobble-horizontal" href="#">
+                    <i class="fas fa-fw fa-comments"></i>
+                    <span>Data Anggota</span></a>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link hvr-wobble-horizontal" href="#">
+                    <i class="fas fa-fw fa-comments"></i>
+                    <span>Data Pegawai</span></a>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link hvr-wobble-horizontal" href="#">
+                    <i class="fas fa-fw fa-comments"></i>
+                    <span>Data Jenis Permintaan</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Pengaturan
+            </div>
+
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link hvr-wobble-horizontal" href="#">
                     <i class="fa fa-fw fa-question-circle"></i>
-                    <span>FAQ</span></a>
+                    <span>Pengaturan</span></a>
             </li>
 
             <!-- Divider -->
@@ -147,17 +221,17 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle hvr-wobble-horizontal" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php secho(ucfirst($user->first_name . " " . $user->last_name)) ?></span>
-                                <img class="img-profile rounded-circle" src="<?= base_url('assets/img/profil/') . $user->photo; ?>">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Imam</span>
+                                <img class="img-profile rounded-circle" src="<?= base_url('assets/img/profil/default.png') ?>">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item hvr-wobble-horizontal" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profil
+                                    Akun Saya
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item hvr-wobble-horizontal" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Keluar
                                 </a>
@@ -206,7 +280,7 @@
                 <div class="modal-body">Pilih "Logout" di bawah ini jika Anda ingin mengakhiri sesi Anda saat ini.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="<?= site_url(UA_LOGOUT) ?>">Logout</a>
+                    <a class="btn btn-primary" href="<?= base_url(UA_LOGOUT) ?>">Logout</a>
                 </div>
             </div>
         </div>

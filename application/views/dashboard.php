@@ -11,8 +11,8 @@
   </div>
   <div class="card shadow mb-3 animated zoomIn fast" style="max-width: 540px;">
     <div class="row no-gutters">
-      <div class="col-md-4 p-2">
-        <img src="<?= base_url('assets/img/profil/default.png'); ?>" class="card-img" alt="Imam Agustian Nugraha">
+      <div class="col-md-4 p-2 ">
+        <img src="<?= base_url('assets/img/profil/') . $user->photo; ?>" class="card-img rounded-circle" alt="Imam Agustian Nugraha">
       </div>
       <div class="col-md-8">
         <div class="card-body">
