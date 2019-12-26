@@ -58,9 +58,21 @@ class Applicant_model extends CI_Model
         $this->db->insert($this->_table, $this);
     }
 
-    public function update()
+    public function update($post)
     {
-        $post = $this->input->post();
+        $this->applicant_id = $this->session->userdata('applicant_id');
+        $this->email = $post["email"];
+        $this->photo;
+        $params['first_name'] = htmlspecialchars(ucwords($post["first_name"]), true);
+        $params['last_name'] = htmlspecialchars(ucwords($post["last_name"]), true);
+        $params['nin'] = $post["nin"];
+        $params['address'] = $post["address"] != "" ? htmlspecialchars($post["address"], true) : null;
+        $params['education'] = $post["education"];
+        $params['job_category'] = $post["job_category"];
+        $params['institute'] = $post['institute'] != "" ? htmlspecialchars(ucwords($post["institute"]), true) : null;
+        $params['phone'] = phoneNumber($post["phone"]);
+        $this->db->where(array('applicant_id' => $this->applicant_id, 'email' => $this->email));
+        $this->db->update($this->_table, $params);
     }
 
     public function delete($id)

@@ -29,7 +29,7 @@ function app_not_login()
 
 function cr()
 {
-    $year = 2018;
+    $year = 2019;
     $yearnow = date('Y');
     if ($yearnow == $year) {
         echo $yearnow;

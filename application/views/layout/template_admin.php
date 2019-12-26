@@ -246,11 +246,11 @@
                 <?= $content; ?>
             </div>
             <!-- End of Main Content -->
-            <!-- Footer -->
+            <!-- Footer --> 
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; SIPJAMET <?= date('Y') ?></span>
+                        <span>Copyright &copy; SIPJAMET <?= cr() ?></span>
                     </div>
                 </div>
             </footer>

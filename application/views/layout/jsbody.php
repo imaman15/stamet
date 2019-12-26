@@ -19,3 +19,32 @@
         $('#dataTable').DataTable();
     });
 </script>
+
+<script>
+    $('#checkme').click(function() {
+        if ($(this).is(':checked')) {
+            $('#btnsubmit').removeAttr('disabled');
+        } else {
+            $('#btnsubmit').attr('disabled', 'disabled');
+        }
+    });
+</script>
+
+<script>
+    function numberOnly(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+            return false;
+        return true;
+    }
+</script>
+
+<!-- custom scripts Jquery -->
+<script>
+    // File Browser
+    $('.custom-file-input').on('change', function() {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+</script>

@@ -70,6 +70,7 @@ class Auth extends CI_Controller
 
     public function registration()
     {
+        app_already_login();
         if ($this->form_validation->run('signup_applicant') == FALSE) {
             $data['title'] = 'Daftar';
             $data['captcha'] = $this->recaptcha->getWidget(); // menampilkan recaptcha
