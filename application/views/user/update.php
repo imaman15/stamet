@@ -13,20 +13,20 @@
                 <div class="form-group row">
                     <label for="email" class="col-sm-3 col-form-label">Email</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="email" id="email" placeholder="Email" value="<?php secho($user->email) ?>" readonly>
+                        <input type="text" class="form-control <?= form_error('email') ? 'is-invalid' : null ?>" name="email" id="email" placeholder="Email" value="<?php secho($user->email) ?>" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="first_name" class="col-sm-3 col-form-label">Nama Depan</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="first_name" id="first_name" placeholder="Nama Depan" value="<?php secho(ucfirst($user->first_name)) ?>">
+                        <input type="text" class="form-control <?= form_error('first_name') ? 'is-invalid' : null ?>" name="first_name" id="first_name" placeholder="Nama Depan" value="<?php secho(ucfirst($user->first_name)) ?>">
                         <?= form_error('first_name'); ?>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="last_name" class="col-sm-3 col-form-label">Nama Belakang</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Nama Belakang" aria-describedby="lastnameHelpBlock" value="<?php secho(ucfirst($user->last_name)) ?>">
+                        <input type="text" class="form-control <?= form_error('last_name') ? 'is-invalid' : null ?>" name="last_name" id="last_name" placeholder="Nama Belakang" aria-describedby="lastnameHelpBlock" value="<?php secho(ucfirst($user->last_name)) ?>">
                         <small id="lastnameHelpBlock" class="form-text text-muted">
                             Jika tidak memiliki nama belakang kosongkan saja.
                         </small>
@@ -36,14 +36,14 @@
                 <div class="form-group row">
                     <label for="nin" class="col-sm-3 col-form-label">No. Identitas (KTP)</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="nin" onkeypress="return numberOnly(event)" maxlength="16" id="nin" placeholder="No. Identitas (KTP)" value="<?php secho($user->nin) ?>" readonly>
+                        <input type="text" class="form-control <?= form_error('nin') ? 'is-invalid' : null ?>" name="nin" onkeypress="return numberOnly(event)" maxlength="16" id="nin" placeholder="No. Identitas (KTP)" value="<?php secho($user->nin) ?>" readonly>
                         <?= form_error('nin'); ?>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="address" class="col-sm-3 col-form-label">Alamat Lengkap</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control" name="address" id="address" rows="3" placeholder="Alamat Lengkap" aria-describedby="addressHelpBlock"><?php secho($user->address) ?></textarea>
+                        <textarea class="form-control <?= form_error('address') ? 'is-invalid' : null ?>" name="address" id="address" rows="3" placeholder="Alamat Lengkap" aria-describedby="addressHelpBlock"><?php secho($user->address) ?></textarea>
                         <small id="addressHelpBlock" class="form-text text-muted">
                             Alamat harus lengkap sesuai dengan No. Identitas/KTP.
                         </small>
@@ -53,7 +53,7 @@
                 <div class="form-group row">
                     <label for="phone" class="col-sm-3 col-form-label">No. Handphone</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="phone" id="phone" placeholder="No. Handphone" aria-describedby="phoneHelpBlock" value="<?= $user->phone ?>">
+                        <input type="text" class="form-control <?= form_error('phone') ? 'is-invalid' : null ?>" name="phone" id="phone" placeholder="No. Handphone" aria-describedby="phoneHelpBlock" value="<?= $user->phone ?>">
                         <small id="phoneHelpBlock" class="form-text text-muted">
                             Pastikan nomor handpone anda aktif dan gunakan nomor yang sudah terdaftar di whatsapp jika ada.
                         </small>
@@ -63,7 +63,7 @@
                 <div class="form-group row">
                     <label for="education" class="col-sm-3 col-form-label">Pendidikan</label>
                     <div class="col-sm-9">
-                        <select class="form-control" name="education" id="education">
+                        <select class="form-control <?= form_error('education') ? 'is-invalid' : null ?>" name="education" id="education">
                             <?php $education = set_value("education") ? set_value("education") : $user->education ?>
                             <option value="">Pilih...</option>
                             <option value="1" <?= ($education == 1) ? "selected" : null; ?>>Doktor (S3)</option>
@@ -77,7 +77,7 @@
                 <div class="form-group row">
                     <label for="job_category" class="col-sm-3 col-form-label">Kategori Pekerjaan</label>
                     <div class="col-sm-9">
-                        <select class="form-control" name="job_category" id="job_category">
+                        <select class="form-control <?= form_error('job_category') ? 'is-invalid' : null ?>" name="job_category" id="job_category">
                             <?php $job_category = set_value("job_category") ? set_value("job_category") : $user->job_category ?>
                             <option value="">Pilih...</option>
                             <option value="1" <?= ($job_category == 1) ? "selected" : null; ?>>BUMN</option>
@@ -93,7 +93,7 @@
                 <div class="form-group row">
                     <label for="institute" class="col-sm-3 col-form-label">Nama Instansi</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="institute" id="institute" placeholder="Nama Instansi" aria-describedby="instituteHelpBlock" value="<?php secho($user->institute) ?>">
+                        <input type="text" class="form-control <?= form_error('institute') ? 'is-invalid' : null ?>" name="institute" id="institute" placeholder="Nama Instansi" aria-describedby="instituteHelpBlock" value="<?php secho($user->institute) ?>">
                         <small id="instituteHelpBlock" class="form-text text-muted">
                             Nama Instansi / Nama Perusahaan / Nama Sekolah / Nama Universitas.
                         </small>
@@ -105,7 +105,7 @@
                     <div class="col-sm-9">
                         <div class="row">
                             <div class="col-sm-3">
-                                <img src="<?= base_url('assets/img/profil/default.jpg') ?>" alt="" class="img-thumbnail">
+                                <img src="<?= base_url('assets/img/profil/') . $user->photo ?>" alt="" class="img-thumbnail">
                             </div>
                             <div class="col-sm-9">
                                 <div class="custom-file">

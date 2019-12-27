@@ -4,6 +4,9 @@
   <!-- Page Heading -->
   <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
 
+  <?= $this->session->flashdata('message');
+  ?>
+
   <div class="alert alert-success animated zoomIn fast" role="alert">
     <h4 class="alert-heading">Selamat Datang <b><?php secho(ucfirst($user->first_name . " " . $user->last_name)) ?></b></h4>
     <hr>

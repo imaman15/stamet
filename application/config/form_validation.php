@@ -112,8 +112,21 @@ $gRecaptchaResponse = array(
     'rules' => 'callback_getRresponseCcaptcha'
 );
 
+// Set Rules Change Password Applicant
+$currentPassword = array(
+    'field' => 'currentPassword',
+    'label' => '<strong>Kata Sandi</strong>',
+    'rules' => 'trim|required',
+    'errors' => [
+        'required' => $required,
+    ]
+);
+
 // Set Rules
 $config = array(
+    'changepass_applicant' => array(
+        $currentPassword, $password, $confirmPassword
+    ),
     'update_applicant' => array(
         $first_name, $last_name, $address, $phone, $education, $job_category, $institute
     ),

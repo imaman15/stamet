@@ -57,6 +57,7 @@ $route[UA_LOGIN] = 'auth/login';
 $route[UA_LOGOUT] = 'auth/logout';
 $route[UA_REGISTRATION] = 'auth/registration';
 $route[UA_RESETPASSWORD] = 'auth/forgotpassword';
+$route[UA_CHANGEPASSWORD] = 'user/changepassword';
 $route[UA_PROFILE] = 'user';
 $route[UA_EDITPROFILE] = 'user/update';
 

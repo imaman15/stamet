@@ -157,6 +157,11 @@
                                     Edit Profil
                                 </a>
                                 <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="<?= site_url(UA_CHANGEPASSWORD) ?>">
+                                    <i class="fas fa-fw fa-key mr-2 text-gray-400"></i>
+                                    Ganti Kata Sandi
+                                </a>
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Keluar
