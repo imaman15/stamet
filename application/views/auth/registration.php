@@ -5,7 +5,7 @@
                 <div class="card-body">
                     <div class="text-center mb-3">
                         <img src="<?= base_url('assets') ?>/img/bmkg.png" alt="BMKG" class="img-fluid img-thumbnail">
-                        <h5>STAMET KELAS I SERANG</h5>
+                        <h5>STAMET KELAS I MARITIM SERANG</h5>
                         <h1 class="subtitle">Sistem Informasi Pelayanan Jasa Meteorologi</h1>
                     </div>
 
@@ -103,7 +103,7 @@
                                 </div>
 
                                 <div class="form-label-group">
-                                    <input type="text" id="email" name="email" class="form-control <?= form_error('email') ? 'is-invalid' : null ?>" placeholder="Email" value="<?= set_value('email') ?>">
+                                    <input type="email" id="email" name="email" class="form-control <?= form_error('email') ? 'is-invalid' : null ?>" placeholder="Email" value="<?= set_value('email') ?>">
                                     <label for="email">Email</label>
                                     <small class="pl-3 font-weight-light d-block text-muted"> (Pastikan email anda aktif, email anda akan digunakan sebagai nama pengguna untuk masuk ke aplikasi) </small>
                                     <?= form_error('email') ?>
@@ -156,7 +156,7 @@
                         <a class="small" href="<?= site_url(UA_LOGIN) ?>">Sudah punya akun ? Masuk</a>
                     </div>
                     <div class="text-center">
-                        <a class="small" href="<?= site_url(UA_RESETPASSWORD) ?>">Lupa Password ?</a>
+                        <a class="small" href="<?= site_url(UA_FORGOTPASSWORD) ?>">Lupa Password ?</a>
                     </div>
                     <?=
                         form_close();
@@ -173,7 +173,7 @@
                     <footer class="sticky-footer bg-white">
                         <div class="container">
                             <div class="copyright text-center small">
-                                <span>Copyright &copy; <? cr(); ?>, Sistem Informasi Pelayanan Jasa Meteorologi </span>
+                                <span>Copyright &copy; SIPJAMET <?= cr() ?> </span>
                             </div>
                         </div>
                     </footer>

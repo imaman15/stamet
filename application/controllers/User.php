@@ -11,13 +11,14 @@ class User extends CI_Controller
         parent::__construct();
         app_not_login();
         $this->load->library(array('form_validation'));
+        $this->load->model('applicant_model');
     }
 
     // List all your items
     public function index()
     {
         $data['title'] = 'Beranda';
-        $data['user'] = $this->users->applicant();
+        $data['user'] = $this->applicant_model->getData()->row();
         $this->template->load('user/profil', $data);
     }
 
@@ -29,12 +30,12 @@ class User extends CI_Controller
     public function update()
     {
         $data['title'] = 'Edit Profil';
-        $data['user'] = $this->users->applicant();
+        $data['user'] = $this->applicant_model->getData()->row();
 
         if ($this->form_validation->run('update_applicant') == FALSE) {
             $this->template->load('user/update', $data);
         } else {
-            $emailnow = $this->users->applicant()->email;
+            $emailnow = $data['user']->email;
             $emailform = $this->input->post('email');
             if ($emailnow !== $emailform) {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger animated zoomIn" role="alert">
@@ -57,8 +58,7 @@ class User extends CI_Controller
     public function changePassword()
     {
         $data['title'] = 'Ganti Kata Sandi';
-        $data['user'] = $this->users->applicant();
-
+        $data['user'] = $this->applicant_model->getData()->row();
 
         if ($this->form_validation->run('changepass_applicant') == FALSE) {
             $this->template->load('user/changepassword', $data);
@@ -66,11 +66,11 @@ class User extends CI_Controller
             $post = $this->input->post(null, TRUE);
             $this->applicant_model->changepassword($post);
             if ($this->db->affected_rows() > 0) {
-                $this->session->set_flashdata('message', '<div class="alert alert-success animated zoomIn fast" role="alert"><strong>Selamat!</strong> Password Anda berhasil diubah.</div>');
+                $this->session->set_flashdata('message', '<div class="alert alert-success animated zoomIn fast" role="alert"><strong>Selamat!</strong> Kata sandi Anda berhasil diubah.</div>');
                 redirect(UA_PROFILE);
             }
             $this->session->set_flashdata('message', '<div class="alert alert-danger animated zoomIn" role="alert">
-            <strong>Maaf!</strong> password Anda gagal diubah.</div>');
+            <strong>Maaf!</strong> Kata sandi Anda gagal diubah.</div>');
             redirect(UA_CHANGEPASSWORD);
         }
     }

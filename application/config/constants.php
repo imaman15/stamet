@@ -97,6 +97,8 @@ define('UA_LOGIN', strtolower('login'));
 define('UA_LOGOUT', strtolower('logout'));
 define('UA_REGISTRATION', strtolower('register'));
 define('UA_RESETPASSWORD', strtolower('resetpassword'));
+define('UA_FORGOTPASSWORD', strtolower('forgotpassword'));
+define('UA_VERIFY', strtolower('verify'));
 define('UA_CHANGEPASSWORD', strtolower('changepassword'));
 define('UA_PROFILE', strtolower('profil'));
 define('UA_EDITPROFILE', strtolower('edit-profil'));

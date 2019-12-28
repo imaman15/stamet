@@ -11,8 +11,8 @@
                 ?>
                 <?= form_open(UA_CHANGEPASSWORD); ?>
                 <div class="form-group">
-                    <label for="currentPassword">Kata Sandi Lama</label>
-                    <input type="password" class="form-control <?= form_error('currentPassword') ? 'is-invalid' : null ?>" name="currentPassword" id="currentPassword" placeholder="Masukkan Kata Sandi Lama">
+                    <label for="currentPassword">Kata Sandi Saat ini</label>
+                    <input type="password" class="form-control <?= form_error('currentPassword') ? 'is-invalid' : null ?>" name="currentPassword" id="currentPassword" placeholder="Masukkan Kata Sandi Saat ini">
                     <?= form_error('currentPassword') ?>
                 </div>
                 <div class="form-group">
@@ -27,7 +27,7 @@
                     <?= form_error('confirmPassword') ?>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Ganti Kata Sandi</button>
+                    <button type="submit" class="btn btn-primary">Atur Ulang Kata Sandi</button>
                 </div>
                 <?= form_close(); ?>
             </div>

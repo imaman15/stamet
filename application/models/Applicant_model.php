@@ -19,7 +19,7 @@ class Applicant_model extends CI_Model
     public $job_category;
     public $institute;
     public $phone;
-    public $is_active = 1;
+    public $is_active = 0;
     public $date_created;
 
     public function login($post)
@@ -29,9 +29,21 @@ class Applicant_model extends CI_Model
         // row() fungsi untuk mengambil satu data dari hasil query
     }
 
-    public function getData($user = NULL)
+    public function getDataByEmail($email)
     {
-        $this->applicant_id = $user;
+        $query = $this->db->get_where($this->_table, ['email' => $email])->row_array();
+        return $query;
+    }
+
+    public function resetpassword($email)
+    {
+        $query = $this->db->get_where($this->_table, ['email' => $email, 'is_active' => 1])->row_array();
+        return $query;
+    }
+
+    public function getData()
+    {
+        $this->applicant_id = $this->session->userdata('applicant_id');
         $this->db->from($this->_table);
         if ($this->applicant_id != NULL) {
             $this->db->where('applicant_id', $this->applicant_id);
@@ -52,7 +64,7 @@ class Applicant_model extends CI_Model
         $this->education = $post["education"];
         $this->job_category = $post["job_category"];
         $this->institute = $post['institute'] != "" ? htmlspecialchars(ucwords($post["institute"]), true) : null;
-        $this->phone = phoneNumber($post["phone"]);
+        $this->phone = phoneNumber($post["phone"], true);
         $this->is_active;
         $this->date_created = time();
         $this->db->insert($this->_table, $this);
@@ -76,13 +88,13 @@ class Applicant_model extends CI_Model
         if ($upload_image) {
             $config['upload_path']          = './assets/img/profil/';
             $config['allowed_types']        = 'gif|jpg|png';
-            $config['file_name']            = $this->users->applicant()->nin;
+            $config['file_name']            = $this->getData()->row()->nin;
             $config['max_size']             = 2048; // 2MB
 
             $this->load->library('upload', $config);
 
             if ($this->upload->do_upload('photo')) {
-                $old_image = $this->users->applicant()->photo;
+                $old_image = $this->getData()->row()->photo;
                 if ($old_image != 'default.jpg') {
                     unlink(FCPATH . 'assets/img/profil/' . $old_image);
                 }
@@ -98,6 +110,21 @@ class Applicant_model extends CI_Model
         $this->db->update($this->_table, $params);
     }
 
+    public function updateActivation($email)
+    {
+        $this->db->set('is_active', 1);
+        $this->db->where('email', $email);
+        $this->db->update($this->_table);
+    }
+
+    public function changepass($post)
+    {
+        $this->password = password_hash($post['password'], PASSWORD_DEFAULT);
+        $this->email = $this->session->userdata('reset_email');
+        $this->db->set('password', $this->password);
+        $this->db->where('email', $this->email);
+        $this->db->update($this->_table);
+    }
     public function changepassword($post)
     {
         $currentPassword = $post['currentPassword'];
@@ -107,7 +134,7 @@ class Applicant_model extends CI_Model
         $this->email = $this->users->applicant()->email;
         if (!password_verify($currentPassword, $this->password)) {
             $this->session->set_flashdata('message', '<div class="alert alert-danger animated zoomIn" role="alert">
-            <strong>Maaf!</strong> Kata sandi lama Anda salah.</div>');
+            <strong>Maaf!</strong> Kata sandi saat ini salah.</div>');
             redirect(UA_CHANGEPASSWORD);
         } else {
             if ($currentPassword == $newPassword) {
@@ -127,6 +154,10 @@ class Applicant_model extends CI_Model
     public function delete($id)
     {
         return $this->db->delete($this->_table, ["applicant_id" => $id]);
+    }
+    public function delByEmail($email)
+    {
+        return $this->db->delete($this->_table, ["email" => $email]);
     }
 }
 

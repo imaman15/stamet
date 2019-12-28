@@ -84,6 +84,15 @@ $email = array(
         'is_unique' => '%s sudah terdaftar.'
     ]
 );
+$email2 = array(
+    'field' => 'email',
+    'label' => '<strong>Email</strong>',
+    'rules' => 'trim|required|valid_email',
+    'errors' => [
+        'required' => $required,
+        'valid_email' => $valid_email
+    ]
+);
 $password = array(
     'field' => 'password',
     'label' => '<strong>Kata Sandi</strong>',
@@ -124,8 +133,14 @@ $currentPassword = array(
 
 // Set Rules
 $config = array(
+    'resetpassword_applicant' => array(
+        $email2, $gRecaptchaResponse
+    ),
     'changepass_applicant' => array(
         $currentPassword, $password, $confirmPassword
+    ),
+    'changepass2_applicant' => array(
+        $password, $confirmPassword, $gRecaptchaResponse
     ),
     'update_applicant' => array(
         $first_name, $last_name, $address, $phone, $education, $job_category, $institute
@@ -134,15 +149,7 @@ $config = array(
         $first_name, $last_name, $nin, $address, $phone, $education, $job_category, $institute, $email, $password, $confirmPassword, $checkme, $gRecaptchaResponse
     ),
     'signin_applicant' => array(
-        array(
-            'field' => 'email',
-            'label' => '<strong>Email</strong>',
-            'rules' => 'trim|required|valid_email',
-            'errors' => [
-                'required' => $required,
-                'valid_email' => $valid_email
-            ]
-        ),
+        $email2,
         array(
             'field' => 'password',
             'label' => '<strong>Password</strong>',
@@ -151,11 +158,7 @@ $config = array(
                 'required' => $required,
             ]
         ),
-        array(
-            'field' => 'g-recaptcha-response',
-            'label' => '<strong>Captcha</strong>',
-            'rules' => 'callback_getRresponseCcaptcha'
-        )
+        $gRecaptchaResponse
     )
 );
 

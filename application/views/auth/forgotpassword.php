@@ -1,32 +1,25 @@
 <div class="container">
     <div class="row">
-        <div class="col-lg-5 mx-auto">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <div class="card card-signin my-5">
                 <div class="card-body">
                     <div class="text-center mb-3">
                         <img src="<?= base_url('assets') ?>/img/bmkg.png" alt="BMKG" class="img-fluid img-thumbnail">
                         <h5>STAMET KELAS I MARITIM SERANG</h5>
                         <h1 class="subtitle">Sistem Informasi Pelayanan Jasa Meteorologi</h1>
+                        <span class="text-center font-weight-normal"> Masukkan alamat email yang dulu Anda daftarkan. Kami akan mengirimi tautan untuk mereset kata sandi anda melalui email.</span>
                     </div>
 
                     <?= $this->session->flashdata('message');
                     ?>
 
-                    <?=
-                        form_open(UA_LOGIN, 'class="form-signin"');
-                    ?>
+                    <?= form_open(UA_FORGOTPASSWORD, 'class="form-signin"'); ?>
+
                     <div class="form-label-group">
-                        <input type="email" id="email" name="email" class="form-control" placeholder="Email" required autofocus value="<?= set_value('email') ?>">
+                        <input type="email" name="email" id="email" class="form-control" value="<?= set_value('email') ?>" placeholder="Email" required autofocus>
                         <label for="email">Email</label>
                         <?= form_error('email') ?>
                     </div>
-
-                    <div class="form-label-group">
-                        <input type="password" id="password" name="password" class="form-control" placeholder="Kata Sandi">
-                        <label for="password">Kata Sandi</label>
-                        <?= form_error('password') ?>
-                    </div>
-
                     <div class="form-group mt-3">
                         <?=
                             $captcha // tampilkan recaptcha
@@ -35,13 +28,11 @@
                             form_error('g-recaptcha-response')
                         ?>
                     </div>
-                    <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Masuk</button>
+
+                    <button class="btn btn-primary btn-block text-uppercase" type="submit">Atur Ulang Kata Sandi</button>
 
                     <div class="text-center small mt-2">
-                        <a href="<?= site_url(UA_FORGOTPASSWORD) ?>">Lupa Password ?</a>
-                    </div>
-                    <div class="text-center">
-                        <a class="small" href="<?= site_url(UA_REGISTRATION) ?>">Belum punya akun ? Daftar</a>
+                        <a href="<?= site_url(UA_LOGIN) ?>">Kembali untuk Masuk</a>
                     </div>
 
                     <hr class="my-3">
@@ -70,11 +61,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    var status = document.getElementById('kondisi')
-    setInterval(function() {
-        status.className = navigator.onLine ? 'online' : 'offline';
-        status.innerHTML = navigator.onLine ? 'online' : 'offline';
-    }, 100);
-</script>
