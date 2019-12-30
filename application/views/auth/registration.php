@@ -55,22 +55,6 @@
                                     <small class="pl-3 font-weight-light d-block text-muted"> (Pastikan nomor handpone anda aktif dan gunakan nomor yang sudah terdaftar di whatsapp jika ada.) </small>
                                     <?= form_error('phone') ?>
                                 </div>
-
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text bs-4" for="education">Pendidikan</label>
-                                    </div>
-                                    <select class="custom-select bs-4 <?= form_error('education') ? 'is-invalid' : null ?>" id="education" name="education" style="height: 50px">
-                                        <option value="">Pilih...</option>
-                                        <option value="1" <?= (set_value("education") == 1) ? "selected" : null; ?>>Doktor (S3)</option>
-                                        <option value="2" <?= (set_value("education") == 2) ? "selected" : null; ?>>Pascasarjana (S2)</option>
-                                        <option value="3" <?= (set_value("education") == 3) ? "selected" : null; ?>>Sarjana (S1)</option>
-                                        <option value="4" <?= (set_value("education") == 4) ? "selected" : null; ?>>SMA</option>
-                                    </select>
-                                    <div class="input-group">
-                                        <?= form_error('education') ?>
-                                    </div>
-                                </div>
                             </div>
 
                         </div>
@@ -83,12 +67,9 @@
                                     </div>
                                     <select class="custom-select bs-4 <?= form_error('job_category') ? 'is-invalid' : null ?>" id="job_category" name="job_category" style="height: 50px">
                                         <option value="">Pilih...</option>
-                                        <option value="1" <?= (set_value("job_category") == 1) ? "selected" : null; ?>>BUMN</option>
-                                        <option value="2" <?= (set_value("job_category") == 2) ? "selected" : null; ?>>Instansi pemerintah</option>
-                                        <option value="3" <?= (set_value("job_category") == 3) ? "selected" : null; ?>>Mahasiswa</option>
-                                        <option value="4" <?= (set_value("job_category") == 4) ? "selected" : null; ?>>SMA</option>
-                                        <option value="5" <?= (set_value("job_category") == 5) ? "selected" : null; ?>>Peneliti</option>
-                                        <option value="6" <?= (set_value("job_category") == 6) ? "selected" : null; ?>>Swasta</option>
+                                        <?php foreach ($user->result() as $u) : ?>
+                                            <option value="<?= $u->jobcat_id; ?>" <?= (set_value("job_category") == $u->jobcat_id) ? "selected" : null; ?>><?= $u->jobcat ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                     <div class="input-group">
                                         <?= form_error('job_category') ?>

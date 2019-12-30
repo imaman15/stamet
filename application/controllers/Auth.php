@@ -9,7 +9,7 @@ class Auth extends CI_Controller
     {
         parent::__construct();
         $this->load->library(array('form_validation', 'recaptcha', 'email'));
-        $this->load->model(array('applicant_model', 'usertoken_model'));
+        $this->load->model(array('applicant_model', 'usertoken_model', 'jobcategory_model'));
     }
 
     public function login()
@@ -20,9 +20,9 @@ class Auth extends CI_Controller
             $data['captcha'] = $this->recaptcha->getWidget(); // menampilkan recaptcha
             $this->template->auth('template_login', 'auth/login', $data, FALSE);
         } else {
-            $post = $this->input->post(null, TRUE);
-            $password = $post["password"];
-            $user = $this->applicant_model->login($post);
+            $email = $this->input->post('email', TRUE);
+            $password = $this->input->post('password', TRUE);
+            $user = $this->applicant_model->getDataByEmail($email)->row();
 
             //jika usernya ada
             if ($user) {
@@ -73,6 +73,7 @@ class Auth extends CI_Controller
         app_already_login();
         if ($this->form_validation->run('signup_applicant') == FALSE) {
             $data['title'] = 'Daftar';
+            $data['user'] = $this->jobcategory_model->getData();
             $data['captcha'] = $this->recaptcha->getWidget(); // menampilkan recaptcha
             $this->template->auth('template_login', 'auth/registration', $data, FALSE);
         } else {
@@ -83,7 +84,8 @@ class Auth extends CI_Controller
             $user_token = [
                 'email' => $email,
                 'token' => $token,
-                'information' => 'applicant',
+                'user' => 'applicant',
+                'action' => 'registration',
                 'date_created' => time()
             ];
             //base64_encode untuk menterjemahkan random_bytes agar dikenali oleh MySQL
@@ -91,7 +93,7 @@ class Auth extends CI_Controller
             $this->usertoken_model->add($user_token);
             if ($this->db->affected_rows() > 0) {
                 $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-                <strong>Selamat!</strong> Akun anda berhasil dibuat. Silahkan aktifkan akun Anda. <small class="pl-3 font-weight-light d-block text-muted">(Cek Folder <b>Spam</b> jika tidak ada email masuk)</small>');
+                <strong>Selamat!</strong> Akun anda berhasil dibuat. Silahkan aktifkan akun Anda. <small class="pl-3 font-weight-light d-block text-muted">(Cek Folder <b>Spam</b> jika tidak ada email masuk)</small></div>');
                 //=========== Send Email ===========
                 $this->_sendEmail($token, 'verify');
                 //=========== End Of Send Email ===========
@@ -114,17 +116,23 @@ class Auth extends CI_Controller
             $user = $this->applicant_model->resetpassword($email);
 
             if ($user) {
+                $cekdata = $this->usertoken_model->readToken($email, 'applicant', 'resetpassword')->num_rows();
+                if ($cekdata > 0) {
+                    $this->usertoken_model->delByEmail($email, "applicant", "resetpassword");
+                }
                 $token = base64_encode(random_bytes(32));
                 $user_token = [
                     'email' => $email,
                     'token' => $token,
-                    'information' => 'applicant',
+                    'user' => 'applicant',
+                    'action' => 'resetpassword',
                     'date_created' => time()
                 ];
                 $this->usertoken_model->add($user_token);
                 //=========== Send Email ===========
                 $this->_sendEmail($token, 'forgot');
                 //=========== End Of Send Email ===========
+
                 $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
                 Silahkan periksa email Anda untuk mengatur ulang kata sandi Anda <small class=" font-weight-light d-block text-muted">(Cek Folder <b>Spam</b> jika tidak ada email masuk)</small></div>');
                 redirect(UA_FORGOTPASSWORD);
@@ -141,7 +149,7 @@ class Auth extends CI_Controller
         $email = $this->input->get('email');
         $token = $this->input->get('token');
 
-        $user = $this->applicant_model->getDataByEmail($email);
+        $user = $this->applicant_model->getDataByEmail($email)->row_array();
         $user_token = $this->usertoken_model->getToken($token);
 
         if ($user) {
@@ -149,12 +157,8 @@ class Auth extends CI_Controller
                 if (time() - $user_token['date_created'] < (60 * 60 * 24)) {
                     $this->session->set_userdata('reset_email', $email);
                     $this->changepassword();
-
-                    // $this->usertoken_model->delByEmail($email);
-                    // $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"><strong>Selamat! </strong>' . $email . ' telah diaktifkan. Silahkan login.</div>');
-                    // redirect(UA_LOGIN);
                 } else {
-                    $this->usertoken_model->delByEmail($email);
+                    $this->usertoken_model->delByEmail($email, "applicant", "resetpassword");
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> <strong>Maaf!</strong> Kata sandi gagal diatur ulang. Token Anda kedaluwarsa.</div>');
                     redirect(UA_LOGIN);
                 }
@@ -183,9 +187,11 @@ class Auth extends CI_Controller
             $post = $this->input->post(null, TRUE);
             $this->applicant_model->changepass($post);
             if ($this->db->affected_rows() > 0) {
+                $email = $this->session->userdata('reset_email');
+                $this->usertoken_model->delByEmail($email, "applicant", "resetpassword");
+                $this->session->unset_userdata('reset_email');
                 $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
                 <strong>Selamat!</strong> Kata Sandi Anda berhasil diubah. Silahkan login</div>');
-                $this->session->unset_userdata('reset_email');;
                 redirect(UA_LOGIN);
             }
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
@@ -235,19 +241,19 @@ class Auth extends CI_Controller
         $email = $this->input->get('email');
         $token = $this->input->get('token');
 
-        $user = $this->applicant_model->getDataByEmail($email);
+        $user = $this->applicant_model->getDataByEmail($email)->row_array();
         $user_token = $this->usertoken_model->getToken($token);
 
         if ($user) {
             if ($user_token) {
                 if (time() - $user_token['date_created'] < (60 * 60 * 24)) {
                     $this->applicant_model->updateActivation($email);
-                    $this->usertoken_model->delByEmail($email);
+                    $this->usertoken_model->delByEmail($email, "applicant", "registration");
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"><strong>Selamat! </strong>' . $email . ' telah diaktifkan. Silahkan login.</div>');
                     redirect(UA_LOGIN);
                 } else {
-                    $this->applicant_model->delByEmail($email);
-                    $this->usertoken_model->delByEmail($email);
+                    $this->applicant_model->delByEmail($email, "applicant", "registration");
+                    $this->usertoken_model->delByEmail($email, "applicant", "registration");
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> <strong>Maaf!</strong> Aktivasi akun gagal. Token Anda kedaluwarsa.</div>');
                     redirect(UA_LOGIN);
                 }

@@ -10,8 +10,8 @@ class User extends CI_Controller
     {
         parent::__construct();
         app_not_login();
-        $this->load->library(array('form_validation'));
-        $this->load->model('applicant_model');
+        $this->load->library(['form_validation']);
+        $this->load->model(['applicant_model', 'jobcategory_model']);
     }
 
     // List all your items
@@ -31,7 +31,7 @@ class User extends CI_Controller
     {
         $data['title'] = 'Edit Profil';
         $data['user'] = $this->applicant_model->getData()->row();
-
+        $data['jobcategory'] = $this->jobcategory_model->getData();
         if ($this->form_validation->run('update_applicant') == FALSE) {
             $this->template->load('user/update', $data);
         } else {

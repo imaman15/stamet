@@ -50,14 +50,6 @@ $phone = array(
         'numeric' => '%s harus berupa angka',
     ]
 );
-$education = array(
-    'field' => 'education',
-    'label' => '<strong>Pendidikan</strong>',
-    'rules' => 'required',
-    'errors' => [
-        'required' => $required
-    ]
-);
 $job_category = array(
     'field' => 'job_category',
     'label' => '<strong>Kategori Pekerjaan</strong>',
@@ -143,10 +135,10 @@ $config = array(
         $password, $confirmPassword, $gRecaptchaResponse
     ),
     'update_applicant' => array(
-        $first_name, $last_name, $address, $phone, $education, $job_category, $institute
+        $first_name, $last_name, $address, $phone, $job_category, $institute
     ),
     'signup_applicant' => array(
-        $first_name, $last_name, $nin, $address, $phone, $education, $job_category, $institute, $email, $password, $confirmPassword, $checkme, $gRecaptchaResponse
+        $first_name, $last_name, $nin, $address, $phone, $job_category, $institute, $email, $password, $confirmPassword, $checkme, $gRecaptchaResponse
     ),
     'signin_applicant' => array(
         $email2,

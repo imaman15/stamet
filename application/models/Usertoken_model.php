@@ -17,9 +17,16 @@ class Usertoken_model extends CI_Model
         $query = $this->db->get_where($this->_table, ['token' => $token])->row_array();
         return $query;
     }
-    public function delByEmail($email)
+
+    public function readToken($email, $user, $action)
     {
-        return $this->db->delete($this->_table, ["email" => $email]);
+        $query = $this->db->get_where($this->_table, ["email" => $email, "user" => $user, "action" => $action]);
+        return $query;
+    }
+
+    public function delByEmail($email, $user, $action)
+    {
+        return $this->db->delete($this->_table, ["email" => $email, "user" => $user, "action" => $action]);
     }
 }
 
