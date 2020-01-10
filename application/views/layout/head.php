@@ -23,3 +23,6 @@
 <link href="<?= base_url('assets') ?>/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 <!-- My Css -->
 <link rel="stylesheet" href="<?= base_url('assets') ?>/css/admin.css">
+
+<script src="<?= base_url('assets'); ?>/vendor/jquery/jquery.min.js"></script>
+<script src="https://js.pusher.com/5.0/pusher.min.js"></script>

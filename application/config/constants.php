@@ -91,6 +91,9 @@ defined('EXIT__AUTO_MAX')      or define('EXIT__AUTO_MAX', 125); // highest auto
 |--------------------------------------------------------------------------
 |
 */
+// URL Umum
+define('FAQ', strtolower('faq'));
+define('CHECKSTATUS', strtolower('checkstatus'));
 
 // URL Applicant (UA)
 define('UA_LOGIN', strtolower('login'));
@@ -102,9 +105,17 @@ define('UA_VERIFY', strtolower('verify'));
 define('UA_CHANGEPASSWORD', strtolower('changepassword'));
 define('UA_PROFILE', strtolower('profil'));
 define('UA_EDITPROFILE', strtolower('edit-profil'));
-define('UA_FAQ', strtolower('faq'));
-define('UA_CHECKSTATUS', strtolower('checkstatus'));
 
 //URL Employee (UE)
 define('UE_FOLDER', strtolower('employee'));
 define('UE_ADMIN', strtolower('administrator'));
+define('UE_LOGIN', strtolower(UE_ADMIN . '/login'));
+define('UE_LOGOUT', strtolower(UE_ADMIN . '/logout'));
+define('UE_RESETPASSWORD', strtolower('resetpassword'));
+define('UE_FORGOTPASSWORD', strtolower('forgotpassword'));
+define('UE_VERIFY', strtolower('verify'));
+define('UE_CHANGEPASSWORD', strtolower('changepassword'));
+define('UE_EDITPROFILE', strtolower('edit-profil'));
+define('UE_EMPLOYEE', strtolower(UE_ADMIN . '/' . 'employee'));
+
+define('UE_ADD', strtolower('/add'));

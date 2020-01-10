@@ -13,13 +13,13 @@
         <ul class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= site_url(UE_ADMIN) ?>">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <img src="<?= base_url() ?>assets/img/bmkg.png" alt="BMKG" class="img-fluid border-0 img-thumbnail rounded-circle" width="52">
                 </div>
-                <div class="sidebar-brand-text mx-3">
-                    <div>STAMET</div>
-                    <div class="small text-capitalize">Kelas I Serang</div>
+                <div class="sidebar-brand-text ml-2">
+                    <div class="font-weight-bolder mb-n1" style="font-size:24px; letter-spacing: 5px;">STAMET</div>
+                    <div class="text-capitalize font-weight-normal" style="font-size:11px">Kelas I Maritim Serang</div>
                 </div>
             </a>
 
@@ -221,17 +221,17 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle hvr-wobble-horizontal" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Imam</span>
-                                <img class="img-profile rounded-circle" src="<?= base_url('assets/img/profil/default.png') ?>">
+                                <img class="mr-2 img-profile rounded-circle" src="<?= base_url('assets/img/profil/default.jpg') ?>">
+                                <span class="d-none d-lg-inline text-gray-600 small">Imam Agustian</span>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item hvr-wobble-horizontal" href="#">
+                                <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Akun Saya
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item hvr-wobble-horizontal" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Keluar
                                 </a>
@@ -246,7 +246,7 @@
                 <?= $content; ?>
             </div>
             <!-- End of Main Content -->
-            <!-- Footer --> 
+            <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">

@@ -78,7 +78,7 @@ class Applicant_model extends CI_Model
         if ($upload_image) {
             $config['upload_path']          = './assets/img/profil/';
             $config['allowed_types']        = 'gif|jpg|png';
-            $config['file_name']            = $this->getData()->row()->nin;
+            $config['file_name']            = round(microtime(true) * 1000);
             $config['max_size']             = 2048; // 2MB
 
             $this->load->library('upload', $config);

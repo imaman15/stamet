@@ -19,7 +19,7 @@
                     <div class="form-label-group">
                         <input type="password" name="password" id="password" class="form-control" value="<?= set_value('password') ?>" placeholder="Masukkan Kata Sandi Baru" required autofocus>
                         <label for="password">Masukkan Kata Sandi Baru</label>
-                        <small class="pl-3 font-weight-light d-block text-muted">(Kata sandi minimal 6 karakter dan berisi kombinasi dari huruf kecil, huruf besar, angka dan simbol !@#$%^&*()\-_=+{};:,<.>§~ )</small>
+                        <small class="pl-3 font-weight-light d-block text-muted">(Kata sandi minimal 6 karakter dan berisi kombinasi dari huruf kecil, huruf besar dan angka)</small>
                         <?= form_error('password') ?>
                     </div>
                     <div class="form-label-group">

@@ -64,4 +64,8 @@ $route[UA_PROFILE] = 'user';
 $route[UA_EDITPROFILE] = 'user/update';
 
 $route[UE_ADMIN] = UE_FOLDER . '/beranda';
-$route[UE_ADMIN . '/login'] = UE_FOLDER . '/auth/login';
+$route[UE_LOGIN] = UE_FOLDER . '/auth/login';
+$route[UE_LOGOUT] = UE_FOLDER . '/auth/logout';
+$route[UE_EMPLOYEE] = UE_FOLDER . '/employee';
+$route[UE_EMPLOYEE . UE_ADD] = UE_FOLDER . '/employee/add';
+$route[UE_EMPLOYEE . UE_ADD] = UE_FOLDER . '/employee/update';

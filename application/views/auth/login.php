@@ -47,9 +47,9 @@
                     <hr class="my-3">
 
                     <div class="text-center small blue">
-                        <a href="<?= site_url(UA_FAQ) ?>">FAQ</a>
+                        <a href="<?= site_url(FAQ) ?>">FAQ</a>
                         |
-                        <a href="<?= site_url(UA_CHECKSTATUS) ?>">Cek Status</a>
+                        <a href="<?= site_url(CHECKSTATUS) ?>">Cek Status</a>
                     </div>
 
                     <?=

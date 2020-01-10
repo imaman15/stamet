@@ -291,7 +291,7 @@ class Auth extends CI_Controller
         $regex_lowercase = '/[a-z]/';
         $regex_uppercase = '/[A-Z]/';
         $regex_number = '/[0-9]/';
-        $regex_special = '/[!@#$%^&*()\-_=+{};:,<.>§~]/';
+        // $regex_special = '/[!@#$%^&*()\-_=+{};:,<.>~]/';
 
         if (empty($password)) {
             $this->form_validation->set_message('vallid_passworrd', '{field} tidak boleh kosong.');
@@ -310,10 +310,10 @@ class Auth extends CI_Controller
             $this->form_validation->set_message('vallid_passworrd', '{field} harus memiliki minimal satu angka');
             return FALSE;
         }
-        if (preg_match_all($regex_special, $password) < 1) {
-            $this->form_validation->set_message('vallid_passworrd', '{field} harus memiliki minimal satu simbol');
-            return FALSE;
-        }
+        // if (preg_match_all($regex_special, $password) < 1) {
+        //     $this->form_validation->set_message('vallid_passworrd', '{field} harus memiliki minimal satu simbol');
+        //     return FALSE;
+        // }
         if (strlen($password) < 6) {
             $this->form_validation->set_message('vallid_passworrd', '{field} minimal 6 karakter.');
             return FALSE;

@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
 $required = '%s tidak boleh kosong.';
-$nin_unique = '%s sudah terdaftar. jika anda merasa belum pernah mendaftarkan Nomor Identitas (KTP) di aplikasi ini silahkan <a href="' . site_url(UA_FAQ) . '">hubungi kami!</a>';
+$nin_unique = '%s sudah terdaftar. jika anda merasa belum pernah mendaftarkan Nomor Identitas (KTP) di aplikasi ini silahkan <a href="' . site_url(FAQ) . '">hubungi kami!</a>';
 $valid_email = '%s harus berupa alamat surel yang valid.';
 
 //Set Rules User Applicant
@@ -122,9 +122,51 @@ $currentPassword = array(
         'required' => $required,
     ]
 );
+// Set Rule Employee
+$emailEmp = array(
+    'field' => 'email',
+    'label' => '<strong>Email</strong>',
+    'rules' => 'trim|required|valid_email|is_unique[employee.email]',
+    'errors' => [
+        'required' => $required,
+        'valid_email' => $valid_email,
+        'is_unique' => '%s sudah terdaftar.'
+    ]
+);
+$csidn =  array(
+    'field' => 'csidn',
+    'label' => '<strong>No. Identitas Pegawai (NIP)</strong>',
+    'rules' => 'trim|required|exact_length[18]|numeric|is_unique[employee.csidn]',
+    'errors' => [
+        'required' => $required,
+        'exact_length' => '%s harus 18 digit',
+        'numeric' => '%s harus berupa angka',
+        'is_unique' => '%s sudah terdaftar. jika anda merasa belum pernah mendaftarkan Nomor Identitas Pegawai (NIP) di aplikasi ini silahkan <a href="' . site_url(FAQ) . '">hubungi kami!</a>'
+    ]
+);
+$position_name = array(
+    'field' => 'position_name',
+    'label' => '<strong>Jabatan</strong>',
+    'rules' => 'trim|required',
+    'errors' => [
+        'required' => $required
+    ]
+);
+$level = array(
+    'field' => 'Level',
+    'label' => '<strong>Level</strong>',
+    'rules' => 'trim|required',
+    'errors' => [
+        'required' => $required
+    ]
+);
 
 // Set Rules
 $config = array(
+    'employee' => array(
+        $first_name, $last_name, $emailEmp, $csidn, $position_name, $address, $phone, $level
+
+    ),
     'resetpassword_applicant' => array(
         $email2, $gRecaptchaResponse
     ),

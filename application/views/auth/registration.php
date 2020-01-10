@@ -86,7 +86,7 @@
                                 <div class="form-label-group">
                                     <input type="email" id="email" name="email" class="form-control <?= form_error('email') ? 'is-invalid' : null ?>" placeholder="Email" value="<?= set_value('email') ?>">
                                     <label for="email">Email</label>
-                                    <small class="pl-3 font-weight-light d-block text-muted"> (Pastikan email anda aktif, email anda akan digunakan sebagai nama pengguna untuk masuk ke aplikasi) </small>
+                                    <small class="pl-3 font-weight-light d-block text-muted"> ( Pastikan email Anda aktif. Kami akan mengirimkan email untuk mengaktifkan akun Anda.) </small>
                                     <?= form_error('email') ?>
                                 </div>
 
@@ -97,7 +97,7 @@
                                 <div class="form-label-group">
                                     <input type="password" id="password" name="password" class="form-control <?= form_error('password') ? 'is-invalid' : null ?>" placeholder="Kata Sandi">
                                     <label for="password">Kata Sandi</label>
-                                    <small class="pl-3 font-weight-light d-block text-muted">(Kata sandi minimal 6 karakter dan berisi kombinasi dari huruf kecil, huruf besar, angka dan simbol !@#$%^&*()\-_=+{};:,<.>§~ )</small>
+                                    <small class="pl-3 font-weight-light d-block text-muted">(Kata sandi minimal 6 karakter dan berisi kombinasi dari huruf kecil, huruf besar dan angka)</small>
                                     <?= form_error('password') ?>
                                 </div>
                                 <div class="form-label-group">
@@ -145,9 +145,9 @@
 
                     <hr class="my-3">
                     <div class="text-center small blue">
-                        <a href="<?= site_url(UA_FAQ); ?>">FAQ</a>
+                        <a href="<?= site_url(FAQ); ?>">FAQ</a>
                         |
-                        <a href="<?= site_url(UA_CHECKSTATUS); ?>">Cek Status</a>
+                        <a href="<?= site_url(CHECKSTATUS); ?>">Cek Status</a>
                     </div>
 
                     <!-- Footer -->
