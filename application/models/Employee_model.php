@@ -16,7 +16,7 @@ class Employee_model extends CI_Model
     public $address;
     public $phone;
     public $level;
-    public $is_active = 1;
+    public $is_active = 0;
     public $date_created;
 
     // start datatables
@@ -28,7 +28,7 @@ class Employee_model extends CI_Model
     {
         $this->db->select('employee.*, CONCAT(employee.first_name, " ", employee.last_name) as fullname, position.pos_name');
         $this->db->from('employee');
-        $this->db->join('position', 'employee.position_name = position.pos_id');
+        $this->db->join('position', 'position.pos_id = employee.position_name');
 
         $i = 0;
 
@@ -82,11 +82,11 @@ class Employee_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    public function add($post)
+    public function add($pass)
     {
-        $pass = get_random_password(6, 8, true, true, false);
+        $post = $this->input->post(null, TRUE);
         $this->email = htmlspecialchars($post["email"], true);
-        $this->password = password_hash('Admin0!', PASSWORD_DEFAULT);
+        $this->password = password_hash($pass, PASSWORD_DEFAULT);
         $this->first_name = htmlspecialchars(ucwords($post["first_name"]), true);
         $this->last_name = htmlspecialchars(ucwords($post["last_name"]), true);
         $this->csidn = $post["csidn"];
@@ -138,6 +138,15 @@ class Employee_model extends CI_Model
         return $this->db->affected_rows();
     }
 
+    public function changepass($data)
+    {
+        $this->password = password_hash($data['pass'], PASSWORD_DEFAULT);
+        $this->email = $data['email'];
+        $this->db->set('password', $this->password);
+        $this->db->where('email', $this->email);
+        $this->db->update($this->_table);
+    }
+
     function get_position($id)
     {
         $query = $this->db->get_where('position', array('pos_id' => $id));
@@ -151,14 +160,25 @@ class Employee_model extends CI_Model
         $this->db->delete($this->_table);
     }
 
-    public function getDataBy($email, $name)
+    public function getDataBy($id, $name)
     {
-        return $this->db->get_where($this->_table, [$name => $email]);
+        $this->db->select('employee.emp_id, employee.email, employee.photo, employee.first_name, employee.last_name, employee.csidn, employee.position_name, employee.address, employee.phone, employee.level, employee.is_active, employee.date_created, employee.date_update, position.pos_name');
+        $this->db->from($this->_table);
+        $this->db->join('position', 'position.pos_id = employee.position_name');
+        $this->db->where([$name => $id]);
+        return $this->db->get();
     }
 
     public function checkData($where = NULL)
     {
         return $this->db->get_where($this->_table, $where);
+    }
+
+    public function updateActivation($email)
+    {
+        $this->db->set('is_active', 1);
+        $this->db->where('email', $email);
+        $this->db->update($this->_table);
     }
 
     private function _do_upload()

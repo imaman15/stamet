@@ -9,8 +9,8 @@ class Employee extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->library(['form_validation']);
-        $this->load->model(['employee_model', 'position_model']);
+        $this->load->library(['form_validation', 'recaptcha', 'email']);
+        $this->load->model(['employee_model', 'position_model', 'usertoken_model']);
     }
 
     public function index()
@@ -24,8 +24,24 @@ class Employee extends CI_Controller
     public function add()
     {
         $this->_validate();
-        $data = $this->input->post(null, TRUE);
-        $this->employee_model->add($data);
+        $pass = get_random_password(6, 8, true, true, false);
+        //Create Token
+        $email = $this->input->post('email', true);
+        $token = base64_encode(random_bytes(32));
+        $user_token = [
+            'email' => $email,
+            'token' => $token,
+            'user' => 'employee',
+            'action' => 'registration',
+            'date_created' => time()
+        ];
+        //base64_encode untuk menterjemahkan random_bytes agar dikenali oleh MySQL
+        $this->employee_model->add($pass);
+        $this->usertoken_model->add($user_token);
+
+        //=========== Send Email ===========
+        $this->_sendEmail($token, $pass, 'verify');
+        //=========== End Of Send Email ===========
         echo json_encode(array("status" => TRUE));
 
         // Koneksi ke Pusher.com agar menjadi relatime
@@ -49,11 +65,15 @@ class Employee extends CI_Controller
     public function view($id = NULL)
     {
         $data = $this->employee_model->getDataBy($id, 'emp_id')->row();
+        $data->level_name = level($data->level);
+        $data->is_active = ($data->is_active = 1) ? "Aktif" : "Tidak Aktif";
+        $data->date_created = timeIDN(date('Y-m-d', $data->date_created));
+        $data->date_update = date('d-m-Y H:i:s', strtotime($data->date_update));
         if ((!isset($id)) or (!$data)) redirect(site_url(UE_ADMIN));
         echo json_encode($data);
     }
 
-    public function update($id = NULL)
+    public function update()
     {
         $this->_validate('edit');
         $data = $this->input->post(null, TRUE);
@@ -76,6 +96,20 @@ class Employee extends CI_Controller
         // $data['message'] = 'success';
         // $pusher->trigger('my-channel', 'my-event', $data);
         // ===============================================
+    }
+
+    public function changepassword($id = NULL)
+    {
+        $check = $this->employee_model->getDataBy($id, 'emp_id')->row();
+        if ((!isset($id)) or (!$check)) redirect(site_url(UE_ADMIN));
+        $data['pass'] = get_random_password(6, 8, true, true, false);
+        $data['email'] = $check->email;
+        //Create Token
+        $this->employee_model->changepass($data);
+        //=========== Send Email ===========
+        $this->_sendEmail($data['email'], $data['pass'], 'forgot');
+        //=========== End Of Send Email ===========
+        echo json_encode(array("status" => TRUE));
     }
 
     // get position
@@ -224,6 +258,88 @@ class Employee extends CI_Controller
         );
         //output to json format
         echo json_encode($output);
+    }
+
+    public function _sendEmail($token = NULL, $pass, $type)
+    {
+        $email = $this->input->post('email', true);
+        if ($type == 'verify') {
+            $subject = 'SIPJAMET - Verifikasi Akun ';
+            $message = '
+            <h3 align="center" style="font-family: arial, sans-serif;">Akun Pegawai Sipjamet</h3>
+            <table border="1" width="100%" style="border-collapse: collapse; font-family: arial, sans-serif;">
+            <tr>
+                <th width="20%" style="padding: 8px;">Email</th>
+                <td width="80%" style="padding: 8px;">' . $email . '</td>
+            </tr>
+            <tr>
+                <th width="20%" style="padding: 8px;">Password</th>
+                <td width="80%" style="padding: 8px;">' . $pass . '</td>
+            </tr>
+            </table>
+            <p>
+            Klik tautan ini untuk memverifikasi akun Anda : <a href="' . site_url() . '' . UE_VERIFY . '?email=' . $email . '&token=' . urlencode($token) . '">Aktifkan Akun</a>
+            </p>';
+            sendMail($email, $subject, $message);
+            //base64_encode karakter tidak ramah url ada karakter tambah dan sama dengan nah ketika di urlnya ada karakter itu nanti akan di terjemahkan spasi jadi kosong. untuk menghindari hal sprti itu maka kita bungkus urlencode jadi jika ada karakter tadi maka akan di rubah jadi %20 dan strusnya. 
+        } elseif ($type == 'forgot') {
+            $subject = 'SIPJAMET - Atur Ulang Kata Sandi';
+            $message = '
+            <h3 align="center" style="font-family: arial, sans-serif;">Akun Pegawai Sipjamet</h3>
+            <table border="1" width="100%" style="border-collapse: collapse; font-family: arial, sans-serif;">
+            <tr>
+                <th width="20%" style="padding: 8px;">Email</th>
+                <td width="80%" style="padding: 8px;">' . $token . '</td>
+            </tr>
+            <tr>
+                <th width="20%" style="padding: 8px;">Password</th>
+                <td width="80%" style="padding: 8px;">' . $pass . '</td>
+            </tr>
+            </table>
+            <p>
+            Klik tautan ini untuk masuk akun Anda : <a href="' . site_url(UE_LOGIN) . '">Login Akun</a>
+            </p>';
+            sendMail($token, $subject, $message);
+        }
+
+        if ($this->email->send()) {
+            return TRUE;
+        } else {
+            echo $this->email->print_debugger();
+            die;
+        }
+    }
+
+    public function verify()
+    {
+        $email = $this->input->get('email');
+        $token = $this->input->get('token');
+
+        $user = $this->employee_model->checkData(['email' => $email])->row_array();
+        $user_token = $this->usertoken_model->getToken($token);
+
+        if ($user) {
+            if ($user_token) {
+                if (time() - $user_token['date_created'] < (60 * 60 * 24)) {
+                    $this->employee_model->updateActivation($email);
+                    $this->usertoken_model->delByEmail($email, "employee", "registration");
+                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"><strong>Selamat! </strong>' . $email . ' telah diaktifkan. Silahkan login.</div>');
+                    redirect(UE_LOGIN);
+                } else {
+                    $this->employee_model->delete($email, "email");
+                    $this->usertoken_model->delByEmail($email, "employee", "registration");
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> <strong>Maaf!</strong> Aktivasi akun gagal. Token Anda kedaluwarsa. Silahkan hubungi Admin.</div>');
+                    redirect(UE_LOGIN);
+                }
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> <strong>Maaf!</strong> Aktivasi akun gagal. Token Anda tidak valid.</div>');
+                redirect(UE_LOGIN);
+            }
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+            <strong>Maaf!</strong> Aktivasi akun gagal. Email Anda salah.</div>');
+            redirect(UE_LOGIN);
+        }
     }
 }
 

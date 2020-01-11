@@ -40,7 +40,7 @@
 <script type="text/javascript">
     var save_method; //for save method string
     var table;
-    var base_url = '<?php echo base_url();?>';
+    var base_url = '<?php echo base_url(); ?>';
     $(document).ready(function() {
         //datatables
         table = $('#dataTable').DataTable({
@@ -162,6 +162,7 @@
                 $('[name="address"]').val(data.address);
                 $('[name="phone"]').val(data.phone);
                 $('[name="email"]').val(data.email);
+                $('#resetpass').attr('onclick', 'resetpassword(' + data.emp_id + ')');
                 $('#employeeForm').modal('show'); // show bootstrap modal when complete loaded
                 $('#employeeFormLabel').text('Edit Data'); // Set title to Bootstrap modal title
                 $('#rempho').show();
@@ -198,15 +199,30 @@
         $('#btnSave').hide();
         $('#btnClose').text('Tutup');
         $('#form').hide();
+
         $.ajax({
             url: "<?php echo site_url('employee/employee/view') ?>/" + id,
             type: "GET",
             dataType: "JSON",
             success: function(data) {
-                $('#view_photo').attr("href",base_url+"assets/img/profil/default.jpg")
-                $('#view_photo').html('<img src="'+base_url+'assets/img/profil/'+data.photo+'" class=" img-thumbnail rounded-circle w-25 mb-3" alt="'+data.first_name+'">');
-                $('#view_fullname').text(data.first_name+' '+data.last_name);
-
+                if (data.photo != "default.jpg") {
+                    $('#view_photo').attr("href", base_url + "assets/img/profil/" + data.photo);
+                    $('#view_photo').attr("target", "_blank");
+                } else {
+                    $('#view_photo').removeAttr("href");
+                    $('#view_photo').removeAttr("target");
+                }
+                $('#view_photo').html('<img src="' + base_url + 'assets/img/profil/' + data.photo + '" class=" img-thumbnail rounded-circle w-25 mb-3" alt="' + data.first_name + '">');
+                $('#view_fullname').text(data.first_name + ' ' + data.last_name);
+                $('#view_csidn').text(data.csidn);
+                $('#view_position_name').text(data.pos_name);
+                $('#view_address').text(data.address);
+                $('#view_phone').text(data.phone);
+                $('#view_email').text(data.email);
+                $('#view_level').text(data.level_name);
+                $('#view_is_active').text(data.is_active);
+                $('#view_date_created').text(data.date_created);
+                $('#view_date_update').text(data.date_update);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert">Kesalahan mendapatkan data dari ajax.</div>');
@@ -222,8 +238,31 @@
     }
 
     //resetpassword
-    function resetpassword() {
-        $('#password_success').text('Kata sandi baru berhasil di kirim ke email!');
+    function resetpassword(id) {
+        // ajax delete data to database
+        $.ajax({
+            url: "<?php echo site_url('employee/employee/changepassword') ?>/" + id,
+            type: "POST",
+            dataType: "JSON",
+            success: function(data) {
+                $('#password_message').addClass('text-success').text('Kata sandi baru berhasil di kirim ke email!');
+                // close the message after seconds
+                $('#password_message').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#password_message').addClass('text-danger').text('Kata sandi baru gagal di kirim ke email!');
+                // close the message after seconds
+                $('#password_message').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+            }
+        });
     }
 
     //Tambah Data
@@ -342,7 +381,7 @@
                 </button>
             </div>
             <div class="modal-body form">
-                <div id="viewData">
+                <div class="text-break" id="viewData">
                     <div class="mx-auto text-center">
                         <a id="view_photo" target="_blank">
                         </a>
@@ -388,6 +427,27 @@
                         <label for="level" class="col-sm-5 col-form-label text-sm-right font-weight-bold">Level</label>
                         <div class="col-sm-7 text-primary text-lg my-auto" id="view_level">
                             Level
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <label for="level" class="col-sm-5 col-form-label text-sm-right font-weight-bold">Status Akun</label>
+                        <div class="col-sm-7 text-primary text-lg my-auto" id="view_is_active">
+                            Aktif
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <label for="level" class="col-sm-5 col-form-label text-sm-right font-weight-bold">Tanggal Pembuatan Akun</label>
+                        <div class="col-sm-7 text-primary text-lg my-auto" id="view_date_created">
+                            00 Januari 0000
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <label for="level" class="col-sm-5 col-form-label text-sm-right font-weight-bold">Terakhir diperbarui</label>
+                        <div class="col-sm-7 text-primary text-lg my-auto" id="view_date_update">
+                            00-00-0000 00:00:00
                         </div>
                     </div>
                     <!-- <hr>
@@ -475,8 +535,8 @@
                     <div class="form-group row" id="respassword">
                         <label for="password" class="col-sm-3 col-form-label text-sm-right font-weight-bold">Password</label>
                         <div class="col-sm-9 my-auto">
-                            <button onclick="resetpassword()" type="button" class="btn btn-primary btn-sm">Atur ulang kata sandi</button>
-                            <small id="password_success" class="ml-sm-1 my-2 d-block d-sm-inline text-success"></small>
+                            <button id="resetpass" type="button" class="btn btn-primary btn-sm">Atur ulang kata sandi</button>
+                            <small id="password_message" class="ml-sm-1 my-2 d-block d-sm-inline"></small>
                         </div>
                     </div>
                     <div class="form-group row">

@@ -10,15 +10,18 @@
           <div class="row">
             <div class="col-lg">
               <div class="p-5">
-                <div class="text-center mb-4">
+                <div class="text-center mb-3">
                   <img src="<?= base_url('assets') ?>/img/bmkg.png" alt="BMKG" class="img-fluid" style="width: 6rem; height: 6rem; border-radius: 100%;">
                 </div>
+                <div class="text-center mb-4">
+                  <h5><b><?= strtoupper($title) ?></b></h5>
+                </div>
+                <hr>
                 <?= $this->session->flashdata('message');
                 ?>
-                <hr>
                 <form class="user" action="<?= base_url('auth_admin') ?>" method="POST">
                   <div class="form-group">
-                    <input type="text" class="is-valid form-control form-control-user" id="email" name="email" placeholder="Email" value="<?= set_value('email') ?>">
+                    <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Email" value="<?= set_value('email') ?>">
                     <?= form_error('email', '<small class="text-danger pl-3">', '</small>') ?>
                   </div>
                   <div class="form-group">
@@ -30,8 +33,8 @@
                   </button>
                 </form>
                 <hr>
-                <div class="text-center">
-                  <a class="small" href="<?= base_url("admin/lupa_kata_sandi") ?>">Lupa sandi Anda?</a>
+                <div class="copyright text-center small">
+                  <span>Copyright &copy; SIPJAMET <?= cr() ?> </span>
                 </div>
               </div>
             </div>

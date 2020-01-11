@@ -27,6 +27,19 @@ function app_not_login()
     }
 }
 
+function app_del_login()
+{
+    $CI = &get_instance();
+    $CI->load->model('applicant_model');
+    $user = $CI->applicant_model->getData()->row();
+    if (!$user) {
+        $CI->session->unset_userdata('applicant_id');
+        $CI->session->unset_userdata('logged_in');
+        $CI->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Anda telah keluar! </div>');
+        redirect(UA_LOGIN);
+    }
+}
+
 function cr()
 {
     $year = 2019;
@@ -114,35 +127,63 @@ function rupiah($angka)
     return $hasil_rupiah;
 }
 
-// function checkEmp()
-// {
-//     $CI = &get_instance();
-//     $c1 = $CI->employee_model->checkData('position_name = 1')->num_rows();
-//     $c2 = $CI->employee_model->checkData('position_name = 2')->num_rows();
-//     $c3 = $CI->employee_model->checkData('position_name = 3')->num_rows();
-//     $c4 = $CI->employee_model->checkData('position_name = 4')->num_rows();
 
-//     // if ($c1 > 0 && $c2 > 0) {
-//     //     $CI->db->from('position');
-//     //     $CI->db->where_not_in('pos_id', [1, 2]);
-//     //     $data['position_name'] = $CI->db->get();
-//     // } 
+function timeIDN($tanggal, $cetak_hari = false)
+{
+    $hari = array(
+        1 =>    'Senin',
+        'Selasa',
+        'Rabu',
+        'Kamis',
+        'Jumat',
+        'Sabtu',
+        'Minggu'
+    );
 
-//     $i = $CI->employee_model->checkData('position_name IN (1,2,3,4)')->result();
-//     switch ($i) {
-//         case $i['position_name'] = 1:
-//             $data['position_name'] .= $CI->db->where_not_in('pos_id', 1);
-//         case $i['position_name'] = 2:
-//             $data['position_name'] .= $CI->db->where_not_in('pos_id', 2);
-//         case $i['position_name'] = 3:
-//             $data['position_name'] .= $CI->db->where_not_in('pos_id', 3);
-//         case $i['position_name'] = 4:
-//             $data['position_name'] .= $CI->db->where_not_in('pos_id', 4);
+    $bulan = array(
+        1 =>   'Januari',
+        'Februari',
+        'Maret',
+        'April',
+        'Mei',
+        'Juni',
+        'Juli',
+        'Agustus',
+        'September',
+        'Oktober',
+        'November',
+        'Desember'
+    );
+    $split       = explode('-', $tanggal);
+    $tgl_indo = $split[2] . ' ' . $bulan[(int) $split[1]] . ' ' . $split[0];
 
-//         default:
-//             $CI->db->select('*');
-//             $CI->db->from('position');
-//             $data['position_name'] = $CI->db->get();
-//             return $data;
-//     }
-// }
+    if ($cetak_hari) {
+        $num = date('N', strtotime($tanggal));
+        return $hari[$num] . ', ' . $tgl_indo;
+    }
+    return $tgl_indo;
+}
+
+function sendMail($email, $subject, $message)
+{
+    $CI = &get_instance();
+
+    //smtp (simple mail transfer protocol )
+    $config = [
+        'protocol' => 'smtp',
+        'smtp_host' => 'ssl://smtp.googlemail.com',
+        'smtp_user' => 'bfundangan@gmail.com',
+        'smtp_pass' => 'BFU970817',
+        'smtp_port' => 465,
+        'mailtype' => 'html',
+        'charset' => 'utf-8',
+        'newline' => "\r\n",
+        // 'wordwrap' => TRUE
+    ];
+    // kirim email
+    $CI->email->initialize($config);
+    $CI->email->from('no-reply@sipjamet.com', 'Stasiun Meteorologi Kelas I Maritim Serang');
+    $CI->email->to($email);
+    $CI->email->subject($subject);
+    $CI->email->message($message);
+}

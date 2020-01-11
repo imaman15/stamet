@@ -115,6 +115,7 @@ class Applicant_model extends CI_Model
         $this->db->where('email', $this->email);
         $this->db->update($this->_table);
     }
+    
     public function changepassword($post)
     {
         $this->applicant_id = $this->session->userdata('applicant_id');

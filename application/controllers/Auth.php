@@ -202,30 +202,16 @@ class Auth extends CI_Controller
 
     public function _sendEmail($token, $type)
     {
-        //smtp (simple mail transfer protocol )
-        $config = [
-            'protocol' => 'smtp',
-            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_user' => 'bfundangan@gmail.com',
-            'smtp_pass' => 'BFU970817',
-            'smtp_port' => 465,
-            'mailtype' => 'html',
-            'charset' => 'utf-8',
-            'newline' => "\r\n"
-        ];
-        // kirim email
-        $email = $this->input->post('email', true);
-        $this->email->initialize($config);
-        $this->email->from('bfundangan@gmail.com', 'Stasiun Meteorologi Kelas I Maritim Serang');
-        $this->email->to($email);
-
+        $email = $this->input->post('email');
         if ($type == 'verify') {
-            $this->email->subject('SIPJAMET - Verifikasi Akun ');
-            $this->email->message('Klik tautan ini untuk memverifikasi akun Anda : <a href="' . site_url() . '' . UA_VERIFY . '?email=' . $email . '&token=' . urlencode($token) . '">Aktifkan Akun</a>');
+            $subject = 'SIPJAMET - Verifikasi Akun ';
+            $message = 'Klik tautan ini untuk memverifikasi akun Anda : <a href="' . site_url() . '' . UA_VERIFY . '?email=' . $email . '&token=' . urlencode($token) . '">Aktifkan Akun</a>';
+            sendMail($email, $subject, $message);
             //base64_encode karakter tidak ramah url ada karakter tambah dan sama dengan nah ketika di urlnya ada karakter itu nanti akan di terjemahkan spasi jadi kosong. untuk menghindari hal sprti itu maka kita bungkus urlencode jadi jika ada karakter tadi maka akan di rubah jadi %20 dan strusnya. 
         } elseif ($type == 'forgot') {
-            $this->email->subject('SIPJAMET - Atur Ulang Kata Sandi');
-            $this->email->message('klik tautan ini untuk mengatur ulang kata sandi Anda : <a href="' . site_url() . '' . UA_RESETPASSWORD . '?email=' . $email . '&token=' . urlencode($token) . '">Atur Ulang Kata Sandi</a>');
+            $subject = 'SIPJAMET - Atur Ulang Kata Sandi';
+            $message = 'klik tautan ini untuk mengatur ulang kata sandi Anda : <a href="' . site_url() . '' . UA_RESETPASSWORD . '?email=' . $email . '&token=' . urlencode($token) . '">Atur Ulang Kata Sandi</a>';
+            sendMail($email, $subject, $message);
         }
 
         if ($this->email->send()) {
@@ -252,9 +238,9 @@ class Auth extends CI_Controller
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"><strong>Selamat! </strong>' . $email . ' telah diaktifkan. Silahkan login.</div>');
                     redirect(UA_LOGIN);
                 } else {
-                    $this->applicant_model->delByEmail($email, "applicant", "registration");
+                    $this->applicant_model->delByEmail($email);
                     $this->usertoken_model->delByEmail($email, "applicant", "registration");
-                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> <strong>Maaf!</strong> Aktivasi akun gagal. Token Anda kedaluwarsa.</div>');
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> <strong>Maaf!</strong> Aktivasi akun gagal. Token Anda kedaluwarsa. Silahkan Daftar Kembali.</div>');
                     redirect(UA_LOGIN);
                 }
             } else {
