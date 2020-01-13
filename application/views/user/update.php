@@ -89,19 +89,22 @@
                     <div class="col-sm-9">
                         <div class="row">
                             <div class="col-sm-3">
-                                <img src="<?= base_url('assets/img/profil/') . $user->photo ?>" alt="" class="img-thumbnail">
+                                <img src="<?= base_url('assets/img/profil/') . $user->photo ?>" alt="" class="img-thumbnail rounded-circle profil-admin">
                             </div>
                             <div class="col-sm-9 my-sm-auto mt-2">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input clearfix" name="photo" id="photo">
                                     <label class="custom-file-label overflow-hidden" for="photo">Pilih Foto</label>
+                                    <div id="rempho" class="custom-control custom-checkbox mt-2">
+                                        <input type="checkbox" class="custom-control-input" id="remove_photo" value="$user->photo " name="remove_photo"><label class="custom-control-label" for="remove_photo">Hapus foto saat menyimpan</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-4 offset-md-4">
+                    <div class="col-md-4 offset-md-4 mt-4">
                         <button type="submit" class="btn btn-primary btn-block">Edit</button>
                     </div>
                 </div>

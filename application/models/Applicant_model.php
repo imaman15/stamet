@@ -21,9 +21,77 @@ class Applicant_model extends CI_Model
     public $is_active = 0;
     public $date_created;
 
-    public function getDataByEmail($email)
+    // start datatables
+    var $column_order = array(null, 'nin', 'fullname', 'email', 'phone', 'applicant.date_update', null); //set column field database for datatable orderable
+    var $column_search = array('nin', 'CONCAT(applicant.first_name, " ", applicant.last_name)', 'email', 'phone', 'applicant.date_update'); //set column field database for datatable searchable
+    var $order = array('applicant_id' => 'desc'); // default order
+
+    private function _get_datatables_query()
     {
-        return $this->db->get_where($this->_table, ['email' => $email]);
+        $this->db->select('applicant.applicant_id, applicant.nin, applicant.email, applicant.date_update, CONCAT(applicant.first_name, " ", applicant.last_name) as fullname, job_category.jobcat');
+        $this->db->from('applicant');
+        $this->db->join('job_category', 'job_category.jobcat_id = applicant.job_category');
+
+        $i = 0;
+
+        foreach ($this->column_search as $item) // loop column 
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->column_search) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order)) {
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
+    }
+
+    function get_datatables()
+    {
+        $this->_get_datatables_query();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered()
+    {
+        $this->_get_datatables_query();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all()
+    {
+        $this->db->from('applicant');
+        return $this->db->count_all_results();
+    }
+    //=======================================================
+
+    public function getDataBy($id, $name)
+    {
+        $this->db->select('applicant.applicant_id,applicant.password, applicant.email, applicant.photo, applicant.first_name, applicant.last_name, applicant.nin, applicant.job_category, applicant.address, applicant.phone, applicant.institute, applicant.is_active, applicant.date_created, applicant.date_update, job_category.jobcat');
+        $this->db->from($this->_table);
+        $this->db->join('job_category', 'job_category.jobcat_id = applicant.job_category');
+        $this->db->where([$name => $id]);
+        return $this->db->get();
     }
 
     public function resetpassword($email)
@@ -44,10 +112,11 @@ class Applicant_model extends CI_Model
         return $query;
     }
 
-    public function add($post)
+    public function add($post, $pass = NULL)
     {
+        $password = ($pass != NULL) ? $pass : $post["password"];
         $this->email = htmlspecialchars($post["email"], true);
-        $this->password = password_hash($post["password"], PASSWORD_DEFAULT);
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
         $this->photo;
         $this->first_name = htmlspecialchars(ucwords($post["first_name"]), true);
         $this->last_name = htmlspecialchars(ucwords($post["last_name"]), true);
@@ -63,8 +132,14 @@ class Applicant_model extends CI_Model
 
     public function update($post)
     {
-        $this->applicant_id = $this->session->userdata('applicant_id');
-        $this->email = $post["email"];
+        $session_id = $this->session->userdata('applicant_id');
+        $post_id = $post["applicant_id"];
+        if (isset($post_id)) {
+            $this->applicant_id = $post_id;
+        } else {
+            $this->applicant_id = $session_id;
+        };
+
         $params['first_name'] = htmlspecialchars(ucwords($post["first_name"]), true);
         $params['last_name'] = htmlspecialchars(ucwords($post["last_name"]), true);
         $params['nin'] = $post["nin"];
@@ -96,7 +171,18 @@ class Applicant_model extends CI_Model
             }
         }
 
-        $this->db->where(array('applicant_id' => $this->applicant_id, 'email' => $this->email));
+        if (isset($post['remove_photo'])) // if remove photo checked
+        {
+            if (file_exists('assets/img/profil/' . $post['remove_photo']) && $post['remove_photo'])
+                unlink('assets/img/profil/' . $post['remove_photo']);
+            $params["photo"] = 'default.jpg';
+        }
+
+        if ($post["email"]) {
+            $params['email'] = $post["email"];
+        };
+
+        $this->db->where(array('applicant_id' => $this->applicant_id));
         $this->db->update($this->_table, $params);
     }
 
@@ -115,7 +201,7 @@ class Applicant_model extends CI_Model
         $this->db->where('email', $this->email);
         $this->db->update($this->_table);
     }
-    
+
     public function changepassword($post)
     {
         $this->applicant_id = $this->session->userdata('applicant_id');

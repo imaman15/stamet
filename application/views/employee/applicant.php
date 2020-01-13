@@ -9,8 +9,8 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4 animated zoomIn fast">
         <div class="card-header py-3">
-            <button type="button" class="btn btn-primary" onclick="add_employee()">
-                Tambah Pegawai
+            <button type="button" class="btn btn-primary" onclick="add_applicant()">
+                Tambah Pengguna
             </button>
         </div>
         <div class="card-body">
@@ -19,10 +19,9 @@
                     <thead>
                         <tr class="text-center">
                             <th>#</th>
-                            <th>No. Identitas Pegawai</th>
-                            <th>Nama Pegawai</th>
-                            <th>Jabatan</th>
-                            <th>Level</th>
+                            <th>No. Identitas Penduduk</th>
+                            <th>Nama Pengguna</th>
+                            <th>Email</th>
                             <th>Diperbarui</th>
                             <th>Aksi</th>
                         </tr>
@@ -51,7 +50,7 @@
 
             // Load data for the table's content from an Ajax source
             "ajax": {
-                "url": "<?php echo site_url('employee/employee/list') ?>",
+                "url": "<?php echo site_url('employee/applicant/list') ?>",
                 "type": "POST"
             },
 
@@ -63,14 +62,6 @@
                 {
                     "targets": [-1, 0],
                     "className": 'text-center',
-                },
-                {
-                    "targets": [-1],
-                    "width": '13%',
-                },
-                {
-                    "targets": [1],
-                    "width": '20%',
                 },
             ],
 
@@ -114,27 +105,27 @@
     // ========================================================
 
     // Tambah Data
-    function add_employee() {
+    function add_applicant() {
         save_method = 'add';
         $('#form').show();
+        $('#form_photo').hide();
         $('#form')[0].reset(); // reset form on modals
         $('#btnSave').show();
         $('#btnClose').text('Batal');
         $('.form-control').removeClass('is-invalid'); // clear error class
         $('.invalid-feedback').empty(); // clear error string
         $('#rempho').empty();
-        $('#employeeForm').modal('show'); // show bootstrap modal
-        $('#employeeFormLabel').text('Tambah Data'); // Set Title to Bootstrap modal title
-        $('.custom-file-label').text('Pilih Foto'); // label photo upload
-        $('#photo-preview').text('(Tidak ada foto)');
+        $('#applicantForm').modal('show'); // show bootstrap modal
+        $('#applicantFormLabel').text('Tambah Data'); // Set Title to Bootstrap modal title
         $('#respassword').hide();
         $('#viewData').hide();
     }
 
     // Edit Data
-    function edit_emp(id) {
+    function edit_applicant(id) {
         save_method = 'update';
         $('#form').show();
+        $('#form_photo').show();
         $('#form')[0].reset(); // reset form on modals
         $('.form-control').removeClass('is-invalid'); // clear error class
         $('.invalid-feedback').empty(); // clear error string
@@ -147,23 +138,23 @@
 
         //Ajax Load data from ajax
         $.ajax({
-            url: "<?php echo site_url('employee/employee/view') ?>/" + id,
+            url: "<?php echo site_url('employee/applicant/view') ?>/" + id,
             type: "GET",
             dataType: "JSON",
             success: function(data) {
 
-                $('[name="emp_id"]').val(data.emp_id);
+                $('[name="applicant_id"]').val(data.applicant_id);
                 $('[name="first_name"]').val(data.first_name);
                 $('[name="last_name"]').val(data.last_name);
-                $('[name="csidn"]').val(data.csidn);
-                $('[name="position_name"]').val(data.position_name);
-                $('[name="level"]').val(data.level);
+                $('[name="nin"]').val(data.nin);
+                $('[name="job_category"]').val(data.job_category);
+                $('[name="institute"]').val(data.institute);
                 $('[name="address"]').val(data.address);
                 $('[name="phone"]').val(data.phone);
                 $('[name="email"]').val(data.email);
                 $('#resetpass').attr('onclick', 'resetpassword(' + data.emp_id + ')');
-                $('#employeeForm').modal('show'); // show bootstrap modal when complete loaded
-                $('#employeeFormLabel').text('Edit Data'); // Set title to Bootstrap modal title
+                $('#applicantForm').modal('show'); // show bootstrap modal when complete loaded
+                $('#applicantFormLabel').text('Edit Data'); // Set title to Bootstrap modal title
                 $('#rempho').show();
 
                 if (data.photo) {
@@ -185,22 +176,22 @@
                         $(this).remove();
                     });
                 });
-                $('#employeeForm').modal('hide');
+                $('#applicantForm').modal('hide');
             }
         });
     }
 
     // Detail Data
-    function view_emp(id) {
-        $('#employeeForm').modal('show'); // show bootstrap modal
+    function view_applicant(id) {
+        $('#applicantForm').modal('show'); // show bootstrap modal
         $('#viewData').show();
-        $('#employeeFormLabel').text('Detail Data'); // Set Title to Bootstrap modal title
+        $('#applicantFormLabel').text('Detail Data'); // Set Title to Bootstrap modal title
         $('#btnSave').hide();
         $('#btnClose').text('Tutup');
         $('#form').hide();
 
         $.ajax({
-            url: "<?php echo site_url('employee/employee/view') ?>/" + id,
+            url: "<?php echo site_url('employee/applicant/view') ?>/" + id,
             type: "GET",
             dataType: "JSON",
             success: function(data) {
@@ -213,12 +204,12 @@
                 }
                 $('#view_photo').html('<img src="' + base_url + 'assets/img/profil/' + data.photo + '" class="img-thumbnail rounded-circle profil-admin mb-3" alt="' + data.first_name + '">');
                 $('#view_fullname').text(data.first_name + ' ' + data.last_name);
-                $('#view_csidn').text(data.csidn);
-                $('#view_position_name').text(data.pos_name);
+                $('#view_nin').text(data.nin);
+                $('#view_job_category').text(data.jobcat);
+                $('#view_institute').text(data.institute);
                 $('#view_address').text(data.address);
                 $('#view_phone').text(data.phone);
                 $('#view_email').text(data.email);
-                $('#view_level').text(data.level_name);
                 $('#view_is_active').text(data.is_active);
                 $('#view_date_created').text(data.date_created);
                 $('#view_date_update').text(data.date_update);
@@ -231,7 +222,7 @@
                         $(this).remove();
                     });
                 });
-                $('#employeeForm').modal('hide');
+                $('#applicantForm').modal('hide');
             }
         });
     }
@@ -242,7 +233,7 @@
         $('#resetpass').attr('disabled', true); //set button disable 
         // ajax delete data to database
         $.ajax({
-            url: "<?php echo site_url('employee/employee/changepassword') ?>/" + id,
+            url: "<?php echo site_url('employee/applicant/changepassword') ?>/" + id,
             type: "POST",
             dataType: "JSON",
             success: function(data) {
@@ -281,11 +272,11 @@
         var act_danger;
 
         if (save_method == 'add') {
-            url = "<?php echo site_url('employee/employee/add') ?>";
+            url = "<?php echo site_url('employee/applicant/add') ?>";
             act_success = "ditambahkan";
             act_danger = "menambah";
         } else {
-            url = "<?php echo site_url('employee/employee/update') ?>";
+            url = "<?php echo site_url('employee/applicant/update') ?>";
             act_success = "diedit";
             act_danger = "mengedit";
         }
@@ -303,8 +294,8 @@
 
                 if (data.status) //if success close modal and reload ajax table
                 {
-                    $('#employeeForm').modal('hide');
-                    $('#the-message').html('<div class="alert alert-success animated zoomIn fast" role="alert"><strong>Selamat! </strong> Data Pegawai berhasil ' + act_success + '.</div>');
+                    $('#applicantForm').modal('hide');
+                    $('#the-message').html('<div class="alert alert-success animated zoomIn fast" role="alert"><strong>Selamat! </strong> Data Pengguna berhasil ' + act_success + '.</div>');
                     // close the message after seconds
                     $('.alert-success').delay(500).show(10, function() {
                         $(this).delay(3000).hide(10, function() {
@@ -325,8 +316,8 @@
 
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                $('#employeeForm').modal('hide');
-                $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Anda gagal ' + act_danger + ' data Pegawai.</div>');
+                $('#applicantForm').modal('hide');
+                $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Anda gagal ' + act_danger + ' Data Pengguna.</div>');
                 // close the message after seconds
                 $('.alert-danger').delay(500).show(10, function() {
                     $(this).delay(3000).hide(10, function() {
@@ -341,17 +332,17 @@
 
     }
 
-    function delete_emp(id) {
+    function delete_applicant(id) {
         $('#deleteData').modal('show'); // show bootstrap modal
         $('#btn-delete').click(function() {
             // ajax delete data to database
             $.ajax({
-                url: "<?php echo site_url('employee/employee/delete') ?>/" + id,
+                url: "<?php echo site_url('employee/applicant/delete') ?>/" + id,
                 type: "POST",
                 dataType: "JSON",
                 success: function(data) {
                     //if success reload ajax table
-                    $('#the-message').html('<div class="alert alert-success animated zoomIn fast" role="alert"><strong>Selamat! </strong> Data Pegawai berhasil dihapus.</div>');
+                    $('#the-message').html('<div class="alert alert-success animated zoomIn fast" role="alert"><strong>Selamat! </strong> Data Pengguna berhasil dihapus.</div>');
                     // close the message after seconds
                     $('.alert-success').delay(500).show(10, function() {
                         $(this).delay(3000).hide(10, function() {
@@ -363,7 +354,7 @@
                     reload_table();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Anda gagal menghapus data Pegawai.</div>');
+                    $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Anda gagal menghapus data Pengguna.</div>');
                     // close the message after seconds
                     $('.alert-danger').delay(500).show(10, function() {
                         $(this).delay(3000).hide(10, function() {
@@ -378,11 +369,11 @@
     }
 </script>
 <!-- Modal Add/Update -->
-<div class="modal fade" id="employeeForm" tabindex="-1" role="dialog" aria-labelledby="employeeFormLabel" aria-hidden="true">
+<div class="modal fade" id="applicantForm" tabindex="-1" role="dialog" aria-labelledby="applicantFormLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title font-weight-bolder" id="employeeFormLabel">Data Pegawai</h4>
+                <h4 class="modal-title font-weight-bolder" id="applicantFormLabel">Data Pegawai</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -396,16 +387,23 @@
                     </div>
                     <hr>
                     <div class="form-group row">
-                        <label for="csidn" class="col-sm-5 col-form-label text-sm-right font-weight-bold">No. Identitas Pegawai (NIP)</label>
-                        <div class="col-sm-7 text-primary text-lg my-auto" id="view_csidn">
-                            No. Identitas Pegawai (NIP)
+                        <label for="nin" class="col-sm-5 col-form-label text-sm-right font-weight-bold">Nomor Identitas (KTP)</label>
+                        <div class="col-sm-7 text-primary text-lg my-auto" id="view_nin">
+                            Nomor Identitas (KTP)
                         </div>
                     </div>
                     <hr>
                     <div class="form-group row">
-                        <label for="position_name" class="col-sm-5 col-form-label text-sm-right font-weight-bold">Jabatan</label>
-                        <div class="col-sm-7 text-primary text-lg my-auto" id="view_position_name">
-                            Jabatan
+                        <label for="job_category" class="col-sm-5 col-form-label text-sm-right font-weight-bold">Kategori Pekerjaan</label>
+                        <div class="col-sm-7 text-primary text-lg my-auto" id="view_job_category">
+                            Kategori Pekerjaan
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <label for="institute" class="col-sm-5 col-form-label text-sm-right font-weight-bold">Nama Instansi</label>
+                        <div class="col-sm-7 text-primary text-lg my-auto" id="view_institute">
+                            Nama Instansi
                         </div>
                     </div>
                     <hr>
@@ -431,16 +429,9 @@
                     </div>
                     <hr>
                     <div class="form-group row">
-                        <label for="level" class="col-sm-5 col-form-label text-sm-right font-weight-bold">Level</label>
-                        <div class="col-sm-7 text-primary text-lg my-auto" id="view_level">
-                            Level
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group row">
-                        <label for="level" class="col-sm-5 col-form-label text-sm-right font-weight-bold">Status Akun</label>
+                        <label for="is_active" class="col-sm-5 col-form-label text-sm-right font-weight-bold">Status Akun</label>
                         <div class="col-sm-7 text-primary text-lg my-auto" id="view_is_active">
-                            Aktif
+                            --
                         </div>
                     </div>
                     <hr>
@@ -465,7 +456,7 @@
                 </div>
 
                 <form action="#" id="form">
-                    <input type="hidden" value="" name="emp_id" />
+                    <input type="hidden" name="applicant_id" />
                     <div class="form-group row">
                         <label for="first_name" class="col-sm-3 col-form-label text-sm-right font-weight-bold">Nama Depan</label>
                         <div class="col-sm-9">
@@ -486,23 +477,34 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="csidn" class="col-sm-3 col-form-label text-sm-right font-weight-bold">No. Identitas Pegawai (NIP)</label>
+                        <label for="nin" class="col-sm-3 col-form-label text-sm-right font-weight-bold">Nomor Identitas (KTP)</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="csidn" onkeypress="return numberOnly(event)" maxlength="18" id="csidn" placeholder="No. Identitas Pegawai (NIP)" value="">
-                            <div id="csidn_error" class="invalid-feedback">
+                            <input type="text" class="form-control" name="nin" onkeypress="return numberOnly(event)" maxlength="16" id="nin" placeholder="No. Identitas Pegawai (NIP)" value="">
+                            <div id="nin_error" class="invalid-feedback">
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="position_name" class="col-sm-3 col-form-label text-sm-right font-weight-bold">Jabatan</label>
+                        <label for="job_category" class="col-sm-3 col-form-label text-sm-right font-weight-bold">Kategori Pekerjaan</label>
                         <div class="col-sm-9">
-                            <select class="form-control" name="position_name" id="position_name">
+                            <select class="form-control" name="job_category" id="job_category">
                                 <option value="">Pilih...</option>
-                                <?php foreach ($pos_name->result() as $pn) : ?>
-                                    <option value="<?= $pn->pos_id; ?>"><?= $pn->pos_name ?></option>
+                                <?php foreach ($jobcat->result() as $jc) : ?>
+                                    <option value="<?= $jc->jobcat_id; ?>"><?= $jc->jobcat; ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <div id="position_name_error" class="invalid-feedback">
+                            <div id="job_category_error" class="invalid-feedback">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="institute" class="col-sm-3 col-form-label text-sm-right font-weight-bold">Nama Instansi</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="institute" id="institute" placeholder="Nama Instansi" aria-describedby="instituteHelpBlock" value="">
+                            <small id="instituteHelpBlock" class="form-text text-muted">
+                                Nama Instansi / Nama Perusahaan / Nama Sekolah / Nama Universitas
+                            </small>
+                            <div id="institute_error" class="invalid-feedback">
                             </div>
                         </div>
                     </div>
@@ -546,32 +548,16 @@
                             <small id="password_message" class="ml-sm-1 my-2 d-block d-sm-inline"></small>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="level" class="col-sm-3 col-form-label text-sm-right font-weight-bold">Level</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" name="level" id="level">
-                                <option value="">Pilih...</option>
-                                <option value="1">Administrator</option>
-                                <option value="2">Kasi DATIN</option>
-                                <option value="3">Petugas Layanan</option>
-                                <option value="4">Petugas Tata Usaha</option>
-                            </select>
-                            <div id="level_error" class="invalid-feedback">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
+                    <div class="form-group row" id="form_photo">
                         <div class="col-sm-3 text-sm-right font-weight-bold">Foto Profil</div>
-                        <div class="col-sm-9" id="form_photo">
+                        <div class="col-sm-9">
                             <div class="row">
                                 <div class="col-sm-3" id="photo-preview">
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="photo" id="photo">
-                                        <label class="custom-file-label" for="photo">Pilih Foto</label>
+                                        <input type="file" name="photo" id="photo" hidden>
                                         <div id="rempho" class="custom-control custom-checkbox mt-1">
-
                                         </div>
                                         <div id="photo_error" class="invalid-feedback">
                                         </div>

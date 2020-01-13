@@ -22,7 +22,7 @@ class Auth extends CI_Controller
         } else {
             $email = $this->input->post('email', TRUE);
             $password = $this->input->post('password', TRUE);
-            $user = $this->applicant_model->getDataByEmail($email)->row();
+            $user = $this->applicant_model->getDataBy($email, "email")->row();
 
             //jika usernya ada
             if ($user) {
@@ -149,7 +149,7 @@ class Auth extends CI_Controller
         $email = $this->input->get('email');
         $token = $this->input->get('token');
 
-        $user = $this->applicant_model->getDataByEmail($email)->row_array();
+        $user = $this->applicant_model->getDataBy($email, "email")->row_array();
         $user_token = $this->usertoken_model->getToken($token);
 
         if ($user) {
@@ -227,7 +227,7 @@ class Auth extends CI_Controller
         $email = $this->input->get('email');
         $token = $this->input->get('token');
 
-        $user = $this->applicant_model->getDataByEmail($email)->row_array();
+        $user = $this->applicant_model->getDataBy($email, "email")->row_array();
         $user_token = $this->usertoken_model->getToken($token);
 
         if ($user) {

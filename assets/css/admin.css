@@ -10,5 +10,11 @@
 
 .foto-profil {
 	width: 128px;
+	height: 128px;
 	margin-top: -85px;
+}
+
+.profil-admin {
+	width: 128px;
+	height: 128px;
 }

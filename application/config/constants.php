@@ -116,5 +116,6 @@ define('UE_FORGOTPASSWORD', strtolower('forgotpassword'));
 define('UE_CHANGEPASSWORD', strtolower('changepassword'));
 define('UE_EDITPROFILE', strtolower('edit-profil'));
 define('UE_EMPLOYEE', strtolower(UE_ADMIN . '/' . 'employee'));
+define('UE_APPLICANT', strtolower(UE_ADMIN . '/' . 'applicant'));
 define('UE_ADD', strtolower('/add'));
 define('UE_VERIFY', strtolower(UE_ADMIN . '/verify'));

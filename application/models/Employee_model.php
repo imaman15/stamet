@@ -26,7 +26,7 @@ class Employee_model extends CI_Model
 
     private function _get_datatables_query()
     {
-        $this->db->select('employee.*, CONCAT(employee.first_name, " ", employee.last_name) as fullname, position.pos_name');
+        $this->db->select('employee.emp_id, employee.csidn, employee.level, employee.date_update, CONCAT(employee.first_name, " ", employee.last_name) as fullname, position.pos_name');
         $this->db->from('employee');
         $this->db->join('position', 'position.pos_id = employee.position_name');
 
