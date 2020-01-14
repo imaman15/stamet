@@ -68,4 +68,6 @@ $route[UE_LOGIN] = UE_FOLDER . '/auth/login';
 $route[UE_LOGOUT] = UE_FOLDER . '/auth/logout';
 $route[UE_EMPLOYEE] = UE_FOLDER . '/employee';
 $route[UE_APPLICANT] = UE_FOLDER . '/applicant';
+$route[UE_JOBCAT] = UE_FOLDER . '/jobcat';
+$route[UE_POSITION] = UE_FOLDER . '/position';
 $route[UE_VERIFY] = UE_FOLDER . '/employee/verify';

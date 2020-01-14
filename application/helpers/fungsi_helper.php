@@ -116,9 +116,15 @@ function level($data)
         return "Kasi Datin";
     } elseif ($data == 3) {
         return "Petugas Layanan";
-    } elseif ($data == 4) {
-        return "Petugas TU";
     }
+}
+
+function dataLevel()
+{
+    $data = '<option value="1">Administrator</option>';
+    $data .= '<option value="2">Kasi DATIN</option>';
+    $data .= '<option value="3">Petugas Layanan</option>';
+    return $data;
 }
 
 function rupiah($angka)

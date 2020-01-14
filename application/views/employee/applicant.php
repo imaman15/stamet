@@ -152,7 +152,7 @@
                 $('[name="address"]').val(data.address);
                 $('[name="phone"]').val(data.phone);
                 $('[name="email"]').val(data.email);
-                $('#resetpass').attr('onclick', 'resetpassword(' + data.emp_id + ')');
+                $('#resetpass').attr('onclick', 'resetpassword(' + data.applicant_id + ')');
                 $('#applicantForm').modal('show'); // show bootstrap modal when complete loaded
                 $('#applicantFormLabel').text('Edit Data'); // Set title to Bootstrap modal title
                 $('#rempho').show();
@@ -233,7 +233,7 @@
         $('#resetpass').attr('disabled', true); //set button disable 
         // ajax delete data to database
         $.ajax({
-            url: "<?php echo site_url('employee/applicant/changepassword') ?>/" + id,
+            url: "<?php echo site_url('employee/applicant/resetpassword') ?>/" + id,
             type: "POST",
             dataType: "JSON",
             success: function(data) {

@@ -98,7 +98,7 @@ class Employee extends CI_Controller
         // ===============================================
     }
 
-    public function changepassword($id = NULL)
+    public function resetpassword($id = NULL)
     {
         $check = $this->employee_model->getDataBy($id, 'emp_id')->row();
         if ((!isset($id)) or (!$check)) redirect(site_url(UE_ADMIN));

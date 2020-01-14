@@ -242,7 +242,7 @@
         $('#resetpass').attr('disabled', true); //set button disable 
         // ajax delete data to database
         $.ajax({
-            url: "<?php echo site_url('employee/employee/changepassword') ?>/" + id,
+            url: "<?php echo site_url('employee/employee/resetpassword') ?>/" + id,
             type: "POST",
             dataType: "JSON",
             success: function(data) {
@@ -551,10 +551,7 @@
                         <div class="col-sm-9">
                             <select class="form-control" name="level" id="level">
                                 <option value="">Pilih...</option>
-                                <option value="1">Administrator</option>
-                                <option value="2">Kasi DATIN</option>
-                                <option value="3">Petugas Layanan</option>
-                                <option value="4">Petugas Tata Usaha</option>
+                                <?= dataLevel() ?>
                             </select>
                             <div id="level_error" class="invalid-feedback">
                             </div>

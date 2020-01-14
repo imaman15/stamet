@@ -8,7 +8,7 @@ class Applicant extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->library(['form_validation', 'recaptcha', 'email']);
+        $this->load->library(['form_validation', 'email']);
         $this->load->model(['applicant_model', 'jobcategory_model', 'usertoken_model']);
     }
 
@@ -98,16 +98,30 @@ class Applicant extends CI_Controller
         // ===============================================
     }
 
-    public function changepassword($id = NULL)
+    public function resetpassword($id = NULL)
     {
-        $check = $this->applicant_model->getDataBy($id, 'emp_id')->row();
+        $check = $this->applicant_model->getDataBy($id, 'applicant_id')->row();
         if ((!isset($id)) or (!$check)) redirect(site_url(UE_ADMIN));
-        $data['pass'] = get_random_password(6, 8, true, true, false);
-        $data['email'] = $check->email;
+
+        $cekdata = $this->usertoken_model->readToken($check->email, 'applicant', 'resetpassword')->num_rows();
+
+        if ($cekdata > 0) {
+            $this->usertoken_model->delByEmail($check->email, "applicant", "resetpassword");
+        }
         //Create Token
-        $this->applicant_model->changepass($data);
+        $token = base64_encode(random_bytes(32));
+        $user_token = [
+            'email' => $check->email,
+            'token' => $token,
+            'user' => 'applicant',
+            'action' => 'resetpassword',
+            'date_created' => time()
+        ];
+        $this->usertoken_model->add($user_token);
+
+        $this->applicant_model->resetpassword($check->email);
         //=========== Send Email ===========
-        $this->_sendEmail($data['email'], $data['pass'], 'forgot');
+        $this->_sendEmail($token, $check->email, 'forgot');
         //=========== End Of Send Email ===========
         echo json_encode(array("status" => TRUE));
     }
@@ -251,7 +265,7 @@ class Applicant extends CI_Controller
         echo json_encode($output);
     }
 
-    public function _sendEmail($token = NULL, $pass, $type)
+    public function _sendEmail($token = NULL, $pass = NULL, $type)
     {
         $email = $this->input->post('email', true);
         if ($type == 'verify') {
@@ -275,22 +289,8 @@ class Applicant extends CI_Controller
             //base64_encode karakter tidak ramah url ada karakter tambah dan sama dengan nah ketika di urlnya ada karakter itu nanti akan di terjemahkan spasi jadi kosong. untuk menghindari hal sprti itu maka kita bungkus urlencode jadi jika ada karakter tadi maka akan di rubah jadi %20 dan strusnya. 
         } elseif ($type == 'forgot') {
             $subject = 'SIPJAMET - Atur Ulang Kata Sandi';
-            $message = '
-            <h3 align="center" style="font-family: arial, sans-serif;">Akun Pegawai Sipjamet</h3>
-            <table border="1" width="100%" style="border-collapse: collapse; font-family: arial, sans-serif;">
-            <tr>
-                <th width="20%" style="padding: 8px;">Email</th>
-                <td width="80%" style="padding: 8px;">' . $token . '</td>
-            </tr>
-            <tr>
-                <th width="20%" style="padding: 8px;">Password</th>
-                <td width="80%" style="padding: 8px;">' . $pass . '</td>
-            </tr>
-            </table>
-            <p>
-            Klik tautan ini untuk masuk akun Anda : <a href="' . site_url(UE_LOGIN) . '">Login Akun</a>
-            </p>';
-            sendMail($token, $subject, $message);
+            $message = 'klik tautan ini untuk mengatur ulang kata sandi Anda : <a href="' . site_url() . '' . UA_RESETPASSWORD . '?email=' . $pass . '&token=' . urlencode($token) . '">Atur Ulang Kata Sandi</a>';
+            sendMail($pass, $subject, $message);
         }
 
         if ($this->email->send()) {
