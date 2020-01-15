@@ -123,11 +123,11 @@
                                     Saya telah membaca dan menyetujui ketentuan Pendaftaran Akun Data Online
                                 </label>
                             </div>
-                            <div class="form-group mt-3">
+                            <!-- <div class="form-group mt-3">
                                 <?php echo $captcha // tampilkan recaptcha 
                                 ?>
                                 <?= form_error('g-recaptcha-response') ?>
-                            </div>
+                            </div> -->
                         </div>
 
                         <button class="btn btn-lg btn-primary text-uppercase btn-block mx-lg-5" type="submit" id="btnsubmit" disabled>Daftar</button>

@@ -8,6 +8,7 @@ class Applicant extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        admin_not_login([2,3]);
         $this->load->library(['form_validation', 'email']);
         $this->load->model(['applicant_model', 'jobcategory_model', 'usertoken_model']);
     }
@@ -271,6 +272,7 @@ class Applicant extends CI_Controller
         if ($type == 'verify') {
             $subject = 'SIPJAMET - Verifikasi Akun ';
             $message = '
+            <p> Terimakasih telah melakukan registrasi. </p>
             <h3 align="center" style="font-family: arial, sans-serif;">Akun Sipjamet</h3>
             <table border="1" width="100%" style="border-collapse: collapse; font-family: arial, sans-serif;">
             <tr>
@@ -283,7 +285,8 @@ class Applicant extends CI_Controller
             </tr>
             </table>
             <p>
-            Klik tautan ini untuk memverifikasi akun Anda : <a href="' . site_url() . '' . UA_VERIFY . '?email=' . $email . '&token=' . urlencode($token) . '">Aktifkan Akun</a>
+            <p>Silahkan Klik link berikut untuk melakukan Verifikasi :</p>
+            <a href="' . site_url() . '' . UA_VERIFY . '?email=' . $email . '&token=' . urlencode($token) . '">Aktifkan Akun</a>
             </p>';
             sendMail($email, $subject, $message);
             //base64_encode karakter tidak ramah url ada karakter tambah dan sama dengan nah ketika di urlnya ada karakter itu nanti akan di terjemahkan spasi jadi kosong. untuk menghindari hal sprti itu maka kita bungkus urlencode jadi jika ada karakter tadi maka akan di rubah jadi %20 dan strusnya. 

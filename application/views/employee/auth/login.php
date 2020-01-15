@@ -19,18 +19,28 @@
                 <hr>
                 <?= $this->session->flashdata('message');
                 ?>
-                <form class="user" action="<?= base_url('auth_admin') ?>" method="POST">
-                  <div class="form-group">
-                    <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Email" value="<?= set_value('email') ?>">
-                    <?= form_error('email', '<small class="text-danger pl-3">', '</small>') ?>
-                  </div>
-                  <div class="form-group">
-                    <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Password">
-                    <?= form_error('password', '<small class="text-danger pl-3">', '</small>') ?>
-                  </div>
-                  <button type="submit" class="btn btn-info btn-user btn-block">
-                    Login
-                  </button>
+                <?=
+                  form_open(UE_LOGIN, 'class="user"');
+                ?>
+                <div class="form-group">
+                  <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Email" value="<?= set_value('email') ?>" autofocus>
+                  <?= form_error('email') ?>
+                </div>
+                <div class="form-group">
+                  <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Kata Sandi">
+                  <?= form_error('password') ?>
+                </div>
+                <!-- <div class="form-group mt-3">
+                  <?=
+                    $captcha // tampilkan recaptcha
+                  ?>
+                  <?=
+                    form_error('g-recaptcha-response')
+                  ?>
+                </div> -->
+                <button type="submit" class="btn btn-info btn-user btn-block">
+                  Masuk
+                </button>
                 </form>
                 <hr>
                 <div class="copyright text-center small">

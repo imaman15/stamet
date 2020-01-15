@@ -9,6 +9,7 @@ class Position extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        admin_not_login([2,3]);
         //Load Dependencies
         $this->load->library(['form_validation', 'email']);
         $this->load->model(['position_model']);

@@ -107,11 +107,12 @@ $checkme = array(
         'required' => '%s harus di centang'
     ]
 );
-$gRecaptchaResponse = array(
-    'field' => 'g-recaptcha-response',
-    'label' => '<strong>Captcha</strong>',
-    'rules' => 'callback_getRresponseCcaptcha'
-);
+
+// $gRecaptchaResponse = array(
+//     'field' => 'g-recaptcha-response',
+//     'label' => '<strong>Captcha</strong>',
+//     'rules' => 'callback_getRresponseCcaptcha'
+// );
 
 // Set Rules Change Password Applicant
 $currentPassword = array(
@@ -136,12 +137,11 @@ $emailEmp = array(
 $csidn =  array(
     'field' => 'csidn',
     'label' => '<strong>No. Identitas Pegawai (NIP)</strong>',
-    'rules' => 'trim|required|exact_length[18]|numeric|is_unique[employee.csidn]',
+    'rules' => 'trim|required|exact_length[18]|numeric',
     'errors' => [
         'required' => $required,
         'exact_length' => '%s harus 18 digit',
-        'numeric' => '%s harus berupa angka',
-        'is_unique' => '%s sudah terdaftar. jika anda merasa belum pernah mendaftarkan Nomor Identitas Pegawai (NIP) di aplikasi ini silahkan <a href="' . site_url(FAQ) . '">hubungi kami!</a>'
+        'numeric' => '%s harus berupa angka'
     ]
 );
 $position_name = array(
@@ -153,7 +153,7 @@ $position_name = array(
     ]
 );
 $level = array(
-    'field' => 'Level',
+    'field' => 'level',
     'label' => '<strong>Level</strong>',
     'rules' => 'trim|required',
     'errors' => [
@@ -161,26 +161,33 @@ $level = array(
     ]
 );
 
+if (isset(dAdmin()->level) && dAdmin()->level == 1) {
+    $field = array(
+        $first_name, $last_name, $email2, $csidn, $address, $phone
+    );
+} else {
+    $field = array(
+        $first_name, $last_name, $email2, $csidn, $address, $phone, $position_name, $level
+    );
+}
+
 // Set Rules
 $config = array(
-    'employee' => array(
-        $first_name, $last_name, $emailEmp, $csidn, $position_name, $address, $phone, $level
-
-    ),
+    'employee' => $field,
     'resetpassword_applicant' => array(
-        $email2, $gRecaptchaResponse
+        $email2,
     ),
     'changepass_applicant' => array(
         $currentPassword, $password, $confirmPassword
     ),
     'changepass2_applicant' => array(
-        $password, $confirmPassword, $gRecaptchaResponse
+        $password, $confirmPassword,
     ),
     'update_applicant' => array(
         $first_name, $last_name, $address, $phone, $job_category, $institute
     ),
     'signup_applicant' => array(
-        $first_name, $last_name, $nin, $address, $phone, $job_category, $institute, $email, $password, $confirmPassword, $checkme, $gRecaptchaResponse
+        $first_name, $last_name, $nin, $address, $phone, $job_category, $institute, $email, $password, $confirmPassword, $checkme,
     ),
     'signin_applicant' => array(
         $email2,
@@ -192,7 +199,7 @@ $config = array(
                 'required' => $required,
             ]
         ),
-        $gRecaptchaResponse
+
     )
 );
 

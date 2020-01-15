@@ -27,10 +27,10 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item <?= ($this->uri->segment(1) == "") ? "active" : NULL; ?>">
                 <a class="nav-link hvr-wobble-horizontal" href="<?= site_url() ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Beranda</span></a>
+                    <span>Dashboard</span></a>
             </li>
 
             <!-- Divider -->

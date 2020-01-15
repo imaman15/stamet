@@ -30,6 +30,9 @@ class Employee_model extends CI_Model
         $this->db->from('employee');
         $this->db->join('position', 'position.pos_id = employee.position_name');
 
+        $user = $this->session->userdata('emp_id');
+        $this->db->where('emp_id !=', $user);
+
         $i = 0;
 
         foreach ($this->column_search as $item) // loop column 
@@ -106,19 +109,21 @@ class Employee_model extends CI_Model
         return $this->db->insert_id();
     }
 
-    public function update($post)
+    public function update($post, $id = NULL)
     {
         $params['email'] = htmlspecialchars($post["email"], true);
         $params['first_name'] = htmlspecialchars(ucwords($post["first_name"]), true);
         $params['last_name'] = htmlspecialchars(ucwords($post["last_name"]), true);
         $params['csidn'] = $post["csidn"];
-        $params['position_name'] = $post["position_name"];
         $params['address'] = $post["address"] != "" ? htmlspecialchars($post["address"], true) : null;
         $params['phone'] = phoneNumber($post["phone"], true);
-        $params['level'] = $post["level"];
+        if (isset($post["position_name"]) || isset($post["level"])) {
+            $params['position_name'] = $post["position_name"];
+            $params['level'] = $post["level"];
+        }
 
         if (!empty($_FILES['photo']['name'])) {
-            $upload = $this->_do_upload();
+            $upload = $this->_do_upload($id);
             $params["photo"] = $upload;
             //delete file
             $old_image = $this->getDataBy($post['emp_id'], 'emp_id')->row()->photo;
@@ -134,8 +139,12 @@ class Employee_model extends CI_Model
             $params["photo"] = 'default.jpg';
         }
 
-        $this->db->update($this->_table, $params, ['emp_id' => $post["emp_id"]]);
-        return $this->db->affected_rows();
+        if ($id) {
+            $this->db->update($this->_table, $params, ['emp_id' => $id]);
+        } else {
+            $this->db->update($this->_table, $params, ['emp_id' => $post["emp_id"]]);
+            return $this->db->affected_rows();
+        }
     }
 
     public function changepass($data)
@@ -145,6 +154,30 @@ class Employee_model extends CI_Model
         $this->db->set('password', $this->password);
         $this->db->where('email', $this->email);
         $this->db->update($this->_table);
+    }
+
+    public function changepassword($post)
+    {
+        $user =  dAdmin();
+        $currentPassword = $post['currentPassword'];
+        $newPassword = $post['password'];
+        if (!password_verify($currentPassword, $user->password)) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger animated zoomIn" role="alert">
+            <strong>Maaf!</strong> Kata sandi saat ini salah.</div>');
+            redirect(UE_CHANGEPASSWORD);
+        } else {
+            if ($currentPassword == $newPassword) {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger animated zoomIn" role="alert">
+                <strong>Maaf!</strong> Kata sandi baru tidak boleh sama dengan kata sandi lama.</div>');
+                redirect(UE_CHANGEPASSWORD);
+            } else {
+                //password ok
+                $password = password_hash($newPassword, PASSWORD_DEFAULT);
+                $this->db->set('password', $password);
+                $this->db->where(array('emp_id' => $user->emp_id, 'email' => $user->email));
+                $this->db->update($this->_table);
+            }
+        }
     }
 
     function get_position($id)
@@ -162,7 +195,7 @@ class Employee_model extends CI_Model
 
     public function getDataBy($id, $name)
     {
-        $this->db->select('employee.emp_id, employee.email, employee.photo, employee.first_name, employee.last_name, employee.csidn, employee.position_name, employee.address, employee.phone, employee.level, employee.is_active, employee.date_created, employee.date_update, position.pos_name');
+        $this->db->select('employee.emp_id,employee.password, employee.email, employee.photo, employee.first_name, employee.last_name, employee.csidn, employee.position_name, employee.address, employee.phone, employee.level, employee.is_active, employee.date_created, employee.date_update, position.pos_name');
         $this->db->from($this->_table);
         $this->db->join('position', 'position.pos_id = employee.position_name');
         $this->db->where([$name => $id]);
@@ -181,7 +214,7 @@ class Employee_model extends CI_Model
         $this->db->update($this->_table);
     }
 
-    private function _do_upload()
+    private function _do_upload($id = NULL)
     {
         $config['upload_path']          = './assets/img/profil/';
         $config['allowed_types']        = 'gif|jpg|png';
@@ -192,11 +225,17 @@ class Employee_model extends CI_Model
 
         if (!$this->upload->do_upload('photo')) //upload and validate
         {
-            $data['inputerror'][] = 'photo';
-            $data['error_string'][] = 'Upload error: ' . $this->upload->display_errors('', ''); //show ajax error
-            $data['status'] = FALSE;
-            echo json_encode($data);
-            exit();
+            if ($id != NULL) {
+                $eror = $this->upload->display_errors();
+                $this->session->set_flashdata('message', '<div class="alert alert-danger animated zoomIn" role="alert">' . $eror . '</div>');
+                redirect(UE_EDITPROFILE);
+            } else {
+                $data['inputerror'][] = 'photo';
+                $data['error_string'][] = 'Upload error: ' . $this->upload->display_errors('', ''); //show ajax error
+                $data['status'] = FALSE;
+                echo json_encode($data);
+                exit();
+            }
         }
         return $this->upload->data('file_name');
     }

@@ -9,7 +9,7 @@
             <div class="card-body">
                 <?= $this->session->flashdata('message');
                 ?>
-                <?= form_open(UA_CHANGEPASSWORD); ?>
+                <?= form_open(UE_CHANGEPASSWORD); ?>
                 <div class="form-group">
                     <label for="currentPassword">Kata Sandi Saat ini</label>
                     <input type="password" class="form-control <?= form_error('currentPassword') ? 'is-invalid' : null ?>" name="currentPassword" id="currentPassword" placeholder="Masukkan Kata Sandi Saat ini">

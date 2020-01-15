@@ -9,11 +9,12 @@
             <div class="card-body">
                 <?= $this->session->flashdata('message');
                 ?>
-                <?= form_open_multipart('edit-profil'); ?>
+                <?= form_open_multipart(UE_EDITPROFILE); ?>
                 <div class="form-group row">
                     <label for="email" class="col-sm-3 col-form-label">Email</label>
                     <div class="col-sm-9">
-                        <input type="email" class="form-control <?= form_error('email') ? 'is-invalid' : null ?>" name="email" id="email" placeholder="Email" value="<?php secho($user->email) ?>" readonly>
+                        <input type="email" class="form-control <?= form_error('email') ? 'is-invalid' : null ?>" name="email" id="email" placeholder="Email" value="<?php secho($user->email) ?>">
+                        <?= form_error('email'); ?>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -34,10 +35,10 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="nin" class="col-sm-3 col-form-label">No. Identitas (KTP)</label>
+                    <label for="csidn" class="col-sm-3 col-form-label">No. Identitas Pegawai (NIP)</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control <?= form_error('nin') ? 'is-invalid' : null ?>" name="nin" onkeypress="return numberOnly(event)" maxlength="16" id="nin" placeholder="No. Identitas (KTP)" value="<?php secho($user->nin) ?>" readonly>
-                        <?= form_error('nin'); ?>
+                        <input type="text" class="form-control <?= form_error('csidn') ? 'is-invalid' : null ?>" name="csidn" onkeypress="return numberOnly(event)" maxlength="18" id="csidn" placeholder="No. Identitas Pegawai (NIP)" value="<?php secho($user->csidn) ?>">
+                        <?= form_error('csidn'); ?>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -60,30 +61,39 @@
                         <?= form_error('phone') ?>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="job_category" class="col-sm-3 col-form-label">Kategori Pekerjaan</label>
-                    <div class="col-sm-9">
-                        <select class="form-control <?= form_error('job_category') ? 'is-invalid' : null ?>" name="job_category" id="job_category">
-                            <?php $job_category = set_value("job_category") ? set_value("job_category") : $user->job_category;
-                            ?>
-                            <option value="">Pilih...</option>
-                            <?php foreach ($jobcategory->result() as $jc) : ?>
-                                <option value="<?= $jc->jobcat_id; ?>" <?= ($job_category == $jc->jobcat_id) ? "selected" : null; ?>><?= $jc->jobcat ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <?= form_error('job_category') ?>
+
+                <?php if (dAdmin()->level == 1) : ?>
+
+                    <div class="form-group row">
+                        <label for="position_name" class="col-sm-3 col-form-label">Jabatan</label>
+                        <div class="col-sm-9">
+                            <select class="form-control <?= form_error('position_name') ? 'is-invalid' : null ?>" name="position_name" id="position_name">
+                                <?php $pos = set_value("position_name") ? set_value("position_name") : $user->position_name;
+                                ?>
+                                <option value="">Pilih...</option>
+                                <?php foreach ($position->result() as $p) : ?>
+                                    <option value="<?= $p->pos_id; ?>" <?= ($pos == $p->pos_id) ? "selected" : null; ?>><?= $p->pos_name ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?= form_error('position') ?>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label for="institute" class="col-sm-3 col-form-label">Nama Instansi</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control <?= form_error('institute') ? 'is-invalid' : null ?>" name="institute" id="institute" placeholder="Nama Instansi" aria-describedby="instituteHelpBlock" value="<?php secho($user->institute) ?>">
-                        <small id="instituteHelpBlock" class="form-text text-muted">
-                            Nama Instansi / Nama Perusahaan / Nama Sekolah / Nama Universitas.
-                        </small>
-                        <?= form_error('institute') ?>
+
+                    <div class="form-group row">
+                        <label for="level" class="col-sm-3 col-form-label">Level</label>
+                        <div class="col-sm-9">
+                            <select class="form-control <?= form_error('level') ? 'is-invalid' : null ?>" name="level" id="level">
+                                <?php $level = set_value("level") ? set_value("level") : $user->level;
+                                ?>
+                                <option value="">Pilih...</option>
+                                <?= dataLevel($level) ?>
+                            </select>
+                            <?= form_error('level') ?>
+                        </div>
                     </div>
-                </div>
+
+                <?php endif; ?>
+
                 <div class="form-group row">
                     <div class="col-sm-3">Foto Profil</div>
                     <div class="col-sm-9">

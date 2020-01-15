@@ -6,14 +6,31 @@ function secho($str)
     echo htmlentities($str, ENT_QUOTES, 'UTF-8');
 }
 
-function app_already_login()
+function dAdmin()
 {
     $CI = &get_instance();
-    $user_session = $CI->session->userdata('applicant_id');
-    $logged_in = $CI->session->userdata('logged_in');
+    $CI->load->model('employee_model');
+    $id = $CI->session->userdata('emp_id');
+    return $CI->employee_model->getDataBy($id, 'emp_id')->row();
+}
 
-    if ($user_session && $logged_in == TRUE) {
-        redirect(site_url());
+function app_already_login($method = NULL)
+{
+    $CI = &get_instance();
+    if ($method == "admin") {
+        $user_session = $CI->session->userdata('emp_id');
+        $logged_in = $CI->session->userdata('logged_in');
+
+        if ($user_session && $logged_in == "admin") {
+            redirect(site_url(UE_ADMIN));
+        }
+    } else {
+        $user_session = $CI->session->userdata('applicant_id');
+        $logged_in = $CI->session->userdata('logged_in');
+
+        if ($user_session && $logged_in == "user") {
+            redirect(site_url());
+        }
     }
 }
 
@@ -22,21 +39,34 @@ function app_not_login()
     $CI = &get_instance();
     $user_session = $CI->session->userdata('applicant_id');
     $logged_in = $CI->session->userdata('logged_in');
-    if (!$user_session && $logged_in !== TRUE) {
+    $user_db = $CI->db->get_where('applicant', ['applicant_id' => $user_session])->row();
+    if (!$user_session || $logged_in == "admin") {
         redirect(UA_LOGIN);
-    }
-}
-
-function app_del_login()
-{
-    $CI = &get_instance();
-    $CI->load->model('applicant_model');
-    $user = $CI->applicant_model->getData()->row();
-    if (!$user) {
+    } elseif (!$user_db) {
         $CI->session->unset_userdata('applicant_id');
         $CI->session->unset_userdata('logged_in');
         $CI->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Anda telah keluar! </div>');
         redirect(UA_LOGIN);
+    }
+}
+
+function admin_not_login($level = array())
+{
+    $CI = &get_instance();
+    $user_session = $CI->session->userdata('emp_id');
+    $logged_in = $CI->session->userdata('logged_in');
+    $user_db = $CI->db->get_where('employee', ['emp_id' => $user_session])->row();
+    if (!$user_session || $logged_in == "user") {
+        redirect(UE_LOGIN);
+    } elseif (!$user_db) {
+        $CI->session->unset_userdata('emp_id');
+        $CI->session->unset_userdata('logged_in');
+        $CI->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Anda telah keluar! </div>');
+        redirect(UE_LOGIN);
+    } else {
+        if (in_array($user_db->level, $level)) {
+            redirect(site_url(UE_ADMIN . '/error_page'));
+        }
     }
 }
 
@@ -119,11 +149,14 @@ function level($data)
     }
 }
 
-function dataLevel()
+function dataLevel($level = NULL)
 {
-    $data = '<option value="1">Administrator</option>';
-    $data .= '<option value="2">Kasi DATIN</option>';
-    $data .= '<option value="3">Petugas Layanan</option>';
+    $level1 = ($level == 1) ? "selected" : null;
+    $level2 = ($level == 2) ? "selected" : null;
+    $level3 = ($level == 3) ? "selected" : null;
+    $data = '<option value="1" ' . $level1 . '>Administrator</option>';
+    $data .= '<option value="2" ' . $level2 . '>Kasi DATIN</option>';
+    $data .= '<option value="3" ' . $level3 . '>Petugas Layanan</option>';
     return $data;
 }
 
@@ -192,4 +225,35 @@ function sendMail($email, $subject, $message)
     $CI->email->to($email);
     $CI->email->subject($subject);
     $CI->email->message($message);
+}
+
+// Function Keterangan Waktu
+function timeInfo($timestamp)
+{
+    $selisih = time() - strtotime($timestamp);
+    $detik = $selisih;
+    $menit = round($selisih / 60);
+    $jam = round($selisih / 3600);
+    $hari = round($selisih / 86400);
+    $minggu = round($selisih / 604800);
+    $bulan = round($selisih / 2419200);
+    $tahun = round($selisih / 29030400);
+
+    if ($detik <= 60) {
+        $waktu = $detik . ' detik yang lalu';
+    } else if ($menit <= 60) {
+        $waktu = $menit . ' menit yang lalu';
+    } else if ($jam <= 24) {
+        $waktu = $jam . ' jam yang lalu';
+    } else if ($hari <= 7) {
+        $waktu = $hari . ' hari yang lalu';
+    } else if ($minggu <= 4) {
+        $waktu = $minggu . ' minggu yang lalu';
+    } else if ($bulan <= 12) {
+        $waktu = $bulan . ' bulan yang lalu';
+    } else {
+        $waktu = $tahun . ' tahun yang lalu';
+    }
+
+    return $waktu;
 }

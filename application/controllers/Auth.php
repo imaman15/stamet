@@ -23,7 +23,6 @@ class Auth extends CI_Controller
             $email = $this->input->post('email', TRUE);
             $password = $this->input->post('password', TRUE);
             $user = $this->applicant_model->getDataBy($email, "email")->row();
-
             //jika usernya ada
             if ($user) {
                 //jika usernya aktif
@@ -34,7 +33,7 @@ class Auth extends CI_Controller
                         // password benar
                         $data = [
                             'applicant_id' => $user->applicant_id,
-                            'logged_in' => TRUE
+                            'logged_in' => "user"
                         ];
 
                         $this->session->set_userdata($data);
@@ -93,14 +92,14 @@ class Auth extends CI_Controller
             $this->usertoken_model->add($user_token);
             if ($this->db->affected_rows() > 0) {
                 $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-                <strong>Selamat!</strong> Akun anda berhasil dibuat. Silahkan aktifkan akun Anda. <small class="pl-3 font-weight-light d-block text-muted">(Cek Folder <b>Spam</b> jika tidak ada email masuk)</small></div>');
+                <strong>Selamat!</strong> Registrasi berhasil dilakukan, silahkan cek email anda untuk melakukan aktifasi akun <small class="pl-3 font-weight-light d-block text-muted">(Cek Folder <b>Spam</b> jika tidak ada email masuk)</small></div>');
                 //=========== Send Email ===========
                 $this->_sendEmail($token, 'verify');
                 //=========== End Of Send Email ===========
                 redirect(UA_LOGIN);
             }
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
-                <strong>Maaf!</strong> Akun anda gagal dibuat. Silahkan daftar kembali.</div>');
+                <strong>Maaf!</strong> Registrasi gagal. Silahkan daftar kembali.</div>');
             redirect(UA_REGISTRATION);
         }
     }
@@ -134,11 +133,11 @@ class Auth extends CI_Controller
                 //=========== End Of Send Email ===========
 
                 $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-                Silahkan periksa email Anda untuk mengatur ulang kata sandi Anda <small class=" font-weight-light d-block text-muted">(Cek Folder <b>Spam</b> jika tidak ada email masuk)</small></div>');
+                Silahkan cek email Anda untuk mengatur ulang kata sandi Anda <small class=" font-weight-light d-block text-muted">(Cek Folder <b>Spam</b> jika tidak ada email masuk)</small></div>');
                 redirect(UA_FORGOTPASSWORD);
             } else {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
-                <strong>Maaf!</strong> Email tidak terdaftar atau belum diaktifkan.</div>');
+                <strong>Maaf!</strong> Email tidak terdaftar atau belum diaktifasi.</div>');
                 redirect(UA_FORGOTPASSWORD);
             }
         }
@@ -205,7 +204,10 @@ class Auth extends CI_Controller
         $email = $this->input->post('email');
         if ($type == 'verify') {
             $subject = 'SIPJAMET - Verifikasi Akun ';
-            $message = 'Klik tautan ini untuk memverifikasi akun Anda : <a href="' . site_url() . '' . UA_VERIFY . '?email=' . $email . '&token=' . urlencode($token) . '">Aktifkan Akun</a>';
+            $message = '
+            <p> Terimakasih telah melakukan registrasi. </p>
+            <p>Silahkan Klik link berikut untuk melakukan Verifikasi :</p>
+            <a href="' . site_url() . '' . UA_VERIFY . '?email=' . $email . '&token=' . urlencode($token) . '">Aktifkan Akun</a>';
             sendMail($email, $subject, $message);
             //base64_encode karakter tidak ramah url ada karakter tambah dan sama dengan nah ketika di urlnya ada karakter itu nanti akan di terjemahkan spasi jadi kosong. untuk menghindari hal sprti itu maka kita bungkus urlencode jadi jika ada karakter tadi maka akan di rubah jadi %20 dan strusnya. 
         } elseif ($type == 'forgot') {

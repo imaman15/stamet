@@ -16,7 +16,7 @@
                         form_open(UA_LOGIN, 'class="form-signin"');
                     ?>
                     <div class="form-label-group">
-                        <input type="email" id="email" name="email" class="form-control" placeholder="Email" required autofocus value="<?= set_value('email') ?>">
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Email" autofocus value="<?= set_value('email') ?>">
                         <label for="email">Email</label>
                         <?= form_error('email') ?>
                     </div>
@@ -27,14 +27,15 @@
                         <?= form_error('password') ?>
                     </div>
 
-                    <div class="form-group mt-3">
+                    <!-- <div class="form-group mt-3">
                         <?=
                             $captcha // tampilkan recaptcha
                         ?>
                         <?=
                             form_error('g-recaptcha-response')
                         ?>
-                    </div>
+                    </div> -->
+
                     <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Masuk</button>
 
                     <div class="text-center small mt-2">
@@ -70,11 +71,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    var status = document.getElementById('kondisi')
-    setInterval(function() {
-        status.className = navigator.onLine ? 'online' : 'offline';
-        status.innerHTML = navigator.onLine ? 'online' : 'offline';
-    }, 100);
-</script>

@@ -10,7 +10,6 @@ class User extends CI_Controller
     {
         parent::__construct();
         app_not_login();
-        app_del_login();
         $this->load->library(['form_validation']);
         $this->load->model(['applicant_model', 'jobcategory_model']);
     }
@@ -47,7 +46,7 @@ class User extends CI_Controller
                 $this->applicant_model->update($post);
                 if ($this->db->affected_rows() > 0) {
                     $this->session->set_flashdata('message', '<div class="alert alert-success animated zoomIn fast" role="alert"><strong>Selamat!</strong> Profil Anda telah diperbarui.</div>');
-                    redirect(UA_PROFILE);
+                    redirect(site_url());
                 }
                 $this->session->set_flashdata('message', '<div class="alert alert-danger animated zoomIn" role="alert">
                 <strong>Maaf!</strong> Profil Anda gagal diperbarui.</div>');

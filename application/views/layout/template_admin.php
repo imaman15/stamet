@@ -6,7 +6,6 @@
 </head>
 
 <body id="page-top">
-
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
@@ -27,8 +26,8 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
+            <li class="nav-item <?= ($this->uri->uri_string() ==  UE_ADMIN) ? "active" : NULL; ?>">
+                <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_ADMIN) ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -36,134 +35,137 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Pelayanan
-            </div>
+            <?php if (dAdmin()->level == 1 || dAdmin()->level == 3) : ?>
 
-            <!-- Nav Item - Data/Informasi -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dataInformasi" aria-expanded="true" aria-controls="dataInformasi">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Data / Informasi</span>
-                </a>
-                <div id="dataInformasi" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Data / Informasi :</h6>
-                        <a class="collapse-item hvr-wobble-horizontal" href="#">Form Permintaan</a>
-                        <a class="collapse-item hvr-wobble-horizontal" href="#">Konfirmasi Permintaan</a>
-                        <a class="collapse-item hvr-wobble-horizontal" href="#">Cek Pemabayaran</a>
-                        <a class="collapse-item hvr-wobble-horizontal" href="#">Berkas Pengantar</a>
-                        <a class="collapse-item hvr-wobble-horizontal" href="#">Berkas Data/Informasi</a>
-                        <a class="collapse-item hvr-wobble-horizontal" href="#">Riwayat Permintaan</a>
-                    </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Pelayanan
                 </div>
-            </li>
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-comments"></i>
-                    <span>Konsultasi Data</span></a>
-            </li>
+                <!-- Nav Item - Data/Informasi -->
+                <!-- Nav Item - Tables -->
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_TRANSACTION) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_TRANSACTION) ?>">
+                        <i class="fas fa-fw fa-clipboard-list"></i>
+                        <span>Transaksi Data</span></a>
+                </li>
 
-            <!-- Nav Item - Data/Informasi -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#kunjungan" aria-expanded="true" aria-controls="kunjungan">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Kunjungan</span>
-                </a>
-                <div id="kunjungan" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Kunjungan :</h6>
-                        <a class="collapse-item hvr-wobble-horizontal" href="#">Konfirmasi Kunjungan</a>
-                        <a class="collapse-item hvr-wobble-horizontal" href="#">Jadwal Kunjungan</a>
-                    </div>
+                <!-- Nav Item - Tables -->
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_SCHEDULE) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_SCHEDULE) ?>">
+                        <i class="fas fa-fw far fa-handshake"></i>
+                        <span>Jadwal Pertemuan</span></a>
+                </li>
+
+                <!-- Nav Item - Tables -->
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_REQTYPE) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_REQTYPE) ?>">
+                        <i class="fas fa-fw fa-th-list"></i>
+                        <span>Jenis Permintaan</span></a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+            <?php endif; ?>
+
+            <?php if (dAdmin()->level == 1 || dAdmin()->level == 2) : ?>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Hubungan Pengguna
                 </div>
-            </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                <!-- Nav Item - Tables -->
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_RATINGS) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_RATINGS) ?>">
+                        <i class="fas fa-fw fa-star"></i>
+                        <span>Survei Pelanggan</span></a>
+                </li>
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Hubungan Pengguna
-            </div>
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_CANDS) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_CANDS) ?>">
+                        <i class="fas fa-fw fa-comment-alt"></i>
+                        <span>Kritik & Saran</span></a>
+                </li>
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-comments"></i>
-                    <span>Survei Pelanggan</span></a>
-            </li>
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_COMPLAINT) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_COMPLAINT) ?>">
+                        <i class="fas fa-fw fa-comment-slash"></i>
+                        <span>Komplain</span></a>
+                </li>
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-comments"></i>
-                    <span>Kritik & Saran</span></a>
-            </li>
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-comments"></i>
-                    <span>Komplain</span></a>
-            </li>
+            <?php endif; ?>
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-comments"></i>
-                    <span>Pesan</span></a>
-            </li>
+            <?php if (dAdmin()->level == 1) : ?>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Manajemen
+                </div>
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Manajemen
-            </div>
+                <!-- Nav Item - Tables -->
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_APPLICANT) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_APPLICANT) ?>">
+                        <i class="fas fa-fw fa-users"></i>
+                        <span>Data Pengguna</span></a>
+                </li>
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-comments"></i>
-                    <span>Data Anggota</span></a>
-            </li>
+                <!-- Nav Item - Tables -->
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_EMPLOYEE) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_EMPLOYEE) ?>">
+                        <i class="fas fa-fw fa-user-tie"></i>
+                        <span>Data Pegawai</span></a>
+                </li>
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-comments"></i>
-                    <span>Data Pegawai</span></a>
-            </li>
+                <!-- Nav Item - Tables -->
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_JOBCAT) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_JOBCAT) ?>">
+                        <i class="fas fa-fw fa-chalkboard-teacher"></i>
+                        <span>Kategori Pekerjaan</span></a>
+                </li>
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-comments"></i>
-                    <span>Data Jenis Permintaan</span></a>
-            </li>
+                <!-- Nav Item - Tables -->
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_POSITION) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_POSITION) ?>">
+                        <i class="fas fa-fw fa-briefcase"></i>
+                        <span>Data Jabatan</span></a>
+                </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+                <!-- Nav Item - Tables -->
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_MANAGEFAQ) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_MANAGEFAQ) ?>">
+                        <i class="fas fa-fw fa-question-circle"></i>
+                        <span>FAQ</span></a>
+                </li>
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Pengaturan
-            </div>
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fa fa-fw fa-question-circle"></i>
-                    <span>Pengaturan</span></a>
-            </li>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Pengaturan
+                </div>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+                <!-- Nav Item - Tables -->
+                <li class="nav-item">
+                    <a class="nav-link hvr-wobble-horizontal" href="#">
+                        <i class="fa fa-fw fa-question-circle"></i>
+                        <span>Email</span></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link hvr-wobble-horizontal" href="#">
+                        <i class="fa fa-fw fa-question-circle"></i>
+                        <span>Rekening</span></a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+            <?php endif; ?>
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -189,46 +191,25 @@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle hvr-wobble-horizontal" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Alerts Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
-                        </li>
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle hvr-wobble-horizontal" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="mr-2 img-profile rounded-circle" src="<?= base_url('assets/img/profil/default.jpg') ?>">
-                                <span class="d-none d-lg-inline text-gray-600 small">Imam Agustian</span>
+                                <img class="mr-2 img-profile rounded-circle" src="<?= base_url('assets/img/profil/') . dAdmin()->photo; ?>">
+                                <span class="d-none d-lg-inline text-gray-600 small"><?php secho(ucfirst(dAdmin()->first_name . " " . dAdmin()->last_name)) ?></span>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="<?= site_url(UE_EDITPROFILE) ?>">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Akun Saya
+                                    Edit Profil
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="<?= site_url(UE_CHANGEPASSWORD) ?>">
+                                    <i class="fas fa-fw fa-key mr-2 text-gray-400"></i>
+                                    Ganti Kata Sandi
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -280,7 +261,7 @@
                 <div class="modal-body">Pilih "Logout" di bawah ini jika Anda ingin mengakhiri sesi Anda saat ini.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="<?= base_url(UA_LOGOUT) ?>">Logout</a>
+                    <a class="btn btn-primary" href="<?= base_url(UE_LOGOUT) ?>">Logout</a>
                 </div>
             </div>
         </div>

@@ -20,14 +20,15 @@
                         <label for="email">Email</label>
                         <?= form_error('email') ?>
                     </div>
-                    <div class="form-group mt-3">
+
+                    <!-- <div class="form-group mt-3">
                         <?=
                             $captcha // tampilkan recaptcha
                         ?>
                         <?=
                             form_error('g-recaptcha-response')
                         ?>
-                    </div>
+                    </div> -->
 
                     <button class="btn btn-primary btn-block text-uppercase" type="submit">Atur Ulang Kata Sandi</button>
 
