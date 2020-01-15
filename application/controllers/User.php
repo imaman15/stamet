@@ -10,6 +10,7 @@ class User extends CI_Controller
     {
         parent::__construct();
         app_not_login();
+
         $this->load->library(['form_validation']);
         $this->load->model(['applicant_model', 'jobcategory_model']);
     }

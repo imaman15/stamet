@@ -11,6 +11,7 @@ class Beranda extends CI_Controller
         parent::__construct();
         //Load Dependencies
         admin_not_login();
+
         $this->load->library(['form_validation']);
         $this->load->model(['employee_model', 'position_model']);
     }

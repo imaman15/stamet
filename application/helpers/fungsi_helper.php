@@ -14,6 +14,14 @@ function dAdmin()
     return $CI->employee_model->getDataBy($id, 'emp_id')->row();
 }
 
+function dUser()
+{
+    $CI = &get_instance();
+    $CI->load->model('applicant_model');
+    $id = $CI->session->userdata('applicant_id');
+    return $CI->applicant_model->getDataBy($id, 'applicant_id')->row();
+}
+
 function app_already_login($method = NULL)
 {
     $CI = &get_instance();
@@ -38,10 +46,17 @@ function app_not_login()
 {
     $CI = &get_instance();
     $user_session = $CI->session->userdata('applicant_id');
+    $user_session2 = $CI->session->userdata('emp_id');
     $logged_in = $CI->session->userdata('logged_in');
     $user_db = $CI->db->get_where('applicant', ['applicant_id' => $user_session])->row();
-    if (!$user_session || $logged_in == "admin") {
+    if (!isset($user_session) || $logged_in !== "user") {
         redirect(UA_LOGIN);
+    } elseif (isset($user_session2) && $logged_in == "user") {
+        $CI->session->unset_userdata('emp_id');
+        redirect(site_url());
+    } elseif (isset($user_session2) && $logged_in == "admin") {
+        $CI->session->unset_userdata('applicant_id');
+        redirect(site_url(UE_ADMIN));
     } elseif (!$user_db) {
         $CI->session->unset_userdata('applicant_id');
         $CI->session->unset_userdata('logged_in');
@@ -54,10 +69,17 @@ function admin_not_login($level = array())
 {
     $CI = &get_instance();
     $user_session = $CI->session->userdata('emp_id');
+    $user_session2 = $CI->session->userdata('applicant_id');
     $logged_in = $CI->session->userdata('logged_in');
     $user_db = $CI->db->get_where('employee', ['emp_id' => $user_session])->row();
-    if (!$user_session || $logged_in == "user") {
+    if (!isset($user_session) || $logged_in !== "admin") {
         redirect(UE_LOGIN);
+    } elseif (isset($user_session2) && $logged_in == "user") {
+        $CI->session->unset_userdata('emp_id');
+        redirect(site_url());
+    } elseif (isset($user_session2) && $logged_in == "admin") {
+        $CI->session->unset_userdata('applicant_id');
+        redirect(site_url(UE_ADMIN));
     } elseif (!$user_db) {
         $CI->session->unset_userdata('emp_id');
         $CI->session->unset_userdata('logged_in');
@@ -65,7 +87,8 @@ function admin_not_login($level = array())
         redirect(UE_LOGIN);
     } else {
         if (in_array($user_db->level, $level)) {
-            redirect(site_url(UE_ADMIN . '/error_page'));
+            // redirect('/404_override');
+            show_404();
         }
     }
 }

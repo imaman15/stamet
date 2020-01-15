@@ -105,6 +105,12 @@ define('UA_VERIFY', strtolower('verify'));
 define('UA_CHANGEPASSWORD', strtolower('changepassword'));
 define('UA_PROFILE', strtolower('profil'));
 define('UA_EDITPROFILE', strtolower('edit-profil'));
+define('UA_TRANSACTION', strtolower('form-transaksi'));
+define('UA_TRANSHISTORY', strtolower('transaksi'));
+define('UA_SCHEDULE', strtolower('form-jadwal'));
+define('UA_SCHEHISTORY', strtolower('jadwal-pertemuan'));
+define('UA_RATINGS', strtolower('survei-pelanggan'));
+define('UA_COMPLAINT', strtolower('komplain-pelanggan'));
 
 //URL Employee (UE)
 define('UE_FOLDER', strtolower('employee'));

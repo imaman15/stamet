@@ -38,52 +38,66 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Data Meteorologi
+                Transaksi Layanan
             </div>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-smog"></i>
-                    <span>Data Harian</span></a>
+            <li class="nav-item <?= ($this->uri->uri_string() == UA_TRANSACTION) ? "active" : NULL; ?>">
+                <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UA_TRANSACTION) ?>">
+                    <i class="fas fa-fw fa-plus-square"></i>
+                    <span>Form Permintaan Data</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" id="link" href="#">
-                    <i class="fas fa-fw fa-poo-storm"></i>
-                    <span>Data Ekstrem</span></a>
+            <li class="nav-item <?= ($this->uri->uri_string() == UA_TRANSHISTORY) ? "active" : NULL; ?>">
+                <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UA_TRANSHISTORY) ?>">
+                    <i class="fas fa-fw fa-clipboard-list"></i>
+                    <span>Riwayat Transaksi</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Penjadwalan
+            </div>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item <?= ($this->uri->uri_string() == UA_SCHEDULE) ? "active" : NULL; ?>">
+                <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UA_SCHEDULE) ?>">
+                    <i class="fas fa-fw fa-calendar-plus"></i>
+                    <span>Form Jadwal Pertemuan</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-mountain"></i>
-                    <span>Data Gempa Bumi</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-money-bill-wave"></i>
-                    <span>Data Berbayar</span></a>
+            <li class="nav-item <?= ($this->uri->uri_string() == UA_SCHEHISTORY) ? "active" : NULL; ?>">
+                <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UA_SCHEHISTORY) ?>">
+                    <i class="fas fa-fw far fa-handshake"></i>
+                    <span>Riwayat Pertemuan</span></a>
             </li>
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Informasi
+                Lainnya
             </div>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
-                    <i class="fas fa-fw fa-comments"></i>
-                    <span>Konsultasi Data</span></a>
+            <li class="nav-item <?= ($this->uri->uri_string() == UA_RATINGS) ? "active" : NULL; ?>">
+                <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UA_RATINGS) ?>">
+                    <i class="fas fa-fw fa-star"></i>
+                    <span>Survei Pelanggan</span></a>
+            </li>
+
+            <li class="nav-item <?= ($this->uri->uri_string() == UA_COMPLAINT) ? "active" : NULL; ?>">
+                <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UA_COMPLAINT) ?>">
+                    <i class="fas fa-fw fa-comment-slash"></i>
+                    <span>Komplain Pelanggan</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link hvr-wobble-horizontal" href="#">
+                <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(FAQ) ?>">
                     <i class="fa fa-fw fa-question-circle"></i>
                     <span>FAQ</span></a>
             </li>
@@ -119,8 +133,8 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle hvr-wobble-horizontal" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="mr-2 img-profile rounded-circle" src="<?= base_url('assets/img/profil/') . $user->photo; ?>">
-                                <span class="d-none d-lg-inline text-gray-600 small"><?php secho(ucfirst($user->first_name . " " . $user->last_name)) ?></span>
+                                <img class="mr-2 img-profile rounded-circle" src="<?= base_url('assets/img/profil/') . dUser()->photo; ?>">
+                                <span class="d-none d-lg-inline text-gray-600 small"><?php secho(ucfirst(dUser()->first_name . " " . dUser()->last_name)) ?></span>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

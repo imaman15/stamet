@@ -7,7 +7,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <head>
 	<meta charset="utf-8">
 	<title>404 Page Not Found</title>
-	<style type="text/css">
+
+	<!-- favicon -->
+	<link rel="shortcut icon" href="<?= base_url('') ?>assets/img/favicon.ico" type="image/x-icon">
+	<!-- Custom fonts for this template-->
+	<link href="<?= base_url('assets'); ?>/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+	<!-- Custom styles for this template-->
+	<link href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- <style type="text/css">
 		::selection {
 			background-color: #E13300;
 			color: white;
@@ -61,14 +71,46 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		p {
 			margin: 12px 15px 12px 15px;
 		}
-	</style>
+	</style> -->
 </head>
 
-<body>
+
+<body id="page-top">
+	<?php
+
+	$CI = &get_instance();
+	$uri = $CI->uri->segment(1);
+	$cek = $CI->session->userdata('logged_in');
+
+	if ($uri == UE_ADMIN || $uri == UE_FOLDER || $cek == "admin") {
+		$url = UE_ADMIN;
+	} else {
+		$url = "";
+	}
+	?>
+	<!-- Begin Page Content -->
+	<div class="container-fluid mt-5">
+
+		<!-- 404 Error Text -->
+		<div class="text-center">
+			<div class="error mx-auto" data-text="404">404</div>
+			<p class="lead text-gray-800 mb-5">Page Not Found</p>
+			<p class="text-gray-500 mb-0">Halaman situs yang Anda cari tidak dapat ditemukan...</p>
+			<a href="<?= base_url("") . $url; ?>">&larr; Kembali ke Halaman Utama</a>
+		</div>
+
+	</div>
+	<!-- /.container-fluid -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+</body>
+
+<!-- <body>
 	<div id="container">
 		<h1><?php echo $heading; ?></h1>
 		<?php echo $message; ?>
 	</div>
-</body>
+</body> -->
 
 </html>

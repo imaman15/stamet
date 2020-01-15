@@ -14,8 +14,9 @@ class Error_page extends CI_Controller
     public function index()
     {
         $uri = $this->uri->segment(1);
+        $cek = $this->session->userdata('logged_in');
 
-        if ($uri == UE_ADMIN or $uri == UE_FOLDER) {
+        if ($uri == UE_ADMIN || $uri == UE_FOLDER || $cek == "admin") {
             $uri = UE_ADMIN;
             $this->_page($uri);
         } else {

@@ -62,6 +62,12 @@ $route[UA_VERIFY] = 'auth/verify';
 $route[UA_CHANGEPASSWORD] = 'user/changepassword';
 $route[UA_PROFILE] = 'user';
 $route[UA_EDITPROFILE] = 'user/update';
+$route[UA_TRANSACTION] = '/transaction/add';
+$route[UA_TRANSHISTORY] = '/transaction';
+$route[UA_SCHEDULE] = '/schedule/add';
+$route[UA_SCHEHISTORY] = '/schedule';
+$route[UA_RATINGS] = '/ratings';
+$route[UA_COMPLAINT] = '/complaint';
 
 $route[UE_ADMIN] = UE_FOLDER . '/beranda';
 $route[UE_LOGIN] = UE_FOLDER . '/auth/login';
