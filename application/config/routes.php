@@ -87,3 +87,6 @@ $route[UE_RATINGS] = UE_FOLDER . '/ratings';
 $route[UE_CANDS] = UE_FOLDER . '/cands';
 $route[UE_COMPLAINT] = UE_FOLDER . '/complaint';
 $route[UE_MANAGEFAQ] = UE_FOLDER . '/faq';
+$route[UE_REPORTTRANSRATE] = UE_FOLDER . '/report/reportTransRate';
+$route[UE_REPORTTRANSNONRATE] = UE_FOLDER . '/report/reportTransNonRate';
+$route[UE_REPORTRATINGS] = UE_FOLDER . '/report/reportsurvey';

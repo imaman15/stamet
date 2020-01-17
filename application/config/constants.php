@@ -131,5 +131,8 @@ define('UE_RATINGS', strtolower(UE_ADMIN . '/' . 'customer-ratings'));
 define('UE_CANDS', strtolower(UE_ADMIN . '/' . 'kritik-saran'));
 define('UE_COMPLAINT', strtolower(UE_ADMIN . '/' . 'complaint'));
 define('UE_MANAGEFAQ', strtolower(UE_ADMIN . '/' . 'kelola-faq'));
+define('UE_REPORTTRANSRATE', strtolower(UE_ADMIN . '/' . 'report-transaction-rates'));
+define('UE_REPORTTRANSNONRATE', strtolower(UE_ADMIN . '/' . 'report-transaction-nonrates'));
+define('UE_REPORTRATINGS', strtolower(UE_ADMIN . '/' . 'report-ratings'));
 define('UE_ADD', strtolower('/add'));
 define('UE_VERIFY', strtolower(UE_ADMIN . '/verify'));

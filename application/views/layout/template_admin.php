@@ -57,18 +57,23 @@
                         <span>Jadwal Pertemuan</span></a>
                 </li>
 
-                <!-- Nav Item - Tables -->
-                <li class="nav-item <?= ($this->uri->uri_string() == UE_REQTYPE) ? "active" : NULL; ?>">
-                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_REQTYPE) ?>">
-                        <i class="fas fa-fw fa-th-large"></i>
-                        <span>Kategori Permintaan</span></a>
-                </li>
-
-                <!-- Nav Item - Tables -->
-                <li class="nav-item <?= ($this->uri->uri_string() == UE_REQSUBTYPE) ? "active" : NULL; ?>">
-                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_REQSUBTYPE) ?>">
+                <!-- Nav Item - Pages Collapse Menu -->
+                <?php
+                $reqtype = $this->uri->uri_string() == UE_REQTYPE;
+                $reqsubtype = $this->uri->uri_string() == UE_REQSUBTYPE;
+                ?>
+                <li class="nav-item <?= ($reqtype || $reqsubtype) ? "active" : NULL; ?>">
+                    <a class="nav-link <?= ($reqtype || $reqsubtype) ? NULL : "collapsed"; ?>" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-th-list"></i>
-                        <span>Jenis Permintaan</span></a>
+                        <span>Jenis Permintaan</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse  <?= ($reqtype || $reqsubtype) ? "show" : NULL; ?>" href="<?= site_url(UE_REQTYPE) ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Jenis Permintaan:</h6>
+                            <a class="collapse-item <?= ($reqtype) ? "active" : NULL; ?>" href="<?= site_url(UE_REQTYPE) ?>">Kategori Permintaan</a>
+                            <a class="collapse-item <?= ($reqsubtype) ? "active" : NULL; ?>" href="<?= site_url(UE_REQSUBTYPE) ?>" href="cards.html">Jenis Permintaan</a>
+                        </div>
+                    </div>
                 </li>
 
                 <!-- Divider -->
@@ -105,6 +110,45 @@
                 <hr class="sidebar-divider">
 
             <?php endif; ?>
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Laporan Bulanan
+            </div>
+            <?php if (dAdmin()->level == 1 || dAdmin()->level == 2) : ?>
+                <!-- Nav Item - Tables -->
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_REPORTRATINGS) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_REPORTRATINGS) ?>">
+                        <i class="fas fa-fw fa-print"></i>
+                        <span>Survei Pelanggan</span></a>
+                </li>
+            <?php endif; ?>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <?php
+            $reportTransRates = $this->uri->uri_string() == UE_REPORTTRANSRATE;
+            $reportTransNonRates = $this->uri->uri_string() == UE_REPORTTRANSNONRATE;
+
+            if (dAdmin()->level == 1 || dAdmin()->level == 3) :
+            ?>
+                <li class="nav-item <?= ($reportTransRates || $reportTransNonRates) ? "active" : NULL; ?>">
+                    <a class="nav-link <?= ($reportTransRates || $reportTransNonRates) ? NULL : "collapsed"; ?>" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-print"></i>
+                        <span>Transaksi Data</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse  <?= ($reportTransRates || $reportTransNonRates) ? "show" : NULL; ?>" href="<?= site_url(UE_REPORTTRANSRATE) ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Laporan Transaksi Data:</h6>
+                            <a class="collapse-item <?= ($reportTransRates) ? "active" : NULL; ?>" href="<?= site_url(UE_REPORTTRANSRATE) ?>">Tarif</a>
+                            <a class="collapse-item <?= ($reportTransNonRates) ? "active" : NULL; ?>" href="<?= site_url(UE_REPORTTRANSNONRATE) ?>" href="cards.html">Non Tarif</a>
+                        </div>
+                    </div>
+                </li>
+
+            <?php endif; ?>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
             <?php if (dAdmin()->level == 1) : ?>
 
