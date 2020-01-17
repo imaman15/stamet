@@ -12,7 +12,7 @@ class Position extends CI_Controller
         admin_not_login([2, 3]);
         //Load Dependencies
         $this->load->library(['form_validation']);
-        $this->load->model(['position_model']);
+        $this->load->model(['position_model', 'employee_model']);
     }
 
     // List all your items
@@ -46,6 +46,23 @@ class Position extends CI_Controller
         //delete file
         $this->position_model->delete($id);
         echo json_encode(array("status" => TRUE));
+    }
+
+    //Delete one item
+    public function viewdelete($id = NULL)
+    {
+        $check = $this->position_model->getData(["pos_id" => $id])->row();
+        if ((!isset($id)) or (!$check)) redirect(site_url(UE_ADMIN));
+
+        $employee = $this->employee_model->getDataBy($id, "position_name")->num_rows();
+        if ($employee > 0) {
+            $message = "Mohon maaf data ini sudah di gunakan tabel Data Pegawai berjumlah " . $employee . " data. Silahkan ganti terlebih dahulu untuk menghapus data ini.";
+            echo json_encode(array("status" => FALSE, "message" => $message));
+        } else {
+            $message = "Data yang dihapus tidak akan bisa dikembalikan.";
+            //delete file
+            echo json_encode(array("status" => TRUE, "message" => $message));
+        }
     }
 
     public function view($id = NULL)

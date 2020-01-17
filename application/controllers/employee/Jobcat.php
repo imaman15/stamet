@@ -12,7 +12,7 @@ class Jobcat extends CI_Controller
         admin_not_login();
         //Load Dependencies
         $this->load->library(['form_validation', 'email']);
-        $this->load->model(['jobcategory_model']);
+        $this->load->model(['jobcategory_model', 'applicant_model']);
     }
 
     // List all your items
@@ -46,6 +46,23 @@ class Jobcat extends CI_Controller
         //delete file
         $this->jobcategory_model->delete($id);
         echo json_encode(array("status" => TRUE));
+    }
+
+    //Delete one item
+    public function viewdelete($id = NULL)
+    {
+        $check = $this->jobcategory_model->getData($id)->row();
+        if ((!isset($id)) or (!$check)) redirect(site_url(UE_ADMIN));
+
+        $applicant = $this->applicant_model->getDataBy($id, "job_category")->num_rows();
+        if ($applicant > 0) {
+            $message = "Mohon maaf data ini sudah di gunakan tabel Data Pengguna berjumlah " . $applicant . " data. Silahkan ganti terlebih dahulu untuk menghapus data ini.";
+            echo json_encode(array("status" => FALSE, "message" => $message));
+        } else {
+            $message = "Data yang dihapus tidak akan bisa dikembalikan.";
+            //delete file
+            echo json_encode(array("status" => TRUE, "message" => $message));
+        }
     }
 
     public function view($id = NULL)

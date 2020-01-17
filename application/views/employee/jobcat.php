@@ -220,38 +220,68 @@
 
     function delete_jobcat(id) {
         $('#deleteData').modal('show'); // show bootstrap modal
-        $('#btn-delete').click(function() {
-            // ajax delete data to database
-            $.ajax({
-                url: "<?php echo site_url('employee/jobcat/delete') ?>/" + id,
-                type: "POST",
-                dataType: "JSON",
-                success: function(data) {
-                    //if success reload ajax table
-                    $('#the-message').html('<div class="alert alert-success animated zoomIn fast" role="alert"><strong>Selamat! </strong> Data Kategori Pekerjaan berhasil dihapus.</div>');
-                    // close the message after seconds
-                    $('.alert-success').delay(500).show(10, function() {
-                        $(this).delay(3000).hide(10, function() {
-                            $(this).remove();
-                        });
+        $('#btn-delete').hide();
+        $.ajax({
+            url: "<?php echo site_url('employee/jobcat/viewdelete') ?>/" + id,
+            type: "GET",
+            dataType: "JSON",
+            success: function(data) {
+
+                if (data.status) {
+                    $('#mesDelete').text(data.message);
+                    $('#btn-delete').show();
+                    $('#btn-delete').click(function() {
+                        deleteBtn(id);
                     });
-                    $('#deleteData').modal('hide');
-                    $('#modal_form').modal('hide');
-                    reload_table();
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Anda gagal menghapus data Kategori Pekerjaan.</div>');
-                    // close the message after seconds
-                    $('.alert-danger').delay(500).show(10, function() {
-                        $(this).delay(3000).hide(10, function() {
-                            $(this).remove();
-                        });
-                    });
-                    $('#deleteData').modal('hide');
+                } else {
+                    $('#mesDelete').text(data.message);
                 }
-            });
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert">Kesalahan mendapatkan data dari ajax.</div>');
+                // close the message after seconds
+                $('.alert-danger').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+                $('#deleteData').modal('hide');
+            }
         });
 
+    }
+
+    function deleteBtn(id) {
+        // ajax delete data to database
+        $.ajax({
+            url: "<?php echo site_url('employee/jobcat/delete') ?>/" + id,
+            type: "POST",
+            dataType: "JSON",
+            success: function(data) {
+                //if success reload ajax table
+                $('#the-message').html('<div class="alert alert-success animated zoomIn fast" role="alert"><strong>Selamat! </strong> Data berhasil dihapus.</div>');
+                // close the message after seconds
+                $('.alert-success').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+                $('#deleteData').modal('hide');
+                $('#modal_form').modal('hide');
+                reload_table();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Anda gagal menghapus Data.</div>');
+                // close the message after seconds
+                $('.alert-danger').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+                $('#deleteData').modal('hide');
+            }
+        });
     }
 </script>
 <!-- Modal Add/Update -->
@@ -305,7 +335,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="mesDelete">
                 Data yang dihapus tidak akan bisa dikembalikan.
             </div>
             <div class="modal-footer">

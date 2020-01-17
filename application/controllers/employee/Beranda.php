@@ -20,8 +20,8 @@ class Beranda extends CI_Controller
     public function index()
     {
         $data['user'] = dAdmin();
-        $data['countApplicant'] = $this->applicant_model->getData()->num_rows();
-        $data['countEmployee'] = $this->employee_model->getData()->num_rows();
+        $data['countApplicant'] = $this->applicant_model->count_all();
+        $data['countEmployee'] = $this->employee_model->count_all();
         $data['title'] = 'Beranda';
         $this->template->loadadmin(UE_FOLDER . '/beranda', $data);
     }
