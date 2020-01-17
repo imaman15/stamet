@@ -9,9 +9,9 @@ class Position extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        admin_not_login([2,3]);
+        admin_not_login([2, 3]);
         //Load Dependencies
-        $this->load->library(['form_validation', 'email']);
+        $this->load->library(['form_validation']);
         $this->load->model(['position_model']);
     }
 
@@ -66,7 +66,7 @@ class Position extends CI_Controller
             $row[] = $no . ".";
             $row[] = $position->pos_name;
             $row[] = $position->pos_information;
-            $row[] = $position->date_update;
+            $row[] = date('d-m-Y H:i:s', strtotime($position->date_update));
 
             $row[] = '
             <a title="Edit Data" class="btn btn-warning btn-circle btn-sm mb-lg-0 mb-1" href="javascript:void(0)" onclick="edit_pos(' . "'" . $position->pos_id . "'" . ')"><i class="fas fa-edit"></i></a>

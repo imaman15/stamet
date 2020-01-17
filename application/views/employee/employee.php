@@ -18,13 +18,13 @@
                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr class="text-center">
-                            <th>#</th>
+                            <th width="18px">#</th>
                             <th>No. Identitas Pegawai</th>
                             <th>Nama Pegawai</th>
                             <th>Jabatan</th>
                             <th>Level</th>
                             <th>Diperbarui</th>
-                            <th>Aksi</th>
+                            <th width="98px">Aksi</th>
                         </tr>
 
                     <tbody>
@@ -63,14 +63,6 @@
                 {
                     "targets": [-1, 0],
                     "className": 'text-center',
-                },
-                {
-                    "targets": [-1],
-                    "width": '13%',
-                },
-                {
-                    "targets": [1],
-                    "width": '20%',
                 },
             ],
 

@@ -29,7 +29,7 @@
             <li class="nav-item <?= ($this->uri->uri_string() ==  UE_ADMIN) ? "active" : NULL; ?>">
                 <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_ADMIN) ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Dashboardss</span></a>
             </li>
 
             <!-- Divider -->
@@ -60,6 +60,13 @@
                 <!-- Nav Item - Tables -->
                 <li class="nav-item <?= ($this->uri->uri_string() == UE_REQTYPE) ? "active" : NULL; ?>">
                     <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_REQTYPE) ?>">
+                        <i class="fas fa-fw fa-th-large"></i>
+                        <span>Kategori Permintaan</span></a>
+                </li>
+
+                <!-- Nav Item - Tables -->
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_REQSUBTYPE) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_REQSUBTYPE) ?>">
                         <i class="fas fa-fw fa-th-list"></i>
                         <span>Jenis Permintaan</span></a>
                 </li>

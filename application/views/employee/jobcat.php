@@ -18,11 +18,11 @@
                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr class="text-center">
-                            <th>#</th>
+                            <th width="18px">#</th>
                             <th>Kategori Pekerjaan</th>
                             <th>Keterangan</th>
                             <th>Diperbarui</th>
-                            <th>Aksi</th>
+                            <th width="98px">Aksi</th>
                         </tr>
 
                     <tbody>

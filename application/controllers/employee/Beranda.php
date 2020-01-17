@@ -13,13 +13,15 @@ class Beranda extends CI_Controller
         admin_not_login();
 
         $this->load->library(['form_validation']);
-        $this->load->model(['employee_model', 'position_model']);
+        $this->load->model(['employee_model', 'applicant_model', 'position_model']);
     }
 
     // List all your items
     public function index()
     {
         $data['user'] = dAdmin();
+        $data['countApplicant'] = $this->applicant_model->getData()->num_rows();
+        $data['countEmployee'] = $this->employee_model->getData()->num_rows();
         $data['title'] = 'Beranda';
         $this->template->loadadmin(UE_FOLDER . '/beranda', $data);
     }

@@ -11,6 +11,7 @@ class Schedule extends CI_Controller
         parent::__construct();
         //Load Dependencies
         admin_not_login([2]);
+        $this->load->library(['form_validation']);
     }
 
     // List all your items

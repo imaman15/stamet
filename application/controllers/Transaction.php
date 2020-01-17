@@ -11,6 +11,7 @@ class Transaction extends CI_Controller
         parent::__construct();
         //Load Dependencies
         app_not_login();
+        $this->load->library(['form_validation']);
     }
 
     // List all your items

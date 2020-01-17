@@ -8,7 +8,7 @@ class Jobcat extends CI_Controller
 
     public function __construct()
     {
-        parent::__construct([2,3]);
+        parent::__construct([2, 3]);
         admin_not_login();
         //Load Dependencies
         $this->load->library(['form_validation', 'email']);
@@ -66,7 +66,7 @@ class Jobcat extends CI_Controller
             $row[] = $no . ".";
             $row[] = $job_category->jobcat;
             $row[] = $job_category->jobcat_information;
-            $row[] = $job_category->date_update;
+            $row[] = date('d-m-Y H:i:s', strtotime($job_category->date_update));
 
             $row[] = '
             <a title="Edit Data" class="btn btn-warning btn-circle btn-sm mb-lg-0 mb-1" href="javascript:void(0)" onclick="edit_jobcat(' . "'" . $job_category->jobcat_id . "'" . ')"><i class="fas fa-edit"></i></a>

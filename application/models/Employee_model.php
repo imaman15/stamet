@@ -202,6 +202,13 @@ class Employee_model extends CI_Model
         return $this->db->get();
     }
 
+    public function getData()
+    {
+        $this->db->from($this->_table);
+        $query = $this->db->get();
+        return $query;
+    }
+
     public function checkData($where = NULL)
     {
         return $this->db->get_where($this->_table, $where);

@@ -11,12 +11,14 @@ class Complaint extends CI_Controller
         parent::__construct();
         //Load Dependencies
         app_not_login();
+
+        $this->load->library(['form_validation']);
     }
 
     // List all your items
     public function index($offset = 0)
     {
-        $data['title'] = 'Survei Pelanggan';
+        $data['title'] = 'Komplain Pelanggan';
         $this->template->load('user/complaint', $data);
     }
 
