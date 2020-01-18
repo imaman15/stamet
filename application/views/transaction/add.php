@@ -8,12 +8,15 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-center text-gray-800"><?= $title; ?></h1>
 
+    <?= $this->session->flashdata('message');
+    ?>
+
     <div class="col-12">
         <div class="card shadow mb-3 animated zoomIn fast">
-            <div class="card-header py-3 text-right">
-                <button type="button" class="btn btn-primary btn-icon-split btn-sm" onclick="view()">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-th-list"></i>
+            <div class="card-header py-3 text-sm-right text-center">
+                <button type="button" class="btn btn-primary btn-icon-split btn-sm align-items-center" onclick="view()">
+                    <span class="icon text-white-50 py-3 py-sm-1">
+                        <i class="fas fa-th-list "></i>
                     </span>
                     <span class="text">Lihat Jenis Permintaan</span>
                 </button>
@@ -107,7 +110,8 @@
             },
             toolbar: [
                 ['style', ['style']],
-                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['bold', 'italic', 'underline']],
+                ['font', ['clear', 'fontsize']],
                 ['fontname', ['fontname']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],

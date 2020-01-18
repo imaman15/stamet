@@ -56,17 +56,29 @@
 
     <!-- Additional Information -->
     <div class="col-xl-8 col-lg-7">
-      <div class="card shadow text-center">
+      <div class="card shadow text-center mb-4">
         <div class="card-header">
-          Featured
+          Transaksi Data Hari ini
         </div>
         <div class="card-body">
           <h5 class="card-title">Special title treatment</h5>
           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
         <div class="card-footer text-muted">
-          2 days ago
+          <a href="#" class="btn btn-primary">Lihat Transaksi</a>
+        </div>
+      </div>
+
+      <div class="card shadow text-center mb-4">
+        <div class="card-header">
+          Jadwal Pertemuan Hari ini
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <div class="card-footer text-muted">
+          <a href="#" class="btn btn-primary">jadwal Pertemuan</a>
         </div>
       </div>
     </div>

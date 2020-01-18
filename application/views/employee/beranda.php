@@ -132,32 +132,29 @@
     <!-- Additional Information -->
     <div class="col-xl-8 col-lg-7">
 
-
       <div class="card shadow text-center mb-4">
         <div class="card-header">
-          Featured
+          Transaksi Data Hari ini
         </div>
         <div class="card-body">
           <h5 class="card-title">Special title treatment</h5>
           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
         <div class="card-footer text-muted">
-          2 days ago
+          <a href="#" class="btn btn-primary">Lihat Transaksi</a>
         </div>
       </div>
 
-      <!-- Bar Chart -->
-      <div class="card shadow mb-4">
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+      <div class="card shadow text-center mb-4">
+        <div class="card-header">
+          Jadwal Pertemuan Hari ini
         </div>
         <div class="card-body">
-          <div class="chart-bar">
-            <canvas id="myBarChart"></canvas>
-          </div>
-          <hr>
-          Styling for the bar chart can be found in the <code>/js/demo/chart-bar-demo.js</code> file.
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <div class="card-footer text-muted">
+          <a href="#" class="btn btn-primary">jadwal Pertemuan</a>
         </div>
       </div>
 
@@ -169,7 +166,3 @@
 
 </div>
 <!-- /.container-fluid -->
-
-<!-- Page Chart -->
-<script src="<?= base_url('assets'); ?>/vendor/chart.js/Chart.min.js"></script>
-<script src="<?= base_url('assets'); ?>/js/demo/chart-bar-demo.js"></script>

@@ -10,8 +10,8 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4 animated zoomIn fast">
         <div class="card-header py-3">
-            <button type="button" class="btn btn-primary" onclick="add_employee()">
-                Tambah Pegawai
+            <button type="button" class="btn btn-primary" onclick="add_schedule()">
+                Ajukan Pertemuan
             </button>
         </div>
         <div class="card-body">
@@ -38,3 +38,12 @@
 
 </div>
 <!-- /.container-fluid -->
+
+
+<script type="text/javascript">
+    var url = "<?= site_url(UA_SCHEDULE) ?>";
+
+    function add_schedule() {
+        window.location.replace(url);
+    }
+</script>

@@ -18,6 +18,7 @@ class Complaint extends CI_Controller
     // List all your items
     public function index($offset = 0)
     {
+        $data['user'] = dUser();
         $data['title'] = 'Komplain Pelanggan';
         $this->template->load('user/complaint', $data);
     }
