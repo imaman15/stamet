@@ -15,6 +15,10 @@
             </button>
         </div>
         <div class="card-body">
+            <?php
+            // header("X-XSS-Protection: 0");
+            // echo $contents;
+            ?>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                     <thead>

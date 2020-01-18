@@ -109,6 +109,17 @@ class Subtype_model extends CI_Model
     {
         return $this->db->delete($this->_table, ["subtype_id" => $id]);
     }
+
+    public function groupData($type_id = NULL)
+    {
+        $this->db->select('*');
+        $this->db->from($this->_table);
+        $this->db->join('request_type', $this->_table . '.type_id = request_type.type_id');
+        if ($type_id != NULL) {
+            $this->db->where($this->_table . '.type_id', $type_id);
+        }
+        return $this->db->get();
+    }
 }
 
 /* End of file Subtype_model.php */

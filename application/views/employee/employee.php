@@ -558,7 +558,7 @@
                                 <div class="col-sm-9">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="photo" id="photo">
-                                        <label class="custom-file-label" for="photo">Pilih Foto</label>
+                                        <label class="custom-file-label overflow-hidden" for="photo">Pilih Foto</label>
                                         <div id="rempho" class="custom-control custom-checkbox mt-1">
 
                                         </div>
