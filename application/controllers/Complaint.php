@@ -12,7 +12,7 @@ class Complaint extends CI_Controller
         //Load Dependencies
         app_not_login();
 
-        $this->load->library(['form_validation']);
+        $this->load->library(['form_validation', 'upload']);
     }
 
     // List all your items
@@ -36,6 +36,16 @@ class Complaint extends CI_Controller
     //Delete one item
     public function delete($id = NULL)
     {
+    }
+
+    public function upload_image()
+    {
+        upload_image();
+    }
+
+    public function delete_image()
+    {
+        delete_image();
     }
 }
 

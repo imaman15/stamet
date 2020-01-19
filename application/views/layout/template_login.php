@@ -3,11 +3,15 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- meta SEO -->
+    <meta name="description" content="Sistem Layanan Informasi dan Jasa Meteorologi | Stasiun Meteorologi Kelas I  Maritim Serang">
+    <meta name="keywords" content="Informasi Cuaca, Layanan Informasi, Layanan Jasa, Layanan Informasi dan Jasa, Meteorologi, Informasi Meteorologi, Jasa Meteorologi">
+    <meta name="author" content="Stasiun Meteorologi Klas I Maritim Serang">
+    <!-- favicon -->
+    <link rel="shortcut icon" href="<?= base_url('') ?>assets/img/favicon.ico" type="image/x-icon">
 
     <title>
         <?php
@@ -15,6 +19,7 @@
         echo $var . "Sistem Informasi Pelayanan Jasa Meteorologi";
         ?>
     </title>
+    
     <!-- favicon -->
     <link rel="shortcut icon" href="<?= base_url('assets') ?>/img/favicon.ico" type="image/x-icon">
 

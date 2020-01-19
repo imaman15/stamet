@@ -92,7 +92,7 @@ defined('EXIT__AUTO_MAX')      or define('EXIT__AUTO_MAX', 125); // highest auto
 |
 */
 // URL Umum
-define('FAQ', strtolower('faq'));
+define('FAQ', strtolower('frequently-asked-questions'));
 define('CHECKSTATUS', strtolower('checkstatus'));
 
 // URL Applicant (UA)
@@ -109,7 +109,7 @@ define('UA_TRANSACTION', strtolower('form-transaksi'));
 define('UA_TRANSHISTORY', strtolower('transaksi'));
 define('UA_SCHEDULE', strtolower('form-jadwal'));
 define('UA_SCHEHISTORY', strtolower('jadwal-pertemuan'));
-define('UA_RATINGS', strtolower('survei-pelanggan'));
+define('UA_CANDS', strtolower('kritik-saran'));
 define('UA_COMPLAINT', strtolower('komplain-pelanggan'));
 
 //URL Employee (UE)

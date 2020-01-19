@@ -280,3 +280,45 @@ function timeInfo($timestamp)
 
     return $waktu;
 }
+
+
+//Upload image summernote
+function upload_image()
+{
+
+    $CI = &get_instance();
+    if (isset($_FILES["image"]["name"])) {
+        $config['upload_path'] = './assets/img-sn/';
+        $config['allowed_types'] = 'jpg|jpeg|png|gif';
+        $CI->upload->initialize($config);
+        if (!$CI->upload->do_upload('image')) {
+            $CI->upload->display_errors();
+            return FALSE;
+        } else {
+            $data = $CI->upload->data();
+            //Compress Image
+            $config['image_library'] = 'gd2';
+            $config['source_image'] = './assets/img-sn/' . $data['file_name'];
+            $config['create_thumb'] = FALSE;
+            $config['maintain_ratio'] = TRUE;
+            $config['quality'] = '60%';
+            $config['width'] = 800;
+            $config['height'] = 800;
+            $config['new_image'] = './assets/img-sn/' . $data['file_name'];
+            $CI->load->library('image_lib', $config);
+            $CI->image_lib->resize();
+            echo base_url() . 'assets/img-sn/' . $data['file_name'];
+        }
+    }
+}
+
+//Delete image summernote
+function delete_image()
+{
+    $CI = &get_instance();
+    $src = $CI->input->post('src');
+    $file_name = str_replace(base_url(), '', $src);
+    if (unlink($file_name)) {
+        echo 'File Delete Successfully';
+    }
+}

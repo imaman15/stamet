@@ -77,16 +77,19 @@
                     <span>Riwayat Pertemuan</span></a>
             </li>
 
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
             <!-- Heading -->
             <div class="sidebar-heading">
-                Lainnya
+                Layanan Pelanggan
             </div>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item <?= ($this->uri->uri_string() == UA_RATINGS) ? "active" : NULL; ?>">
-                <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UA_RATINGS) ?>">
-                    <i class="fas fa-fw fa-star"></i>
-                    <span>Survei Pelanggan</span></a>
+            <li class="nav-item <?= ($this->uri->uri_string() == UA_CANDS) ? "active" : NULL; ?>">
+                <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UA_CANDS) ?>">
+                    <i class="fas fa-fw fa-comment-dots"></i>
+                    <span>Kritik dan Saran</span></a>
             </li>
 
             <li class="nav-item <?= ($this->uri->uri_string() == UA_COMPLAINT) ? "active" : NULL; ?>">
@@ -94,6 +97,9 @@
                     <i class="fas fa-fw fa-comment-slash"></i>
                     <span>Komplain Pelanggan</span></a>
             </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">

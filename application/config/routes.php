@@ -53,6 +53,7 @@ $route['default_controller'] = 'user';
 $route['404_override'] = 'error_page';
 $route['translate_uri_dashes'] = FALSE;
 
+$route[FAQ] = UE_FOLDER . '/faq/frontend';
 $route[UA_LOGIN] = 'auth/login';
 $route[UA_LOGOUT] = 'auth/logout';
 $route[UA_REGISTRATION] = 'auth/registration';
@@ -66,7 +67,7 @@ $route[UA_TRANSACTION] = '/transaction/add';
 $route[UA_TRANSHISTORY] = '/transaction';
 $route[UA_SCHEDULE] = '/schedule/add';
 $route[UA_SCHEHISTORY] = '/schedule';
-$route[UA_RATINGS] = '/ratings';
+$route[UA_CANDS] = '/cands';
 $route[UA_COMPLAINT] = '/complaint';
 
 $route[UE_ADMIN] = UE_FOLDER . '/beranda';

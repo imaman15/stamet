@@ -48,8 +48,8 @@
             </li>
           </ul>
         </div>
-        <div class="card-footer text-muted mt-n2 ">
-          2 days ago
+        <div class="card-footer text-muted mt-n2 small">
+          Terakhir di perbarui : <?= timeInfo($user->date_update) ?>
         </div>
       </div>
     </div>
@@ -58,28 +58,52 @@
     <div class="col-xl-8 col-lg-7">
       <div class="card shadow text-center mb-4">
         <div class="card-header">
-          Transaksi Data Hari ini
+          Status Transaksi Data
         </div>
         <div class="card-body">
           <h5 class="card-title">Special title treatment</h5>
           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
         </div>
-        <div class="card-footer text-muted">
+        <!-- <div class="card-footer text-muted">
           <a href="#" class="btn btn-primary">Lihat Transaksi</a>
-        </div>
+        </div> -->
       </div>
 
       <div class="card shadow text-center mb-4">
         <div class="card-header">
-          Jadwal Pertemuan Hari ini
+          Status Jadwal Pertemuan
         </div>
         <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-inverse" width="100%" cellspacing="0">
+              <thead class="thead-inverse">
+                <tr>
+                  <th>Kode </th>
+                  <th>Tanggal Bertemu</th>
+                  <th>Penanggung jawab</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>SCH19012020XYZ</td>
+                  <td>20-02-2020</td>
+                  <td class="text-left">
+                    <b>Nama : </b>Danindra L
+                    <br>
+                    <b>NIP : </b>234456123616136161
+                    <br>
+                    <b>No. HP</b> : +6290671813158
+                  </td>
+                  <td>Berlangsung</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="card-footer text-muted">
+        <!-- <div class="card-footer text-muted">
           <a href="#" class="btn btn-primary">jadwal Pertemuan</a>
-        </div>
+        </div> -->
       </div>
     </div>
 

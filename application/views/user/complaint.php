@@ -12,7 +12,7 @@
         <?= $this->session->flashdata('message');
         ?>
 
-        <div class="alert alert-success" role="alert"><strong>Selamat! </strong>pesan Anda sudah terkirim. Untuk melihat status/balasan komplain silahakn klik menu "Riwayat Komplain"</div>
+        <div class="alert alert-success d-none" role="alert"><strong>Selamat! </strong>pesan Anda sudah terkirim. Untuk melihat status/balasan komplain silahakn klik menu "Riwayat Komplain"</div>
 
         <div class="card shadow mb-3 animated zoomIn fast">
             <div class="card-body">
@@ -159,12 +159,19 @@
         $('.modal-title').text('Balasan Pesan Anda');
         $('.modal-body').text('Mohon maaf sebelumnya, akan saya kirimkan ulang');
     };
-    var url = "<?= site_url(UA_SCHEHISTORY) ?>";
-    $('#btn-send').click(function() {
-        window.location.replace(url);
-    });
-    $(document).ready(function() {
 
+
+    $('#btn-send').click(function() {
+        $(".alert-success").removeClass('d-none');
+        // close the message after seconds
+        $('.alert-success').delay(500).show(10, function() {
+            $(this).delay(5000).hide(10, function() {
+                $(this).addClass('d-none');
+            });
+        });
+    });
+
+    $(document).ready(function() {
 
         $('#apply_message').summernote({
             dialogsInBody: true,
@@ -198,7 +205,7 @@
             var data = new FormData();
             data.append("image", image);
             $.ajax({
-                url: "<?php echo site_url('schedule/upload_image') ?>",
+                url: "<?php echo site_url('complaint/upload_image') ?>",
                 cache: false,
                 contentType: false,
                 processData: false,
@@ -219,7 +226,7 @@
                     src: src
                 },
                 type: "POST",
-                url: "<?php echo site_url('schedule/delete_image') ?>",
+                url: "<?php echo site_url('complaint/delete_image') ?>",
                 cache: false,
                 success: function(response) {
                     console.log(response);

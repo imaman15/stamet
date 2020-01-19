@@ -3,7 +3,7 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Schedule extends CI_Controller
+class Cands extends CI_Controller
 {
 
     public function __construct()
@@ -18,16 +18,13 @@ class Schedule extends CI_Controller
     public function index($offset = 0)
     {
         $data['user'] = dUser();
-        $data['title'] = 'Riwayat Jadwal Pertemuan';
-        $this->template->load('schedule/list', $data);
+        $data['title'] = 'Form Kritik dan Saran';
+        $this->template->load('user/cands', $data);
     }
 
     // Add a new item
     public function add()
     {
-        $data['user'] = dUser();
-        $data['title'] = 'Form Jadwal Pertemuan';
-        $this->template->load('schedule/add', $data);
     }
 
     //Update one item
@@ -52,4 +49,4 @@ class Schedule extends CI_Controller
     }
 }
 
-/* End of file Schedule.php */
+/* End of file Cands.php */

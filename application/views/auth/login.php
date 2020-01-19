@@ -49,8 +49,6 @@
 
                     <div class="text-center small blue">
                         <a href="<?= site_url(FAQ) ?>">FAQ</a>
-                        |
-                        <a href="<?= site_url(CHECKSTATUS) ?>">Cek Status</a>
                     </div>
 
                     <?=

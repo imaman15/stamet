@@ -18,9 +18,9 @@
                 <div class="col-md-4 text-sm-right text-center text-break col-12 mt-sm-0 mt-2">
                     <button type="button" class="btn btn-primary btn-icon-split btn" onclick="view()">
                         <span class="icon text-white-50">
-                            <i class="fas fa-th-list"></i>
+                            <i class="fas fa-question"></i>
                         </span>
-                        <span class="text">Lihat Jenis Permintaan</span>
+                        <span class="text">Lihat Tampilan FAQS</span>
                     </button>
                 </div>
             </div>
@@ -49,3 +49,11 @@
 
 </div>
 <!-- /.container-fluid -->
+
+<script type="text/javascript">
+    var url = "<?= site_url(FAQ) ?>";
+
+    function view() {
+        window.location.replace(url);
+    }
+</script>

@@ -123,7 +123,7 @@
             </li>
           </ul>
         </div>
-        <div class="card-footer text-muted mt-n2 ">
+        <div class="card-footer text-muted mt-n2 small">
           Terakhir di perbarui : <?= timeInfo($user->date_update) ?>
         </div>
       </div>

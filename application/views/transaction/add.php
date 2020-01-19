@@ -8,10 +8,9 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-center text-gray-800"><?= $title; ?></h1>
 
-    <?= $this->session->flashdata('message');
-    ?>
-
     <div class="col-12">
+        <?= $this->session->flashdata('message');
+        ?>
         <div class="card shadow mb-3 animated zoomIn fast">
             <div class="card-header py-3 text-sm-right text-center">
                 <button type="button" class="btn btn-primary btn-icon-split btn-sm align-items-center" onclick="view()">
@@ -98,7 +97,7 @@
         $('#apply_message').summernote({
             dialogsInBody: true,
             minHeight: 400,
-            placeholder: 'Sebutkan di kolom ini jenis permintaan apa yang di inginkan, wilayah dan waktunya secara detail. <br> jika belum mengetahui jenis permintaan apa saja yang tersedia silahakan klik tombol "Lihat jenis permintaan" di atas atau bisa datang langsung ke kantor untuk konsultasi dengan mengisi jadwal pertemuan terlebih dahulu di menu "Form Jadwal Pertemuan" yang berada di samping kiri',
+            placeholder: 'Sebutkan di kolom ini jenis permintaan apa yang di inginkan, tujuan penggunaan data, wilayah dan waktunya secara detail. <br> jika belum mengetahui jenis permintaan apa saja yang tersedia silahakan klik tombol "Lihat jenis permintaan" di atas atau bisa datang langsung ke kantor untuk konsultasi dengan mengisi jadwal pertemuan terlebih dahulu di menu "Form Jadwal Pertemuan" yang berada di samping kiri',
             lang: 'id-ID', // default: 'en-US'
             callbacks: {
                 onImageUpload: function(image) {
@@ -163,34 +162,6 @@
         $('#transactionForm').modal('show'); // show bootstrap modal
         $('#viewData').show();
         $('#btnClose').text('Tutup');
-
-        $.ajax({
-            url: "<?php echo site_url('employee/employee/view') ?>/" + id,
-            type: "GET",
-            dataType: "JSON",
-            success: function(data) {
-                if (data.photo != "default.jpg") {
-                    $('#view_photo').attr("href", base_url + "assets/img/profil/" + data.photo);
-                    $('#view_photo').attr("target", "_blank");
-                } else {
-                    $('#view_photo').removeAttr("href");
-                    $('#view_photo').removeAttr("target");
-                }
-                $('#view_photo').html('<img src="' + base_url + 'assets/img/profil/' + data.photo + '" class="img-thumbnail rounded-circle profil-admin mb-3" alt="' + data.first_name + '">');
-                $('#view_fullname').text(data.first_name + ' ' + data.last_name);
-                $('#view_csidn').text(data.csidn);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert">Kesalahan mendapatkan data dari ajax.</div>');
-                // close the message after seconds
-                $('.alert-danger').delay(500).show(10, function() {
-                    $(this).delay(3000).hide(10, function() {
-                        $(this).remove();
-                    });
-                });
-                $('#employeeForm').modal('hide');
-            }
-        });
     }
 </script>
 
