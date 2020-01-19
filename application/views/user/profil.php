@@ -58,15 +58,34 @@
     <div class="col-xl-8 col-lg-7">
       <div class="card shadow text-center mb-4">
         <div class="card-header">
-          Status Transaksi Data
+          Status Transaksi
         </div>
         <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-inverse" width="100%" cellspacing="0">
+              <thead class="thead-inverse">
+                <tr>
+                  <th>Kode </th>
+                  <th>Tanggal Transaksi</th>
+                  <th>Petugas Layanan</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>20012020XYZADWL</td>
+                  <td>20-01-2020</td>
+                  <td class="text-left">
+                    Danindra L - Staf Datin
+                  </td>
+                  <td>
+                    <a href="<?= site_url(UA_TRANSACTIONDETAIL . '/20012020XYZADWL') ?>" class="badge badge-success">Selesai</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <!-- <div class="card-footer text-muted">
-          <a href="#" class="btn btn-primary">Lihat Transaksi</a>
-        </div> -->
       </div>
 
       <div class="card shadow text-center mb-4">
@@ -95,7 +114,9 @@
                     <br>
                     <b>No. HP</b> : +6290671813158
                   </td>
-                  <td>Berlangsung</td>
+                  <td>
+                    <span class="badge badge-pill badge-success">Berlangsung</span>
+                  </td>
                 </tr>
               </tbody>
             </table>
