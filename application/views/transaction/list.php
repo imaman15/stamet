@@ -43,7 +43,7 @@
                                 <a id="btn-payment" href="javascript:void(0)" onclick="confirm()" class="badge badge-secondary p-1 m-1">Konfirmasi Bayar</a>
                             </td>
                             <td class="text-center">
-                                <button type="button" title="Detail Transaksi" class="btn btn-info btn-circle btn-sm mb-1" onclick="view()"><i class="fas fa-search-plus"></i></button>
+                                <button type="button" title="Detail Transaksi" class="btn btn-info btn-circle btn-sm mb-1" onclick="view('20012020XYZADWL')"><i class="fas fa-search-plus"></i></button>
                                 <button type="button" title="Batalkan Transaksi" class="btn btn-danger btn-circle btn-sm mb-1" onclick="cancel()"><i class="fas fa-times"></i></button>
                             </td>
                         </tr>
@@ -61,8 +61,9 @@
         window.location.replace("<?= site_url(UA_TRANSACTION) ?>");
     };
 
-    function view() {
-        window.location.replace("<?= site_url(UA_TRANSACTION) ?>");
+    function view(id) {
+        var url = "<?php echo site_url(UA_TRANSACTIONDETAIL) ?>/" + id;
+        window.location.replace(url);
     };
 
     function confirm() {

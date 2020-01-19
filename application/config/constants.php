@@ -107,6 +107,7 @@ define('UA_PROFILE', strtolower('profil'));
 define('UA_EDITPROFILE', strtolower('edit-profil'));
 define('UA_TRANSACTION', strtolower('form-transaksi'));
 define('UA_TRANSHISTORY', strtolower('transaksi'));
+define('UA_TRANSACTIONDETAIL', strtolower('detail-transaksi'));
 define('UA_SCHEDULE', strtolower('form-jadwal'));
 define('UA_SCHEHISTORY', strtolower('jadwal-pertemuan'));
 define('UA_CANDS', strtolower('kritik-saran'));

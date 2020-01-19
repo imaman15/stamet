@@ -31,6 +31,21 @@ class Transaction extends CI_Controller
         $this->template->load('transaction/add', $data);
     }
 
+    public function detail($id = NULL)
+    {
+        if ($id != NULL) {
+            if ($id == '20012020XYZADWL') {
+                $data['user'] = dUser();
+                $data['title'] = 'Detail Transaksi';
+                $this->template->load('transaction/detail', $data);
+            } else {
+                echo "kode tidak ada";
+            }
+        } else {
+            show_404();
+        }
+    }
+
     //Update one item
     public function update($id = NULL)
     {

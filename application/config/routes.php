@@ -64,6 +64,7 @@ $route[UA_CHANGEPASSWORD] = 'user/changepassword';
 $route[UA_PROFILE] = 'user';
 $route[UA_EDITPROFILE] = 'user/update';
 $route[UA_TRANSACTION] = '/transaction/add';
+$route[UA_TRANSACTIONDETAIL . '/(:any)'] = '/transaction/detail/$1';
 $route[UA_TRANSHISTORY] = '/transaction';
 $route[UA_SCHEDULE] = '/schedule/add';
 $route[UA_SCHEHISTORY] = '/schedule';
