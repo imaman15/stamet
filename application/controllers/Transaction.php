@@ -103,23 +103,35 @@ class Transaction extends CI_Controller
     public function viewBeforePay($id)
     {
         $user = $this->session->userdata('applicant_id');
-        $trans = $this->transaction_model->getField('apply_id,trans_sum', ['trans_code' => $id, 'apply_id' => $user])->row();
+        $trans = $this->transaction_model->getField('apply_id,trans_sum, payment_to,payment_date,payment_bank,payment_number,payment_from,payment_amount,payment_img,payment_status', ['trans_code' => $id, 'apply_id' => $user])->row();
 
         $select = 'bank_name, account_number, account_name';
         $conf = $this->configuration_model->getField($select, ['id' => 1])->row();
 
         if ((!isset($id)) || (!$trans) || ($trans->apply_id !== $user || (!$conf))) redirect(show_404());
 
-        if ($trans && $trans->apply_id == $user && $conf) {
-            $data = new stdClass();
-            $data->name = dUser()->first_name . ' ' . dUser()->last_name;
-            $data->payfrom_bank_name = $conf->bank_name;
-            $data->payfrom_account_number = $conf->account_number;
-            $data->payfrom_account_name = $conf->account_name;
-            $data->payfrom_sum = $trans->trans_sum;
-            $data->sum = rupiah($trans->trans_sum);
-            $data->status = true;
-            echo json_encode($data);
+        if ($trans->payment_status == 4) {
+            if ($trans && $trans->apply_id == $user) {
+                $trans->convertDate = date('Y-m-d\TH:i:s', strtotime($trans->payment_date));
+                $trans->status = 1;
+                echo json_encode($trans);
+            } else {
+                echo json_encode(['status' => false]);
+            }
+        } else  if ($trans->payment_status == 1) {
+            if ($trans && $trans->apply_id == $user && $conf) {
+                $data = new stdClass();
+                $data->name = dUser()->first_name . ' ' . dUser()->last_name;
+                $data->payfrom_bank_name = $conf->bank_name;
+                $data->payfrom_account_number = $conf->account_number;
+                $data->payfrom_account_name = $conf->account_name;
+                $data->payfrom_sum = $trans->trans_sum;
+                $data->sum = rupiah($trans->trans_sum);
+                $data->status = 2;
+                echo json_encode($data);
+            } else {
+                echo json_encode(['status' => false]);
+            }
         } else {
             echo json_encode(['status' => false]);
         }
@@ -205,6 +217,7 @@ class Transaction extends CI_Controller
             $data['error_string'][] = 'Jumlah bayar tidak boleh kosong.';
             $data['status'] = FALSE;
         }
+
         if ($_FILES['photo']['name'] == '') {
             $data['inputerror'][] = 'photo';
             $data['error_string'][] = 'Foto Bukti Bayar tidak boleh kosong.';

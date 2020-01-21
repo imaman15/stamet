@@ -150,9 +150,23 @@
                 // var month = ("0" + (now.getMonth() + 1)).slice(-2);
                 // var today = now.getFullYear() + "-" + (month) + "-" + (day);
 
-                // dateControl.value = '2017-06-01T08:30';
+                // ('yyyy-MM-ddThh:mm');
 
-                if (data.status) {
+                if (data.status == 1) {
+                    $('#paybefore').html('<b>' + data.payment_to + '</b>');
+                    $('#trans_code').val(id);
+                    $('#preview').show();
+                    var urlimg = '<?= base_url("assets/img/img-bukti/") ?>' + data.payment_img;
+                    $('#pay_img').attr('src', urlimg);
+
+                    $('#payment_to').val(data.payment_to);
+                    $('#payment_date').val(data.convertDate);
+                    $('#payment_bank').val(data.payment_bank);
+                    $('#payment_number').val(data.payment_number);
+                    $('#payment_from').val(data.payment_from);
+                    $('#payment_amount').val(data.payment_amount);
+                } else if (data.status == 2) {
+                    $('#preview').hide();
                     $('#paybefore').html('<p>Silahkan Lakukan Pembayaran ke Rekening berikut ini : </p><h6><b>' + data.payfrom_bank_name + '</b></h6> <h6><b>' + data.payfrom_account_number + '</b></h6><h6> <b>' + data.payfrom_account_name + '</b></h6> <h6><b>Total : ' + data.sum + '</b></h6>');
                     $('#trans_code').val(id);
                     $('#payment_amount').val(data.payfrom_sum);
@@ -162,6 +176,7 @@
                     $('#paybefore').html("---");
                     $('#payment_amount').val("");
                     $('#payment_from').val("");
+                    $('#preview').hide();
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -409,6 +424,10 @@
                         </small>
                         <div id="photo_error" class="small" style="color:#e74a3b;">
                         </div>
+                    </div>
+                    <div class="form-group text-center" id="preview">
+                        <div class="col-form-label font-weight-bold">Bukti Bayar Sebelumnya</div>
+                        <img id="pay_img" class="img-fluid rounded w-75" alt="Bukti Bayar">
                     </div>
                 </div>
                 <div class="modal-footer">

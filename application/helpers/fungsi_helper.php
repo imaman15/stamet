@@ -400,7 +400,7 @@ function statusTrans($data = NULL, $for = NULL, $array = NULL)
         } elseif ($data == 4) {
             return '<span class="small">Pembayaran Tidak Sesuai</span>
             <hr class="my-0">
-            <a id="btn-payment" href="javascript:void(0)" onclick="check(' . "'" . $array['trans_code'] . "'" . ')" class="badge badge-secondary p-1 m-1">Ganti Pembayaran</a>';
+            <a id="btn-payment" href="javascript:void(0)" onclick="confirm(' . "'" . $array['trans_code'] . "'" . ')" class="badge badge-secondary p-1 m-1">Ganti Pembayaran</a>';
         } elseif ($data == 5) {
             return '-';
         } else {
