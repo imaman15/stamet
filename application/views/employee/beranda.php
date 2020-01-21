@@ -95,7 +95,7 @@
           <ul class="fa-ul text-left">
             <li class="mb-2">
               <span class="fa-li text-primary"><i class="far fa-clock"></i></span>
-              Anggota sejak <?php secho(date('F Y', $user->date_created)) ?>
+              Anggota sejak <?= timeIDN(date('Y-m-d', $user->date_created)) ?>
             </li>
             <li class="mb-2">
               <span class="fa-li text-primary"><i class="fas fa-id-badge"></i></span>

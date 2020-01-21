@@ -21,52 +21,57 @@
                 </button>
             </div>
             <div class="card-body">
-                <?= $this->session->flashdata('message');
-                ?>
+                <?= form_open_multipart(UA_TRANSACTION) ?>
+                <input type="hidden" name="trans_code" value="<?= codeRandom('TC') ?>">
 
-                <!-- <?= form_open_multipart('transaction/save'); ?> -->
                 <div class="form-group row">
                     <label for="apply_name" class="col-sm-2 col-form-label text-left text-sm-right">Nama Pemohon</label>
                     <div class="col-sm-10">
-                        <input type="apply_name" class="form-control <?= form_error('apply_name') ? 'is-invalid' : null ?>" name="apply_name" id="apply_name" placeholder="apply_name" value="<?= $user->first_name . " " . $user->last_name ?>" readonly>
+                        <input type="apply_name" class="form-control" name="apply_name" id="apply_name" placeholder="apply_name" value="<?= $user->first_name . " " . $user->last_name ?>" readonly>
                     </div>
                 </div>
+
                 <div class="form-group row">
                     <label for="apply_institute" class="col-sm-2 col-form-label text-left text-sm-right">Nama Instansi</label>
                     <div class="col-sm-10">
-                        <input type="apply_institute" class="form-control <?= form_error('apply_institute') ? 'is-invalid' : null ?>" name="apply_institute" id="apply_institute" placeholder="apply_institute" value="<?= $user->institute ?>" readonly>
+                        <input type="apply_institute" class="form-control" name="apply_institute" id="apply_institute" placeholder="apply_institute" value="<?= $user->institute ?>" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="apply_email" class="col-sm-2 col-form-label text-left text-sm-right">Email Pemohon</label>
                     <div class="col-sm-10">
-                        <input type="apply_email" class="form-control <?= form_error('apply_email') ? 'is-invalid' : null ?>" name="apply_email" id="apply_email" placeholder="apply_email" value="<?= $user->email ?>" readonly>
+                        <input type="apply_email" class="form-control" name="apply_email" id="apply_email" placeholder="apply_email" value="<?= $user->email ?>" readonly>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="apply_message" class="col-sm-2 col-form-label text-left text-sm-right">Pesan</label>
+                    <label for="trans_message" class="col-sm-2 col-form-label text-left text-sm-right">Pesan</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" name="apply_message" id="apply_message" placeholder="Alamat Lengkap"><?= set_value('apply_message') ?></textarea>
-                        <?= form_error('apply_message'); ?>
-                        <div class="alert alert-warning py-1 mt-2 px-4" role="alert">
-                            <div class="row align-items-center">
-                                <i class="fas fa-fw fa-exclamation-circle fa-1x mx-auto mx-sm-1"></i>
-                                <small class="ml-1"> Catatan : Jika ingin menghapus gambar silahkan klik gambar lalu pilih tombol "Hapus Gambar"</small>
+                        <textarea class="form-control is-invalid" name="trans_message" id="trans_message" placeholder="Alamat Lengkap"><?= set_value('trans_message') ?></textarea>
+                        <?php if (!form_error('trans_message')) : ?>
+                            <div class="alert alert-warning py-1 mt-2 px-4" role="alert">
+                                <div class="row align-items-center">
+                                    <i class="fas fa-fw fa-exclamation-circle fa-1x mx-auto mx-sm-1"></i>
+                                    <small class="ml-1"> Catatan : Jika ingin menghapus gambar silahkan klik gambar lalu pilih tombol "Hapus Gambar"</small>
+                                </div>
                             </div>
+                        <?php endif; ?>
+                        <div class="mb-1 mt-2">
+                            <?= form_error('trans_message'); ?>
                         </div>
+
                     </div>
                 </div>
 
-                <div class="form-group row mt-n3">
-                    <label for="apply_email" class="col-sm-2 col-form-label text-left text-sm-right">Upload Berkas</label>
+                <div class="form-group row mt-n2">
+                    <label for="doc_storage" class="col-sm-2 col-form-label text-left text-sm-right">Upload Berkas</label>
                     <div class="col-sm-10">
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="apply_file" name="apply_file">
-                            <label class="custom-file-label overflow-hidden" for="apply_file">Pilih Berkas</label>
+                            <input type="file" class="custom-file-input" id="doc_storage" name="doc_storage">
+                            <label class="custom-file-label overflow-hidden" for="doc_storage">Pilih Berkas</label>
                         </div>
                         <small id="apply_messageHelpBlock" class="form-text text-muted">
-                            Upload berkas persyaratan dalam format dokumen (pdf atau word).
+                            Upload surat pengantar dalam format dokumen (pdf atau word) jika ada.
                         </small>
                     </div>
                 </div>
@@ -76,8 +81,7 @@
                         <button id="btn-send" type="submit" class="btn btn-primary btn-block">Kirim permintaan</button>
                     </div>
                 </div>
-
-                <!-- <?= form_close(); ?> -->
+                <?= form_close() ?>
             </div>
         </div>
     </div>
@@ -89,12 +93,12 @@
 <script type="text/javascript" src="<?php echo base_url() . 'assets/vendor/summernote/lang/summernote-id-ID.min.js'; ?>"></script>
 
 <script type="text/javascript">
-    var url = "<?= site_url(UA_TRANSHISTORY) ?>";
-    $('#btn-send').click(function() {
-        window.location.replace(url);
-    });
+    // var url = "<?= site_url(UA_TRANSHISTORY) ?>";
+    // $('#btn-send').click(function() {
+    //     window.location.replace(url);
+    // });
     $(document).ready(function() {
-        $('#apply_message').summernote({
+        $('#trans_message').summernote({
             dialogsInBody: true,
             minHeight: 400,
             placeholder: 'Sebutkan di kolom ini jenis permintaan apa yang di inginkan, tujuan penggunaan data, wilayah dan waktunya secara detail. <br> jika belum mengetahui jenis permintaan apa saja yang tersedia silahakan klik tombol "Lihat jenis permintaan" di atas atau bisa datang langsung ke kantor untuk konsultasi dengan mengisi jadwal pertemuan terlebih dahulu di menu "Form Jadwal Pertemuan" yang berada di samping kiri',
@@ -111,8 +115,8 @@
                 ['style', ['style']],
                 ['font', ['bold', 'italic', 'underline']],
                 ['font', ['clear', 'fontsize']],
-                ['fontname', ['fontname']],
-                ['color', ['color']],
+                // ['fontname', ['fontname']],
+                // ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['height', ['height']],
                 ['table', ['table']],
@@ -133,7 +137,7 @@
                 data: data,
                 type: "POST",
                 success: function(url) {
-                    $('#apply_message').summernote("insertImage", url);
+                    $('#trans_message').summernote("insertImage", url);
                 },
                 error: function(data) {
                     console.log(data);
@@ -158,7 +162,7 @@
     });
 
     // Detail Data
-    function view(id) {
+    function view() {
         $('#transactionForm').modal('show'); // show bootstrap modal
         $('#viewData').show();
         $('#btnClose').text('Tutup');

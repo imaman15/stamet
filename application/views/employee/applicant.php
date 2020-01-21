@@ -18,12 +18,12 @@
                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr class="text-center">
-                            <th width="10px">#</thwi>
+                            <th width="5%">#</thwi>
                             <th>No. Identitas Penduduk</th>
                             <th>Nama Pengguna</th>
                             <th>Email</th>
                             <th>Diperbarui</th>
-                            <th width="98px">Aksi</th>
+                            <th width="35%">Aksi</th>
                         </tr>
 
                     <tbody>

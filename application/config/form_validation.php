@@ -163,16 +163,33 @@ $level = array(
 
 if (isset(dAdmin()->level) && dAdmin()->level == 1) {
     $field = array(
-        $first_name, $last_name, $email2, $csidn, $address, $phone
+        $first_name, $last_name, $email2, $csidn, $address, $phone, $position_name, $level
     );
 } else {
     $field = array(
-        $first_name, $last_name, $email2, $csidn, $address, $phone, $position_name, $level
+        $first_name, $last_name, $email2, $csidn, $address, $phone
     );
 }
 
+//=======================================================
+// SET RULE TRANSAKSI
+$transadd = [
+    array(
+        'field' => 'trans_message',
+        'label' => '<strong>Pesan</strong>',
+        'rules' => 'trim|required',
+        'errors' => [
+            'required' => $required
+        ]
+    )
+];
+
+
+
+//=======================================================
 // Set Rules
 $config = array(
+    'transadd' => $transadd,
     'employee' => $field,
     'resetpassword_applicant' => array(
         $email2,

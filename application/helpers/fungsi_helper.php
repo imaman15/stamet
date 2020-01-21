@@ -166,7 +166,7 @@ function level($data)
     if ($data == 1) {
         return "Administrator";
     } elseif ($data == 2) {
-        return "Kasi Datin";
+        return "Petugas CS";
     } elseif ($data == 3) {
         return "Petugas Layanan";
     }
@@ -178,7 +178,7 @@ function dataLevel($level = NULL)
     $level2 = ($level == 2) ? "selected" : null;
     $level3 = ($level == 3) ? "selected" : null;
     $data = '<option value="1" ' . $level1 . '>Administrator</option>';
-    $data .= '<option value="2" ' . $level2 . '>Kasi DATIN</option>';
+    $data .= '<option value="2" ' . $level2 . '>Petugas CS</option>';
     $data .= '<option value="3" ' . $level3 . '>Petugas Layanan</option>';
     return $data;
 }
@@ -224,6 +224,24 @@ function timeIDN($tanggal, $cetak_hari = false)
         return $hari[$num] . ', ' . $tgl_indo;
     }
     return $tgl_indo;
+}
+
+function DateTime($string)
+{
+    // contoh : 2019-01-30 10:20:20
+
+    $bulanIndo = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+    $date = explode(" ", $string)[0];
+    $time = explode(" ", $string)[1];
+
+    $tanggal = explode("-", $date)[2];
+    $bulan = explode("-", $date)[1];
+    $tahun = explode("-", $date)[0];
+
+
+
+    return $tanggal . " " . $bulanIndo[abs($bulan)] . " " . $tahun . " " . $time;
 }
 
 function sendMail($email, $subject, $message)
@@ -320,5 +338,75 @@ function delete_image()
     $file_name = str_replace(base_url(), '', $src);
     if (unlink($file_name)) {
         echo 'File Delete Successfully';
+    }
+}
+
+//Pembuatan Kode Transaksi/Jadwal/Komplain
+function codeRandom($initial = NULL)
+{
+    $CI = &get_instance();
+    $CI->load->helper('string');
+
+    if ($initial == "TC") {
+        $code = "TC";
+    } else if ($initial == "SC") {
+        $code = "SC";
+    } else if ($initial == "CO") {
+        $code = "CT";
+    } else {
+        $code = "SM";
+    }
+    return $code . date('dmy') . strtoupper(random_string('alnum', 8));
+}
+
+
+function statusTrans($data = NULL, $for = NULL, $array = NULL)
+{
+    if ($for == "transaction") {
+        if ($data == 0) {
+            return '<span class="badge badge-pill badge-light">Cek Ketersediaan Data</span>';
+        } elseif ($data == 1) {
+            return '<span class="badge badge-pill badge-info">Tersedia</span>';
+        } elseif ($data == 2) {
+            return '<span class="badge badge-pill badge-warning">Lengkapi Persyaratan</span>';
+        } elseif ($data == 3) {
+            return '<span class="badge badge-pill badge-primary">Proses</span>';
+        } elseif ($data == 4) {
+            return '<span class="badge badge-pill badge-success">Selesai</span>';
+        } elseif ($data == 5) {
+            return '<span class="badge badge-pill badge-danger">Dibatalkan</span>';
+        } elseif ($data == 6) {
+            return '<span class="badge badge-pill badge-danger">Data Tidak Tersedia</span>';
+        } else {
+            return "---";
+        }
+    } elseif ($for == "pay") {
+        if ($data == NULL) {
+            return '<span class="small">Belum Dikonfirmasi</span>';
+        } elseif ($data == 0) {
+            return 'Non Tarif';
+        } elseif ($data == 1) {
+            return '<span class="small">Tarif : ' . rupiah($array['trans_sum']) . '</span>
+            <hr class="my-0">
+            <a id="btn-payment" href="javascript:void(0)" onclick="confirm(' . "'" . $array['trans_code'] . "'" . ')" class="badge badge-secondary p-1 m-1">Konfirmasi Bayar</a>';
+        } elseif ($data == 2) {
+            return '<span class="small">Menunggu Konfirmasi Pembayaran</span>
+            <hr class="my-0">
+            <a id="btn-payment" href="javascript:void(0)" onclick="received(' . "'" . $array['trans_code'] . "'" . ')" class="badge badge-secondary p-1 m-1">Lihat Pembayaran</a>';
+        } elseif ($data == 3) {
+            return '<span class="small">Pembayaran Diterima</span>
+            <hr class="my-0">
+            <a id="btn-payment" href="javascript:void(0)" onclick="received(' . "'" . $array['trans_code'] . "'" . ')" class="badge badge-secondary p-1 m-1">Lihat Pembayaran</a>';
+        } elseif ($data == 4) {
+            return '<span class="small">Pembayaran Tidak Sesuai</span>
+            <hr class="my-0">
+            <a id="btn-payment" href="javascript:void(0)" onclick="check(' . "'" . $array['trans_code'] . "'" . ')" class="badge badge-secondary p-1 m-1">Ganti Pembayaran</a>';
+        } elseif ($data == 5) {
+            return '-';
+        } else {
+            return "---";
+        }
+    } else {
+        return "---";
     }
 }
