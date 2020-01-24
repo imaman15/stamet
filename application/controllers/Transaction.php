@@ -147,17 +147,29 @@ class Transaction extends CI_Controller
 
     public function detail($id = NULL)
     {
-        if ($id != NULL) {
-            if ($id == '20012020XYZADWL') {
-                $data['user'] = dUser();
-                $data['title'] = 'Detail Transaksi';
-                $this->template->load('transaction/detail', $data);
-            } else {
-                echo "kode tidak ada";
-            }
+        $user = $this->session->userdata('applicant_id');
+        $trans = $this->transaction_model->getField('*', ['trans_code' => $id, 'apply_id' => $user])->row();
+        $req = $this->subtype_model->groupTrans($trans->subtype_id)->row();
+        if ($req && $trans->subtype_id) {
+            $request = $req->sub_description . " - " . $req->description;
         } else {
-            show_404();
+            $request = "Jenis permintaan tidak ditemukan";
         }
+
+        if ((!isset($id)) || (!$trans) || ($trans->apply_id !== $user)) redirect(show_404());
+
+        $data['user'] = dUser();
+        $data['trans'] = $trans;
+        $data['request'] =  $request;
+        $data['title'] = 'Detail Transaksi';
+        $this->template->load('transaction/detail', $data);
+    }
+
+    public function canceltransaction($id)
+    {
+        $this->transaction_model->cancelTransaction($id);
+        // if ($this->db->affected_rows() > 0) {}
+        echo json_encode(array("status" => TRUE));
     }
 
 

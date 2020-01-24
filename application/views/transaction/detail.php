@@ -15,7 +15,7 @@
         </nav>
         <div class="card shadow mb-4 animated zoomIn fast">
             <div class="card-body">
-                <button type="button" onclick="printContent('print')" class="btn rounded btn-sm btn-primary d-print-none mb-2 mt-n2 float-right">Cetak</button>
+                <!-- <button type="button" onclick="printContent('print')" class="btn rounded btn-sm btn-primary d-print-none mb-2 mt-n2 float-right">Cetak</button> -->
 
                 <div class="d-print-flex" id="print">
                     <h4 class="d-none d-print-block text-center">Sistem Informasi Pelayanan Jasa Meteorologi</h4>
@@ -23,15 +23,26 @@
                     <table class="table table-bordered">
                         <tr>
                             <th width="20%">Kode Transaksi </th>
-                            <th>20012020XYZADWL</th>
+                            <th><?= $trans->trans_code; ?></th>
                         </tr>
                         <tr>
                             <td>Tanggal Transaksi</td>
-                            <td>20-01-2020</td>
+                            <td><?= DateTime($trans->date_created); ?></td>
                         </tr>
                         <tr>
                             <td>Jenis Informasi</td>
-                            <td>Prakiraan Musim Hujan</td>
+                            <td>
+                                <?php
+
+                                if ((in_array($trans->trans_status, [2, 3, 4])) && (in_array($trans->payment_status, [3, 6])) && $trans->trans_request) {
+                                    echo $trans->trans_request;
+                                } else if ((in_array($trans->payment_status, [2, 1, 4])) && ($trans->trans_status == 1) && $trans->subtype_id) {
+                                    echo $request;
+                                } else {
+                                    echo "-";
+                                }
+                                ?>
+                            </td>
                         </tr>
                         <tr>
                             <td>Jumlah</td>

@@ -139,6 +139,8 @@
         $('#confirm').show();
         $('#view').hide();
         $('#btnSave').show();
+        $('#btnSave').text('Kirim');
+        $('#btnDelete').hide();
 
         $.ajax({
             url: "<?php echo site_url('transaction/viewbeforepay') ?>/" + id,
@@ -200,6 +202,7 @@
         $('#cancel').hide();
         $('#confirm').hide();
         $('#view').show();
+        $('#btnDelete').hide();
 
         $.ajax({
             url: "<?php echo site_url('transaction/viewpay') ?>/" + id,
@@ -242,13 +245,7 @@
     function save() {
         $('#btnSave').text('Mengirim...'); //change button text
         $('#btnSave').attr('disabled', true); //set button disable 
-        var url;
-
-        if (save_method == 'addPayment') {
-            url = "<?php echo site_url('transaction/addpayment') ?>";
-        } else {
-            url = "<?php echo site_url('transaction/updatepayment') ?>";
-        }
+        var url = "<?php echo site_url('transaction/addpayment') ?>";
 
         // ajax adding data to database
         var formData = new FormData($('#form')[0]);
@@ -300,16 +297,44 @@
 
     };
 
-    function cancel() {
-        $('#btn-save').show();
+    function cancel(id) {
         $('#transactionModal').modal('show');
         $('.modal-title').text('Batalkan Transaksi');
         $('#cancel').show();
         $('#confirm').hide();
         $('#view').hide();
-        $('#btn-save').click(function() {
-            $('#transactionModal').modal('hide');
-            $('#field').addClass('odd').html('<td valign="top" colspan="6" class="dataTables_empty">Data tidak tersedia</td>');
+        $('#cancel').text('Anda yakin untuk membatalkan transaksi ' + id + ' ?');
+        $('#btnSave').hide();
+
+        $('#btnDelete').click(function() {
+            // ajax delete data to database
+            $.ajax({
+                url: "<?php echo site_url('transaction/canceltransaction') ?>/" + id,
+                type: "POST",
+                dataType: "JSON",
+                success: function(data) {
+                    //if success reload ajax table
+                    $('#the-message').html('<div class="alert alert-success animated zoomIn fast" role="alert">Transaksi ' + id + ' berhasil di batalkan</div>');
+                    // close the message after seconds
+                    $('.alert-success').delay(500).show(10, function() {
+                        $(this).delay(3000).hide(10, function() {
+                            $(this).remove();
+                        });
+                    });
+                    $('#transactionModal').modal('hide');
+                    reload_table();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Transaksi ' + id + ' gagal di batalkan.</div>');
+                    // close the message after seconds
+                    $('.alert-danger').delay(500).show(10, function() {
+                        $(this).delay(3000).hide(10, function() {
+                            $(this).remove();
+                        });
+                    });
+                    $('#transactionModal').modal('hide');
+                }
+            });
         });
     };
 </script>
@@ -433,6 +458,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button id="btnSave" onclick="save()" type="button" class="btn btn-primary">Kirim</button>
+                    <button id="btnDelete" type="button" class="btn btn-danger">Batalkan</button>
                 </div>
             </form>
         </div>

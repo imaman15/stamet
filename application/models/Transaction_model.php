@@ -155,6 +155,15 @@ class Transaction_model extends CI_Model
         $this->db->where(['trans_code' => $id, 'apply_id' => $user]);
         $this->db->update($this->_table, $params);
     }
+
+    public function cancelTransaction($id)
+    {
+        $user = $this->session->userdata('applicant_id');
+        $params['payment_status'] = 5;
+        $params['trans_status'] = 5;
+        $this->db->where(['trans_code' => $id, 'apply_id' => $user]);
+        $this->db->update($this->_table, $params);
+    }
 }
 
 /* End of file Transaction_model.php */
