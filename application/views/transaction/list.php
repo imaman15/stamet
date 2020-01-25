@@ -27,7 +27,7 @@
                             <th width="5%">#</th>
                             <th>Kode Transaksi</th>
                             <th>Tanggal</th>
-                            <th>Status Bayar</th>
+                            <th>Status Pembayaran</th>
                             <th>Status Transaksi</th>
                             <th width="7%" class="text-break">Aksi</th>
                         </tr>
@@ -77,16 +77,10 @@
 
             //Set column definition initialisation properties.
             "columnDefs": [{
-                    "targets": [-3, -2, -1, 0],
-                    "className": 'text-center',
-                    "orderable": false, //set not orderable
-                },
-                {
-                    "targets": [-3, -2, -1, 0],
-                    "className": 'text-center',
-                    "orderable": false, //set not orderable
-                }
-            ],
+                "targets": [-3, -2, -1, 0],
+                "className": 'text-center',
+                "orderable": false, //set not orderable
+            }],
 
         });
         // $.fn.dataTable.ext.errMode = 'throw';
@@ -301,6 +295,7 @@
         $('#transactionModal').modal('show');
         $('.modal-title').text('Batalkan Transaksi');
         $('#cancel').show();
+        $('#btnDelete').show();
         $('#confirm').hide();
         $('#view').hide();
         $('#cancel').text('Anda yakin untuk membatalkan transaksi ' + id + ' ?');

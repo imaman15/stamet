@@ -12,7 +12,7 @@ class Transaction extends CI_Controller
         //Load Dependencies
         app_not_login();
         $this->load->library(['form_validation', 'upload', 'email']);
-        $this->load->model(['transaction_model', 'type_model', 'subtype_model', 'document_model', 'configuration_model']);
+        $this->load->model(['transaction_model', 'type_model', 'subtype_model', 'document_model', 'configuration_model', 'employee_model', 'applicant_model']);
     }
 
     public function index()
@@ -152,8 +152,19 @@ class Transaction extends CI_Controller
         $req = $this->subtype_model->groupTrans($trans->subtype_id)->row();
         if ($req && $trans->subtype_id) {
             $request = $req->sub_description . " - " . $req->description;
+            $rates = rupiah($req->rates) . " - " . $req->unit;
         } else {
             $request = "Jenis permintaan tidak ditemukan";
+            $rates = "-";
+        }
+
+        $emp = $this->employee_model->getDataBy($trans->emp_id, 'emp_id')->row();
+        if ($emp && $trans->emp_id) {
+            $emp_name = $emp->first_name . " " . $emp->last_name;
+            $emp_posname =  $emp->pos_name;
+        } else {
+            $emp_name = "";
+            $emp_posname = "";
         }
 
         if ((!isset($id)) || (!$trans) || ($trans->apply_id !== $user)) redirect(show_404());
@@ -161,6 +172,9 @@ class Transaction extends CI_Controller
         $data['user'] = dUser();
         $data['trans'] = $trans;
         $data['request'] =  $request;
+        $data['rates'] =  $rates;
+        $data['emp_name'] =  $emp_name;
+        $data['emp_posname'] =  $emp_posname;
         $data['title'] = 'Detail Transaksi';
         $this->template->load('transaction/detail', $data);
     }
@@ -172,20 +186,43 @@ class Transaction extends CI_Controller
         echo json_encode(array("status" => TRUE));
     }
 
-
-    // summernote ==============================
-    public function save()
+    public function docList($id)
     {
-        $title = $this->input->post('title', FALSE);
-        $contents = $this->input->post('contents', FALSE);
-        $this->transaction_model->insert_post($title, $contents);
-        $id = $this->db->insert_id();
-        $result = $this->transaction_model->get_article_by_id($id)->row_array();
-        $data['title'] = $result['title'];
-        $data['contents'] = $result['contents'];
-        $this->template->load('transaction/list', $data);
+        $list = $this->document_model->get_datatables($id);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $d) {
+            $no++;
+            $row = array();
+            $row[] = $no . ".";
+            $row[] = $d->doc_name;
+            $row[] = $d->user_upload;
+            $row[] = DateTime($d->date_update);
+            $row[] = $d->doc_information;
+
+            $url = base_url("assets/transfile/") . $d->doc_storage;
+
+            if ($_SERVER['HTTP_HOST'] !== "localhost") {
+                $btn = '<a title="Download Berkas" class="btn btn-success btn-circle btn-sm mb-1" href="https://docs.google.com/viewerng/viewer?url=' . $url . '" target="_blank"><i class="fas fa-download"></i></a>';
+            } else {
+                $btn = '<a title="Download Berkas" class="btn btn-success btn-circle btn-sm mb-1" href="' . $url . '" target="_blank"><i class="fas fa-download"></i></a>';
+            }
+            $row[] = $btn;
+
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->document_model->count_all($id),
+            "recordsFiltered" => $this->document_model->count_filtered($id),
+            "data" => $data,
+        );
+        //output to json format
+        echo json_encode($output);
     }
 
+    // summernote ==============================
     public function upload_image()
     {
         upload_image();

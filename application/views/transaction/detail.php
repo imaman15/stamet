@@ -33,10 +33,9 @@
                             <td>Jenis Informasi</td>
                             <td>
                                 <?php
-
-                                if ((in_array($trans->trans_status, [2, 3, 4])) && (in_array($trans->payment_status, [3, 6])) && $trans->trans_request) {
+                                if ((in_array($trans->trans_status, [2, 3, 4])) && (in_array($trans->payment_status, [3, 0])) && $trans->trans_request) {
                                     echo $trans->trans_request;
-                                } else if ((in_array($trans->payment_status, [2, 1, 4])) && ($trans->trans_status == 1) && $trans->subtype_id) {
+                                } else if ((in_array($trans->payment_status, [2, 1, 4, 5])) && (in_array($trans->trans_status, [1, 5])) && $trans->subtype_id) {
                                     echo $request;
                                 } else {
                                     echo "-";
@@ -45,29 +44,75 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Tarif - Satuan</td>
+                            <td>
+                                <?php
+                                if ((in_array($trans->trans_status, [2, 3, 4])) && (in_array($trans->payment_status, [3, 0])) && $trans->trans_rates && $trans->emp_posname) {
+                                    echo rupiah($trans->trans_rates) . " - " .  $trans->emp_posname;
+                                } else if ((in_array($trans->payment_status, [2, 1, 4, 5])) && (in_array($trans->trans_status, [1, 5])) && $trans->subtype_id) {
+                                    echo $rates;
+                                } else {
+                                    echo "-";
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>Jumlah</td>
-                            <td>1</td>
+                            <td>
+                                <?php
+                                if ($trans->trans_unit) {
+                                    echo $trans->trans_unit;
+                                } else {
+                                    echo "-";
+                                }
+                                ?>
+                            </td>
                         </tr>
                         <tr>
                             <td>Total</td>
-                            <td>Rp. 50.000</td>
+                            <td>
+                                <?php
+                                if ($trans->trans_sum) {
+                                    echo rupiah($trans->trans_sum);
+                                } else {
+                                    echo "-";
+                                }
+                                ?>
+                            </td>
                         </tr>
                         <tr>
                             <td>Status Transaksi</td>
                             <td>
-                                <span class="badge badge-pill badge-success">Selesai</span>
+                                <?php
+                                if ($trans->trans_status) {
+                                    echo statusTrans($trans->trans_status, 'transaction');
+                                } else {
+                                    echo "-";
+                                }
+                                ?>
                             </td>
                         </tr>
                         <tr>
                             <td>Petugas Layanan</td>
                             <td>
-                                Danindra L - Staf Datin
+                                <?php
+                                if ((in_array($trans->trans_status, [2, 3, 4])) && (in_array($trans->payment_status, [3, 0])) && $trans->emp_name && $trans->emp_posname) {
+                                    echo $trans->emp_name . " - " .  $trans->emp_posname;
+                                } else if ((in_array($trans->payment_status, [2, 1, 4, 5])) && (in_array($trans->trans_status, [1, 5])) && $trans->emp_id) {
+                                    echo $emp_name . " - " . $emp_posname;
+                                } else {
+                                    echo "-";
+                                }
+                                ?>
                             </td>
                         </tr>
                         <tr class="text-center d-print-none">
                             <td colspan="2">
                                 <button type="button" class="btn btn-secondary btn-sm rounded" onclick="applicantNote()">Lihat Catatan Anda</button>
-                                <button type="button" class="btn btn-dark btn-sm rounded" onclick="employeeNote()">Lihat Catatan Petugas</button>
+                                <?php if ($trans->trans_information) : ?>
+                                    <button type="button" class="btn btn-dark btn-sm rounded" onclick="employeeNote()">Lihat Catatan Petugas</button>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     </table>
@@ -75,10 +120,12 @@
             </div>
 
             <div class="card-footer mt-n4">
+                <button type="button" class="btn btn-primary rounded btn-sm my-3" onclick="addDocument()">Tambah Dokumen</button>
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead class="thead-dark">
                             <tr>
+                                <th>#</th>
                                 <th>Nama Berkas</th>
                                 <th>Uploader</th>
                                 <th>Tanggal & Waktu</th>
@@ -87,24 +134,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Berkas Persyaratan</td>
-                                <td>Pemohon</td>
-                                <td>20-01-2020 08:00:00</td>
-                                <td>-</td>
-                                <td class="text-center">
-                                    <button type="button" title="Download Berkas" class="btn btn-success btn-circle btn-sm mb-1" onclick="download()"><i class="fas fa-download"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> Data Prakiraan Musim Hujan</td>
-                                <td>Annisa Rahma - Staf Datin</td>
-                                <td>20-01-2020 08:00:00</td>
-                                <td>-</td>
-                                <td class="text-center">
-                                    <button type="button" title="Download Berkas" class="btn btn-success btn-circle btn-sm mb-1" onclick="download()"><i class="fas fa-download"></i></button>
-                                </td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -120,6 +150,68 @@
 
 
 <script type="text/javascript">
+    var save_method; //for save method string
+    var table;
+    var base_url = '<?php echo base_url(); ?>';
+    $(document).ready(function() {
+        //datatables
+        table = $('#dataTable').DataTable({
+
+            "processing": true, //Feature control the processing indicator.
+            "serverSide": true, //Feature control DataTables' server-side processing mode.
+            "order": [], //Initial no order.
+
+            // Load data for the table's content from an Ajax source
+            "ajax": {
+                "url": "<?php echo site_url('transaction/docList/') ?>" + "<?= $trans->trans_id; ?>",
+                "type": "POST"
+            },
+
+            //Set column definition initialisation properties.
+            "columnDefs": [{
+                "targets": [-1, 0],
+                "className": 'text-center',
+                "orderable": false, //set not orderable
+            }],
+
+        });
+        // $.fn.dataTable.ext.errMode = 'throw';
+
+        //set input/textarea/select event when change value, remove class error and remove text help block 
+
+        $("input").change(function() {
+            $(this).removeClass('is-invalid');
+        });
+        $("textarea").change(function() {
+            $(this).removeClass('is-invalid');
+        });
+        $("select").change(function() {
+            $(this).removeClass('is-invalid');
+        });
+        $(".invalid-feedback").change(function() {
+            $(this).empty();
+        });
+        $("#photo").change(function() {
+            $('#photo_error').empty();
+        });
+
+    });
+
+    function reload_table() {
+        table.ajax.reload(null, false); //reload datatable ajax 
+    }
+
+    // Tambah Data
+    function addDocument() {
+        save_method = 'add';
+        $('#documentModal #form')[0].reset(); // reset form on modals
+        $('#documentModal .form-control').removeClass('is-invalid'); // clear error class
+        $('#documentModal .invalid-feedback').empty(); // clear error string
+        $('#documentModal').modal('show');
+    }
+
+
+
     function printContent(el) {
         var restorepage = document.body.innerHTML;
         var printcontent = document.getElementById(el).innerHTML;
@@ -130,18 +222,87 @@
 
     function applicantNote() {
         $('#note').modal('show');
-        $('.modal-title').text('Catatan Anda');
-        $('.modal-body').text('Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio eos, consequatur numquam sint aut labore maiores vel sequi ducimus amet fuga beatae necessitatibus quos veniam aliquam blanditiis ea placeat molestias!. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio eos, consequatur numquam sint aut labore maiores vel sequi ducimus amet fuga beatae necessitatibus quos veniam aliquam blanditiis ea placeat molestias!');
+        $('#note .modal-title').text('Catatan Anda');
+        var message = '<?= $trans->trans_message; ?>'
+        if (message) {
+            $('#note .modal-body').html(message);
+            $('#note .modal-body img').addClass('img-responsive img-thumbnail');
+        } else {
+            $('#note .modal-body').text('-');
+        }
     };
 
     function employeeNote() {
         $('#note').modal('show');
-        $('.modal-title').text('Catatan Petugas');
-        $('.modal-body').text('Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio eos, consequatur numquam sint aut labore maiores vel sequi ducimus amet fuga beatae necessitatibus quos veniam aliquam blanditiis ea placeat molestias!.');
+        $('#note .modal-title').text('Catatan Petugas');
+        var information = '<?= $trans->trans_information; ?>'
+        if (information) {
+            $('#note .modal-body').html(information);
+            $('#note .modal-body img').addClass('img-responsive img-thumbnail');
+        } else {
+            $('#note .modal-body').text('-');
+        }
     };
 </script>
 
 <!-- Modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="documentModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Dokumen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="#" id="form">
+                <div class="modal-body" id="confirm">
+                    <div class="text-center text-break mb-4" id="paybefore">
+                    </div>
+
+                    <input type="hidden" name="trans_id" id="trans_id" />
+                    <div class="form-group">
+                        <label for="doc_name">Nama Berkas</label>
+                        <input type="text" name="doc_name" id="doc_name" class="form-control" placeholder="" aria-describedby="doc_name">
+                        <small id="doc_name_help" class="text-muted">Misal : Bank Central Asia (BCA)</small>
+                        <div id="doc_name_error" class="invalid-feedback">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="doc_information">Keterangan</label>
+                        <textarea class="form-control" name="address" id="address" rows="3" placeholder="Alamat Lengkap" aria-describedby="addressHelpBlock"></textarea>
+                        <small id="doc_information_help" class="text-muted">Misal : Bank Central Asia (BCA)</small>
+                        <div id="doc_information_error" class="invalid-feedback">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="file" class=" col-form-label">Upload Berkas</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file" name="file">
+                            <label id='file_label' class="custom-file-label overflow-hidden" for="file">Pilih Berkas</label>
+                        </div>
+                        <small id="file_help" class="form-text text-muted">
+                            Upload berkas dalam format dokumen (pdf atau word) jika ada.
+                        </small>
+                        <div id="file_error" class="small" style="color:#e74a3b;">
+                        </div>
+                    </div>
+                    <div class="form-group text-center" id="preview">
+                        <div class="col-form-label font-weight-bold">Bukti Bayar Sebelumnya</div>
+                        <img id="pay_img" class="img-fluid rounded w-75" alt="Bukti Bayar">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="btnSave" onclick="save()" type="button" class="btn btn-primary">Kirim</button>
+                    <button id="btnDelete" type="button" class="btn btn-danger">Batalkan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="note" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
