@@ -98,19 +98,20 @@ class Document_model extends CI_Model
         $this->db->insert($this->_table, $params);
     }
 
-    public function doc($id)
+    public function docApply()
     {
+        $post = $this->input->post(NULL, TRUE);
         if (!empty($_FILES['doc_storage']['name'])) {
             $upload = $this->_do_uploads();
             $params["doc_storage"] = $upload;
         }
 
-        $params['doc_name'] = "Surat Pengantar";
-        $params['doc_information'] = "-";
+        $params['doc_name'] = $post['doc_name'];
+        $params['doc_information'] = $post['doc_information'];
         $params['user_type'] = "applicant";
         $params['user_id'] = $this->session->userdata('applicant_id');
         $params['user_upload'] = dUser()->first_name . " " . dUser()->last_name . " - Pemohon";
-        $params['trans_id'] = $id;
+        $params['trans_id'] = $post['trans_id'];
         $this->db->insert($this->_table, $params);
     }
 

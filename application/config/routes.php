@@ -92,3 +92,4 @@ $route[UE_MANAGEFAQ] = UE_FOLDER . '/faq';
 $route[UE_REPORTTRANSRATE] = UE_FOLDER . '/report/reportTransRate';
 $route[UE_REPORTTRANSNONRATE] = UE_FOLDER . '/report/reportTransNonRate';
 $route[UE_REPORTRATINGS] = UE_FOLDER . '/report/reportsurvey';
+$route[UE_CONFIGURATION] = UE_FOLDER . '/configuration';

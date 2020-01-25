@@ -120,6 +120,7 @@
             </div>
 
             <div class="card-footer mt-n4">
+                <div id="mesDocument"></div>
                 <button type="button" class="btn btn-primary rounded btn-sm my-3" onclick="addDocument()">Tambah Dokumen</button>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -208,9 +209,62 @@
         $('#documentModal .form-control').removeClass('is-invalid'); // clear error class
         $('#documentModal .invalid-feedback').empty(); // clear error string
         $('#documentModal').modal('show');
+
     }
 
+    //Tambah Data
+    function save() {
+        $('#btnSave').text('Mengirim...'); //change button text
+        $('#btnSave').attr('disabled', true); //set button disable 
+        var url = "<?php echo site_url('employee/document/docapply') ?>";
 
+        // ajax adding data to database
+        var formData = new FormData($('#form')[0]);
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "JSON",
+            success: function(data) {
+
+                if (data.status) //if success close modal and reload ajax table
+                {
+                    $('#documentModal').modal('hide');
+                    $('#mesDocument').html('<div class="alert alert-success animated zoomIn fast" role="alert">Dokumen berhasil ditambahkan.</div>');
+                    // close the message after seconds
+                    $('.alert-success').delay(500).show(10, function() {
+                        $(this).delay(3000).hide(10, function() {
+                            $(this).remove();
+                        });
+                    });
+                    reload_table();
+                } else {
+                    for (var i = 0; i < data.inputerror.length; i++) {
+                        $('#' + data.inputerror[i]).addClass('is-invalid');
+                        $('#' + data.inputerror[i] + '_error').text(data.error_string[i]);
+                    }
+                }
+
+                $('#btnSave').text('Kirim'); //change button text
+                $('#btnSave').attr('disabled', false); //set button enable 
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#documentModal').modal('hide');
+                $('#mesDocument').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Dokumen anda gagal di tambahkan</div>');
+                // close the message after seconds
+                $('.alert-danger').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+                $('#btnSave').text('Kirim'); //change button text
+                $('#btnSave').attr('disabled', false); //set button enable 
+            }
+        });
+    };
 
     function printContent(el) {
         var restorepage = document.body.innerHTML;
@@ -258,46 +312,36 @@
                 </button>
             </div>
             <form action="#" id="form">
-                <div class="modal-body" id="confirm">
-                    <div class="text-center text-break mb-4" id="paybefore">
-                    </div>
-
-                    <input type="hidden" name="trans_id" id="trans_id" />
+                <div class="modal-body">
+                    <input type="hidden" name="trans_id" id="trans_id" value="<?= $trans->trans_id ?>" />
                     <div class="form-group">
                         <label for="doc_name">Nama Berkas</label>
                         <input type="text" name="doc_name" id="doc_name" class="form-control" placeholder="" aria-describedby="doc_name">
-                        <small id="doc_name_help" class="text-muted">Misal : Bank Central Asia (BCA)</small>
                         <div id="doc_name_error" class="invalid-feedback">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="doc_information">Keterangan</label>
-                        <textarea class="form-control" name="address" id="address" rows="3" placeholder="Alamat Lengkap" aria-describedby="addressHelpBlock"></textarea>
-                        <small id="doc_information_help" class="text-muted">Misal : Bank Central Asia (BCA)</small>
+                        <textarea class="form-control" name="doc_information" id="doc_information" rows="3" placeholder="Keterangan" aria-describedby="doc_informationHelpBlock"></textarea>
                         <div id="doc_information_error" class="invalid-feedback">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="file" class=" col-form-label">Upload Berkas</label>
+                        <label for="doc_storage" class=" col-form-label">Upload Berkas</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="file" name="file">
-                            <label id='file_label' class="custom-file-label overflow-hidden" for="file">Pilih Berkas</label>
+                            <input type="file" class="custom-file-input" id="doc_storage" name="doc_storage">
+                            <label id='doc_storage_label' class="custom-file-label overflow-hidden" for="doc_storage">Pilih Berkas</label>
                         </div>
-                        <small id="file_help" class="form-text text-muted">
-                            Upload berkas dalam format dokumen (pdf atau word) jika ada.
+                        <small id="doc_storage_help" class="form-text text-muted">
+                            Upload berkas dalam format dokumen. (pdf atau word)
                         </small>
-                        <div id="file_error" class="small" style="color:#e74a3b;">
+                        <div id="doc_storage_error" class="small" style="color:#e74a3b;">
                         </div>
-                    </div>
-                    <div class="form-group text-center" id="preview">
-                        <div class="col-form-label font-weight-bold">Bukti Bayar Sebelumnya</div>
-                        <img id="pay_img" class="img-fluid rounded w-75" alt="Bukti Bayar">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button id="btnSave" onclick="save()" type="button" class="btn btn-primary">Kirim</button>
-                    <button id="btnDelete" type="button" class="btn btn-danger">Batalkan</button>
                 </div>
             </form>
         </div>

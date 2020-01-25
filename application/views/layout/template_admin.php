@@ -87,13 +87,6 @@
                     Hubungan Pengguna
                 </div>
 
-                <!-- Nav Item - Tables -->
-                <li class="nav-item <?= ($this->uri->uri_string() == UE_RATINGS) ? "active" : NULL; ?>">
-                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_RATINGS) ?>">
-                        <i class="fas fa-fw fa-star"></i>
-                        <span>Survei Pelanggan</span></a>
-                </li>
-
                 <li class="nav-item <?= ($this->uri->uri_string() == UE_CANDS) ? "active" : NULL; ?>">
                     <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_CANDS) ?>">
                         <i class="fas fa-fw fa-comment-alt"></i>
@@ -113,16 +106,8 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Laporan Bulanan
+                Laporan Transaksi
             </div>
-            <?php if (dAdmin()->level == 1 || dAdmin()->level == 2) : ?>
-                <!-- Nav Item - Tables -->
-                <li class="nav-item <?= ($this->uri->uri_string() == UE_REPORTRATINGS) ? "active" : NULL; ?>">
-                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_REPORTRATINGS) ?>">
-                        <i class="fas fa-fw fa-print"></i>
-                        <span>Survei Pelanggan</span></a>
-                </li>
-            <?php endif; ?>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <?php
@@ -131,20 +116,17 @@
 
             if (dAdmin()->level == 1 || dAdmin()->level == 3) :
             ?>
-                <li class="nav-item <?= ($reportTransRates || $reportTransNonRates) ? "active" : NULL; ?>">
-                    <a class="nav-link <?= ($reportTransRates || $reportTransNonRates) ? NULL : "collapsed"; ?>" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <!-- Nav Item - Tables -->
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_REPORTTRANSRATE) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_REPORTTRANSRATE) ?>">
                         <i class="fas fa-fw fa-print"></i>
-                        <span>Transaksi Data</span>
-                    </a>
-                    <div id="collapseTwo" class="collapse  <?= ($reportTransRates || $reportTransNonRates) ? "show" : NULL; ?>" href="<?= site_url(UE_REPORTTRANSRATE) ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Laporan Transaksi Data:</h6>
-                            <a class="collapse-item <?= ($reportTransRates) ? "active" : NULL; ?>" href="<?= site_url(UE_REPORTTRANSRATE) ?>">Tarif</a>
-                            <a class="collapse-item <?= ($reportTransNonRates) ? "active" : NULL; ?>" href="<?= site_url(UE_REPORTTRANSNONRATE) ?>" href="cards.html">Non Tarif</a>
-                        </div>
-                    </div>
+                        <span>Tarif</span></a>
                 </li>
-
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_REPORTTRANSNONRATE) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_REPORTTRANSNONRATE) ?>">
+                        <i class="fas fa-fw fa-print"></i>
+                        <span>Non Tarif</span></a>
+                </li>
             <?php endif; ?>
 
             <!-- Divider -->
@@ -195,22 +177,11 @@
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
 
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    Pengaturan
-                </div>
-
                 <!-- Nav Item - Tables -->
-                <li class="nav-item">
-                    <a class="nav-link hvr-wobble-horizontal" href="#">
-                        <i class="fa fa-fw fa-question-circle"></i>
-                        <span>Email</span></a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link hvr-wobble-horizontal" href="#">
-                        <i class="fa fa-fw fa-question-circle"></i>
-                        <span>Rekening</span></a>
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_CONFIGURATION) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_CONFIGURATION) ?>">
+                        <i class="fa fa-fw fa-cog"></i>
+                        <span>Konfigurasi</span></a>
                 </li>
 
                 <!-- Divider -->

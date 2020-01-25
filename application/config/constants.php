@@ -137,3 +137,4 @@ define('UE_REPORTTRANSNONRATE', strtolower(UE_ADMIN . '/' . 'report-transaction-
 define('UE_REPORTRATINGS', strtolower(UE_ADMIN . '/' . 'report-ratings'));
 define('UE_ADD', strtolower('/add'));
 define('UE_VERIFY', strtolower(UE_ADMIN . '/verify'));
+define('UE_CONFIGURATION', strtolower(UE_ADMIN . '/' . 'konfigurasi'));
