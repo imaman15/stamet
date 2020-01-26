@@ -26,7 +26,7 @@ class Transaction_model extends CI_Model
         // start datatables
         $column_order = array(null, 'trans_code', 'date_created', null); //set column field database for datatable orderable
         $column_search = array('trans_code', 'date_created'); //set column field database for datatable searchable
-        $order = array('trans_id' => 'desc', 'date_update' => 'desc'); // default order
+        $order = array('date_update' => 'desc'); // default order
 
         $i = 0;
 
@@ -163,6 +163,14 @@ class Transaction_model extends CI_Model
         $params['trans_status'] = 5;
         $this->db->where(['trans_code' => $id, 'apply_id' => $user]);
         $this->db->update($this->_table, $params);
+    }
+
+    public function beranda()
+    {
+        $id = $this->session->userdata('applicant_id');
+        $this->db->where('apply_id', $id);
+        $this->db->order_by('date_update', 'desc');
+        return $this->db->get($this->_table, 5)->result();
     }
 }
 

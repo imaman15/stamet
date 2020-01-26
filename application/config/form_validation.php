@@ -184,11 +184,49 @@ $transadd = [
     )
 ];
 
+//=======================================================
+// SET RULE SCHEDULE
+$schadd = [
+    array(
+        'field' => 'sch_title',
+        'label' => '<strong>Judul</strong>',
+        'rules' => 'trim|required',
+        'errors' => [
+            'required' => $required
+        ]
+    ),
+    array(
+        'field' => 'sch_type',
+        'label' => '<strong>Jenis Permintaan</strong>',
+        'rules' => 'trim|required',
+        'errors' => [
+            'required' => $required
+        ]
+    ),
+    array(
+        'field' => 'sch_date',
+        'label' => '<strong>Tanggal Pertemuan</strong>',
+        'rules' => 'trim|required',
+        'errors' => [
+            'required' => $required
+        ]
+    ),
+    array(
+        'field' => 'sch_message',
+        'label' => '<strong>Pesan</strong>',
+        'rules' => 'trim|required',
+        'errors' => [
+            'required' => $required
+        ]
+    )
+];
+
 
 
 //=======================================================
 // Set Rules
 $config = array(
+    'schadd' => $schadd,
     'transadd' => $transadd,
     'employee' => $field,
     'resetpassword_applicant' => array(

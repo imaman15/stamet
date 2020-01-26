@@ -6,6 +6,7 @@
 
     <?= $this->session->flashdata('message');
     ?>
+    <div id="the-message"></div>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4 animated zoomIn fast">
@@ -68,40 +69,165 @@
         window.location.replace(url);
     };
 
-    function cancel() {
-        $('#btn-save').show();
+    var table;
+    var method;
+    $(document).ready(function() {
+        //datatables
+        table = $('#dataTable').DataTable({
+
+            "processing": true, //Feature control the processing indicator.
+            "serverSide": true, //Feature control DataTables' server-side processing mode.
+            "order": [], //Initial no order.
+
+            // Load data for the table's content from an Ajax source
+            "ajax": {
+                "url": "<?php echo site_url('schedule/list') ?>",
+                "type": "POST"
+            },
+
+            //Set column definition initialisation properties.
+            "columnDefs": [{
+                "targets": [-3, -2, -1, 0],
+                "className": 'text-center',
+                "orderable": false, //set not orderable
+            }],
+
+        });
+        // $.fn.dataTable.ext.errMode = 'throw';
+
+        //set input/textarea/select event when change value, remove class error and remove text help block 
+        // $("input").change(function() {
+        //     $(this).removeClass('is-invalid');
+        // });
+        // $("textarea").change(function() {
+        //     $(this).removeClass('is-invalid');
+        // });
+        // $("select").change(function() {
+        //     $(this).removeClass('is-invalid');
+        // });
+        // $(".invalid-feedback").change(function() {
+        //     $(this).empty();
+        // });
+        // $("#photo").change(function() {
+        //     $('#photo_error').empty();
+        // });
+
+    });
+
+    function reload_table() {
+        table.ajax.reload(null, false); //reload datatable ajax 
+    };
+
+    function cancel(id) {
+        $('#btnDelete').show();
         $('#viewData').hide();
         $('#schedule').modal('show');
         $('.modal-title').text('Batalkan Jadwal Pertemuan');
-        $('#action').show().html('Anda yakin untuk membatalkan pertemuan ini ? <br> Silahkan klik simpan untuk merubah status');
+        $('#action').show().html('Anda yakin untuk membatalkan pertemuan dengan kode  ' + id + ' ? <br> Silahkan klik simpan untuk merubah status');
         $('.modal-dialog').removeClass('modal-lg');
 
-        $('#btn-save').click(function() {
-            $('#schedule').modal('hide');
-            $('#status').text('Dibatalkan');
+        $('#btnDelete').click(function() {
+            // ajax delete data to database
+            $.ajax({
+                url: "<?php echo site_url('schedule/cancel') ?>/" + id,
+                type: "POST",
+                dataType: "JSON",
+                success: function(data) {
+                    //if success reload ajax table
+                    $('#the-message').html('<div class="alert alert-success animated zoomIn fast" role="alert">Pertemuan dengan kode ' + id + ' berhasil di batalkan</div>');
+                    // close the message after seconds
+                    $('.alert-success').delay(500).show(10, function() {
+                        $(this).delay(3000).hide(10, function() {
+                            $(this).remove();
+                        });
+                    });
+                    $('#schedule').modal('hide');
+                    reload_table();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Pertemuan dengan kode ' + id + ' gagal di batalkan.</div>');
+                    // close the message after seconds
+                    $('.alert-danger').delay(500).show(10, function() {
+                        $(this).delay(3000).hide(10, function() {
+                            $(this).remove();
+                        });
+                    });
+                    $('#schedule').modal('hide');
+                }
+            });
         });
     };
 
-    function message() {
-        $('#btn-save').hide();
+    function message(id) {
+        method = 'applicant';
+        $('#viewData').show();
+        $('#btnDelete').hide();
         $('.modal-dialog').addClass('modal-lg');
         $('#schedule').modal('show');
         $('#labelName').text('Nama Pemohon');
-        $('#viewName').text('Imam Agustian Nugraha');
         $('#labelMessage').text('Pesan Anda');
         $('.modal-title').text('Pesan Anda');
         $('#action').hide();
+        schData(id);
     };
 
-    function reply() {
-        $('#btn-save').hide();
+    function reply(id) {
+        method = 'employee';
+        $('#btnDelete').hide();
+        $('#viewData').show();
         $('.modal-dialog').addClass('modal-lg');
         $('#schedule').modal('show');
         $('#labelName').text('Nama Petugas');
-        $('#viewName').text('Danindra');
         $('#labelMessage').text('Balasan Pesan Anda');
         $('.modal-title').text('Balasan Pesan Anda');
         $('#action').hide();
+        schData(id);
+    };
+
+    function schData(id) {
+        $.ajax({
+            url: "<?php echo site_url('scheDule/schMessage') ?>/" + id,
+            type: "GET",
+            dataType: "JSON",
+            success: function(data) {
+                if (data.status) {
+                    $('#sch_type').text(data.sch_type);
+                    $('#sch_title').text(data.sch_title);
+                    $('#date_created').text(data.date_created)
+                    $('#date_update').text(data.date_update);
+
+                    if (method == 'applicant') {
+                        $('#viewName').text(data.applicant);
+                        $('#message').html(data.sch_message);
+                    } else if (method == 'employee') {
+                        $('#viewName').text(data.employee);
+                        $('#message').html(data.sch_reply);
+                    } else {
+                        $('#viewName').text('-');
+                        $('#message').html('-');
+                    };
+                    $('#message img').addClass('img-responsive img-thumbnail');
+
+                } else {
+                    $('#sch_type').text('-');
+                    $('#sch_title').text('-');
+                    $('#viewName').text('-');
+                    $('#date_created').text('-');
+                    $('#date_update').text('-');
+                    $('#message').text('-');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert">Kesalahan mendapatkan data dari ajax.</div>');
+                // close the message after seconds
+                $('.alert-danger').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+                $('#schedule').modal('hide');
+            }
+        });
     };
 </script>
 
@@ -118,12 +244,12 @@
             <div class="modal-body" id="action"></div>
             <div class="modal-body text-break" id="viewData">
                 <div class="mx-auto text-center">
-                    <h4 class="text-primary font-weight-bold" id="view_fullname">Konsultasi Data</h4>
+                    <h4 class="text-primary font-weight-bold" id="sch_type">Konsultasi Data</h4>
                 </div>
                 <hr>
                 <div class="form-group row">
-                    <label for="nin" class="col-sm-4 col-form-label text-sm-right font-weight-bold">Perihal</label>
-                    <div class="col-sm-8 text-primary text-lg my-auto" id="view_nin">
+                    <label for="sch_title" class="col-sm-4 col-form-label text-sm-right font-weight-bold">judul / Perihal</label>
+                    <div class="col-sm-8 text-primary text-lg my-auto" id="sch_title">
                         Konsultasi data untuk pembangunan Hotel di Jakarta
                     </div>
                 </div>
@@ -136,22 +262,22 @@
                 </div>
                 <hr>
                 <div class="form-group row">
-                    <label for="institute" class="col-sm-4 col-form-label text-sm-right font-weight-bold">Tanggal Dibuat</label>
-                    <div class="col-sm-8 text-primary text-lg my-auto" id="view_institute">
+                    <label for="date_created" class="col-sm-4 col-form-label text-sm-right font-weight-bold">Tanggal Dibuat</label>
+                    <div class="col-sm-8 text-primary text-lg my-auto" id="date_created">
                         19 November 2020
                     </div>
                 </div>
                 <hr>
                 <div class="form-group row">
-                    <label for="address" class="col-sm-4 col-form-label text-sm-right font-weight-bold">Terakhir Diperbarui</label>
-                    <div class="col-sm-8 text-primary text-lg my-auto" id="view_address">
+                    <label for="date_update" class="col-sm-4 col-form-label text-sm-right font-weight-bold">Terakhir Diperbarui</label>
+                    <div class="col-sm-8 text-primary text-lg my-auto" id="date_update">
                         19-01-2020 09:07:10
                     </div>
                 </div>
                 <hr>
                 <div class="form-group">
-                    <label for="job_category" id="labelMessage" class=" col-form-label text-center col-12 font-weight-bold">Pesan Anda</label>
-                    <div class="text-break" id="view_job_category">
+                    <label for="message" id="labelMessage" class=" col-form-label text-center col-12 font-weight-bold">Pesan Anda</label>
+                    <div class="text-break" id="message">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, nobis, dignissimos voluptas alias nemo voluptatem corrupti aspernatur itaque commodi neque animi non odio illum nulla mollitia dolor. Maxime, dignissimos perferendis.
                     </div>
                 </div>
@@ -163,7 +289,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="btn-save" type="button" class="btn btn-primary">Simpan</button>
+                <button id="btnDelete" type="button" class="btn btn-danger">Batalkan</button>
             </div>
         </div>
     </div>

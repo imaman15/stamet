@@ -102,13 +102,11 @@
             $('#photo_error').empty();
         });
 
-
-
     });
 
     function reload_table() {
         table.ajax.reload(null, false); //reload datatable ajax 
-    }
+    };
 
     function add_transaction() {
         window.location.replace("<?= site_url(UA_TRANSACTION) ?>");

@@ -8,14 +8,14 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-center text-gray-800"><?= $title; ?></h1>
 
-    <?= $this->session->flashdata('message');
-    ?>
-
     <div class="col-12">
+        <?= $this->session->flashdata('message');
+        ?>
         <div class="card shadow mb-3 animated zoomIn fast">
             <div class="card-body">
 
-                <!-- <?= form_open_multipart('transaction/save'); ?> -->
+                <?= form_open(UA_SCHEDULE); ?>
+                <input type="hidden" name="sch_code" value="<?= codeRandom('SC') ?>">
                 <div class="form-group row">
                     <label for="apply_name" class="col-sm-3 col-form-label text-left text-sm-right">Nama</label>
                     <div class="col-sm-9">
@@ -37,49 +37,60 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="title" class="col-sm-3 col-form-label text-left text-sm-right">Judul</label>
+                    <label for="sch_title" class="col-sm-3 col-form-label text-left text-sm-right">Judul</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control <?= form_error('title') ? 'is-invalid' : null ?>" name="title" id="title" placeholder="Judul atau Perihal">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="type_meeting" class="col-sm-3 col-form-label text-left text-sm-right">Jenis Pertemuan</label>
-                    <div class="col-sm-9">
-                        <select class="form-control <?= form_error('type_meeting') ? 'is-invalid' : null ?>" name="type_meeting" id="type_meeting">
-                            <?php $type_meeting = set_value("type_meeting") ? set_value("type_meeting") : $user->type_meeting;
-                            ?>
-                            <option value="">Pilih...</option>
-                            <option value="kunjungan">Kunjungan Sekolah</option>
-                            <option value="konsultasi">Konsultasi Data</option>
-                        </select>
-                        <?= form_error('type_meeting') ?>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="apply_email" class="col-sm-3 col-form-label text-left text-sm-right">Tanggal Pertemuan</label>
-                    <div class="col-sm-9">
-                        <input type="date" class="form-control <?= form_error('apply_email') ? 'is-invalid' : null ?>" name="apply_email" id="apply_email" placeholder="apply_email" value="">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="apply_message" class="col-sm-3 col-form-label text-left text-sm-right">Pesan</label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control" name="apply_message" id="apply_message" placeholder="Alamat Lengkap"><?= set_value('apply_message') ?></textarea>
-                        <?= form_error('apply_message'); ?>
-                        <div class="alert alert-warning py-1 mt-2 px-4" role="alert">
-                            <div class="row align-items-center">
-                                <i class="fas fa-fw fa-exclamation-circle fa-1x mx-auto mx-sm-1"></i>
-                                <small class="ml-1"> Catatan : Jika ingin menghapus gambar silahkan klik gambar lalu pilih tombol "Hapus Gambar"</small>
-                            </div>
+                        <input type="text" class="form-control <?= form_error('sch_title') ? 'is-invalid' : null ?>" name="sch_title" id="sch_title" placeholder="Judul atau Perihal" value="<?= set_value('sch_title') ?>">
+                        <div class="mb-1 mt-2">
+                            <?= form_error('sch_title') ?>
                         </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="sch_type" class="col-sm-3 col-form-label text-left text-sm-right">Jenis Pertemuan</label>
+                    <div class="col-sm-9">
+                        <select class="form-control <?= form_error('sch_type') ? 'is-invalid' : null ?>" name="sch_type" id="sch_type">
+                            <option value="">Pilih...</option>
+                            <option value="Kunjungan Sekolah" <?= form_error('sch_type') ? 'selected' : null ?>>Kunjungan Sekolah</option>
+                            <option value="Konsultasi Data" <?= form_error('sch_type') ? 'selected' : null ?>>Konsultasi Data</option>
+                        </select>
+                        <div class="mb-1 mt-2">
+                            <?= form_error('sch_type') ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="sch_date" class="col-sm-3 col-form-label text-left text-sm-right">Tanggal Pertemuan</label>
+                    <div class="col-sm-9">
+                        <input type="datetime-local" class="form-control <?= form_error('sch_date') ? 'is-invalid' : null ?>" name="sch_date" id="sch_date" placeholder="Tanggal Pertemuan" value="<?= set_value('sch_date') ?>">
+                        <div class="mb-1 mt-2">
+                            <?= form_error('sch_date') ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="sch_message" class="col-sm-3 col-form-label text-left text-sm-right">Pesan</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control is-invalid" name="sch_message" id="sch_message" placeholder="Pesan"><?= set_value('sch_message') ?></textarea>
+                        <?php if (!form_error('sch_message')) : ?>
+                            <div class="alert alert-warning py-1 mt-2 px-4" role="alert">
+                                <div class="row align-items-center">
+                                    <i class="fas fa-fw fa-exclamation-circle fa-1x mx-auto mx-sm-1"></i>
+                                    <small class="ml-1"> Catatan : Jika ingin menghapus gambar silahkan klik gambar lalu pilih tombol "Hapus Gambar"</small>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        <div class="mb-1 mt-2">
+                            <?= form_error('sch_message'); ?>
+                        </div>
+
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-md-4 offset-md-4 mt-4">
-                        <button id="btn-send" type="submit" class="btn btn-primary btn-block">Kirim</button>
+                        <button type="submit" class="btn btn-primary btn-block">Kirim</button>
                     </div>
                 </div>
 
@@ -95,12 +106,25 @@
 <script type="text/javascript" src="<?php echo base_url() . 'assets/vendor/summernote/lang/summernote-id-ID.min.js'; ?>"></script>
 
 <script type="text/javascript">
-    var url = "<?= site_url(UA_SCHEHISTORY) ?>";
-    $('#btn-send').click(function() {
-        window.location.replace(url);
-    });
+    // var url = "<?= site_url(UA_SCHEHISTORY) ?>";
+    // $('#btn-send').click(function() {
+    //     window.location.replace(url);
+    // });
     $(document).ready(function() {
-        $('#apply_message').summernote({
+        $("input").change(function() {
+            $(this).removeClass('is-invalid');
+        });
+        $("textarea").change(function() {
+            $(this).removeClass('is-invalid');
+        });
+        $("select").change(function() {
+            $(this).removeClass('is-invalid');
+        });
+        $(".invalid-feedback").change(function() {
+            $(this).empty();
+        });
+
+        $('#sch_message').summernote({
             dialogsInBody: true,
             minHeight: 400,
             placeholder: 'Silahkan jelaskan keperluan Anda secara detail pada kolom ini',
@@ -139,7 +163,7 @@
                 data: data,
                 type: "POST",
                 success: function(url) {
-                    $('#apply_message').summernote("insertImage", url);
+                    $('#sch_message').summernote("insertImage", url);
                 },
                 error: function(data) {
                     console.log(data);

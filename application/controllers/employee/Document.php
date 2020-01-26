@@ -36,8 +36,8 @@ class Document extends CI_Controller
             $data['error_string'][] = 'Nama berkas tidak boleh kosong.';
             $data['status'] = FALSE;
         }
-        if ($_FILES['file']['name'] == '') {
-            $data['inputerror'][] = 'file';
+        if ($_FILES['doc_storage']['name'] == '') {
+            $data['inputerror'][] = 'doc_storage';
             $data['error_string'][] = 'Upload berkas tidak boleh kosong.';
             $data['status'] = FALSE;
         }

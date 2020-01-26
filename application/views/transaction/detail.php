@@ -61,7 +61,7 @@
                             <td>Jumlah</td>
                             <td>
                                 <?php
-                                if ($trans->trans_unit) {
+                                if (isset($trans->trans_unit)) {
                                     echo $trans->trans_unit;
                                 } else {
                                     echo "-";
@@ -73,7 +73,7 @@
                             <td>Total</td>
                             <td>
                                 <?php
-                                if ($trans->trans_sum) {
+                                if (isset($trans->trans_sum)) {
                                     echo rupiah($trans->trans_sum);
                                 } else {
                                     echo "-";
@@ -85,7 +85,7 @@
                             <td>Status Transaksi</td>
                             <td>
                                 <?php
-                                if ($trans->trans_status) {
+                                if (isset($trans->trans_status)) {
                                     echo statusTrans($trans->trans_status, 'transaction');
                                 } else {
                                     echo "-";
@@ -121,7 +121,9 @@
 
             <div class="card-footer mt-n4">
                 <div id="mesDocument"></div>
-                <button type="button" class="btn btn-primary rounded btn-sm my-3" onclick="addDocument()">Tambah Dokumen</button>
+                <?php if (in_array($trans->trans_status, [0, 2])) : ?>
+                    <button type="button" class="btn btn-primary rounded btn-sm my-3" onclick="addDocument()">Tambah Dokumen</button>
+                <?php endif; ?>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead class="thead-dark">
@@ -192,9 +194,10 @@
         $(".invalid-feedback").change(function() {
             $(this).empty();
         });
-        $("#photo").change(function() {
-            $('#photo_error').empty();
+        $("#doc_storage").change(function() {
+            $('#doc_storage_error').empty();
         });
+
 
     });
 
@@ -208,6 +211,10 @@
         $('#documentModal #form')[0].reset(); // reset form on modals
         $('#documentModal .form-control').removeClass('is-invalid'); // clear error class
         $('#documentModal .invalid-feedback').empty(); // clear error string
+        $('#doc_storage').removeClass('is-invalid'); // clear error class
+        $('#doc_storage_label').text('Pilih Berkas');
+        $('#doc_storage_error').empty();
+
         $('#documentModal').modal('show');
 
     }

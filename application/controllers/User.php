@@ -12,20 +12,17 @@ class User extends CI_Controller
         app_not_login();
 
         $this->load->library(['form_validation']);
-        $this->load->model(['applicant_model', 'jobcategory_model']);
+        $this->load->model(['applicant_model', 'jobcategory_model', 'transaction_model', 'schedule_model']);
     }
 
     // List all your items
     public function index()
     {
+        $data['transaction'] = $this->transaction_model->beranda();
+        $data['schedule'] = $this->schedule_model->beranda();
         $data['title'] = 'Beranda';
         $data['user'] = $this->applicant_model->getData()->row();
         $this->template->load('user/profil', $data);
-    }
-
-    // Add a new item
-    public function add()
-    {
     }
 
     public function update()
@@ -118,11 +115,6 @@ class User extends CI_Controller
         }
 
         return TRUE;
-    }
-
-    //Delete one item
-    public function delete($id = NULL)
-    {
     }
 }
 

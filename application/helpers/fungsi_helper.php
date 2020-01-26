@@ -319,9 +319,9 @@ function upload_image()
             $config['source_image'] = './assets/img-sn/' . $data['file_name'];
             $config['create_thumb'] = FALSE;
             $config['maintain_ratio'] = TRUE;
-            $config['quality'] = '60%';
-            $config['width'] = 800;
-            $config['height'] = 800;
+            $config['quality'] = '80%';
+            $config['width'] = 2000;
+            $config['height'] = 2000;
             $config['new_image'] = './assets/img-sn/' . $data['file_name'];
             $CI->load->library('image_lib', $config);
             $CI->image_lib->resize();
@@ -408,5 +408,36 @@ function statusTrans($data = NULL, $for = NULL, $array = NULL)
         }
     } else {
         return "---";
+    }
+}
+
+function statusSch($data = NULL, $for = NULL, $array = NULL)
+{
+    if ($for == "applicant") {
+        if ($data == 0) {
+            if (isset($array['beranda'])) {
+                return '<span class="small">Konfirmasi Jadwal</span>';
+            } else {
+                return '<span class="small">Konfirmasi Jadwal</span>
+                <hr class="my-0">
+                <a id="btn-payment" href="javascript:void(0)" onclick="cancel(' . "'" . $array['sch_code'] . "'" . ')" class="badge badge-danger p-1 m-1">Batalkan</a>';
+            }
+        } elseif ($data == 1) {
+            if (isset($array['beranda'])) {
+                return '<span class="small">Jadwal Disetujui</span>';
+            } else {
+                return '<span class="small">Jadwal Disetujui</span>
+                <hr class="my-0">
+                <a id="btn-payment" href="javascript:void(0)" onclick="cancel(' . "'" . $array['sch_code'] . "'" . ')" class="badge badge-danger p-1 m-1">Batalkan</a>';
+            }
+        } elseif ($data == 2) {
+            return '<span class="small">Berlangsung</span>';
+        } elseif ($data == 3) {
+            return '<span class="small">Selesai</span>';
+        } elseif ($data == 4) {
+            return '<span class="small">Dibatalkan</span>';
+        } else {
+            return "---";
+        }
     }
 }

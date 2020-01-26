@@ -81,14 +81,16 @@ class Transaction extends CI_Controller
         }
     }
 
-    public function viewPay($id)
+    public function viewPay($id = NULL)
     {
         $user = $this->session->userdata('applicant_id');
         $select = 'apply_id,payment_to,payment_date,payment_bank,payment_number,payment_from,payment_amount,payment_img,payment_status';
         $where = ['trans_code' => $id, 'apply_id' => $user];
         $data = $this->transaction_model->getField($select, $where)->row();
 
-        if ((!isset($id)) || (!$data) || ($data->apply_id !== $user)) redirect(show_404());
+        if ((!isset($id)) || (!$data) || ($data->apply_id !== $user)) {
+            redirect(show_404());
+        };
 
         if ($data && $data->apply_id == $user) {
             $data->payment_dateConvert = DateTime($data->payment_date);
@@ -100,7 +102,7 @@ class Transaction extends CI_Controller
         }
     }
 
-    public function viewBeforePay($id)
+    public function viewBeforePay($id = NULL)
     {
         $user = $this->session->userdata('applicant_id');
         $trans = $this->transaction_model->getField('apply_id,trans_sum, payment_to,payment_date,payment_bank,payment_number,payment_from,payment_amount,payment_img,payment_status', ['trans_code' => $id, 'apply_id' => $user])->row();
@@ -108,7 +110,9 @@ class Transaction extends CI_Controller
         $select = 'bank_name, account_number, account_name';
         $conf = $this->configuration_model->getField($select, ['id' => 1])->row();
 
-        if ((!isset($id)) || (!$trans) || ($trans->apply_id !== $user || (!$conf))) redirect(show_404());
+        if ((!isset($id)) || (!$trans) || ($trans->apply_id !== $user || (!$conf))) {
+            redirect(show_404());
+        };
 
         if ($trans->payment_status == 4) {
             if ($trans && $trans->apply_id == $user) {

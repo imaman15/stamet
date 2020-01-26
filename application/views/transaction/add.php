@@ -47,7 +47,7 @@
                 <div class="form-group row">
                     <label for="trans_message" class="col-sm-2 col-form-label text-left text-sm-right">Pesan</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control is-invalid" name="trans_message" id="trans_message" placeholder="Alamat Lengkap"><?= set_value('trans_message') ?></textarea>
+                        <textarea class="form-control is-invalid" name="trans_message" id="trans_message" placeholder="Pesan"><?= set_value('trans_message') ?></textarea>
                         <?php if (!form_error('trans_message')) : ?>
                             <div class="alert alert-warning py-1 mt-2 px-4" role="alert">
                                 <div class="row align-items-center">

@@ -72,16 +72,26 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>20012020XYZADWL</td>
-                  <td>20-01-2020</td>
-                  <td class="text-left">
-                    Danindra L - Staf Datin
-                  </td>
-                  <td>
-                    <a href="<?= site_url(UA_TRANSACTIONDETAIL . '/20012020XYZADWL') ?>" class="badge badge-success">Selesai</a>
-                  </td>
-                </tr>
+
+                <?php foreach ($transaction as $d) { ?>
+                  <tr>
+                    <td><?= $d->trans_code ?></td>
+                    <td><?= DateTime($d->date_created) ?></td>
+                    <td class="text-left">
+                      <?php
+                      if (isset($d->emp_name) && isset($d->emp_posname)) {
+                        echo $d->emp_name . " - " . $d->emp_posname;
+                      }
+                      ?>
+                    </td>
+                    <td>
+
+                      <a target="_blank" href="<?= site_url(UA_TRANSACTIONDETAIL . '/' . $d->trans_code) ?>">
+                        <?= statusTrans($d->trans_status, 'transaction') ?>
+                      </a>
+                    </td>
+                  </tr>
+                <?php }; ?>
               </tbody>
             </table>
           </div>
@@ -104,20 +114,18 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>SCH19012020XYZ</td>
-                  <td>20-02-2020</td>
-                  <td class="text-left">
-                    <b>Nama : </b>Danindra L
-                    <br>
-                    <b>NIP : </b>234456123616136161
-                    <br>
-                    <b>No. HP</b> : +6290671813158
-                  </td>
-                  <td>
-                    <span class="badge badge-pill badge-success">Berlangsung</span>
-                  </td>
-                </tr>
+                <?php foreach ($schedule as $d) { ?>
+                  <tr>
+                    <td><?= $d->sch_code ?></td>
+                    <td><?= DateTime($d->sch_date) ?></td>
+                    <td class="text-left">
+                      <?= $d->responsible_person ?>
+                    </td>
+                    <td>
+                      <?= statusSch($d->sch_status, 'applicant', ['beranda' => 1]) ?>
+                    </td>
+                  </tr>
+                <?php } ?>
               </tbody>
             </table>
           </div>
