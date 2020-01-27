@@ -9,7 +9,7 @@
         ?>
         <nav class="d-print-none" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?= site_url(UA_TRANSHISTORY) ?>">Riwayat Transaksi</a></li>
+                <li class="breadcrumb-item"><a href="<?= site_url(UE_TRANSACTION) ?>">Riwayat Transaksi</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Detail Transaksi</li>
             </ol>
         </nav>
@@ -166,7 +166,7 @@
 
             // Load data for the table's content from an Ajax source
             "ajax": {
-                "url": "<?php echo site_url('transaction/docList/') ?>" + "<?= $trans->trans_id; ?>",
+                "url": "<?php echo site_url('employee/transaction/docList/') ?>" + "<?= $trans->trans_id; ?>",
                 "type": "POST"
             },
 

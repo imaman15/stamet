@@ -125,6 +125,7 @@ define('UE_APPLICANT', strtolower(UE_ADMIN . '/' . 'applicant'));
 define('UE_JOBCAT', strtolower(UE_ADMIN . '/' . 'jobcategory'));
 define('UE_POSITION', strtolower(UE_ADMIN . '/' . 'position'));
 define('UE_TRANSACTION', strtolower(UE_ADMIN . '/' . 'transaction'));
+define('UE_TRANSACTIONDETAIL', strtolower(UE_ADMIN . '/' . 'detail-transaksi'));
 define('UE_SCHEDULE', strtolower(UE_ADMIN . '/' . 'schedule'));
 define('UE_REQTYPE', strtolower(UE_ADMIN . '/' . 'request-type'));
 define('UE_REQSUBTYPE', strtolower(UE_ADMIN . '/' . 'request-subtype'));

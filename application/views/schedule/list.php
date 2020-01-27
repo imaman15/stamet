@@ -30,28 +30,7 @@
                         </tr>
 
                     <tbody>
-                        <tr>
-                            <td>1.</td>
-                            <td>SCH19012020XYZ</td>
-                            <td>Konsultasi Data</td>
-                            <td>20-02-2020</td>
-                            <td>
-                                <b>Nama : </b>Danindra L
-                                <br>
-                                <b>NIP : </b>234456123616136161
-                                <br>
-                                <b>No. HP</b> : +6290671813158
-                            </td>
-                            <td id="status" class="text-center">
-                                Berlangsung
-                                <hr class="my-0">
-                                <a href="javascript:void(0)" onclick="cancel()" class="badge badge-danger p-1 m-1">Batalkan</a>
-                            </td>
-                            <td class="text-center">
-                                <button type="button" title="Pesan Anda" class="btn btn-dark btn-circle btn-sm mb-1" onclick="message()"><i class="fas fa-envelope"></i></button>
-                                <button type="button" title="Balasan Pesan Anda" class="btn btn-secondary btn-circle btn-sm mb-1" onclick="reply()"><i class="fas fa-reply"></i></button>
-                            </td>
-                        </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -186,7 +165,7 @@
 
     function schData(id) {
         $.ajax({
-            url: "<?php echo site_url('scheDule/schMessage') ?>/" + id,
+            url: "<?php echo site_url('schedule/schMessage') ?>/" + id,
             type: "GET",
             dataType: "JSON",
             success: function(data) {
@@ -200,8 +179,14 @@
                         $('#viewName').text(data.applicant);
                         $('#message').html(data.sch_message);
                     } else if (method == 'employee') {
-                        $('#viewName').text(data.employee);
-                        $('#message').html(data.sch_reply);
+                        if (data.sch_reply && data.employee) {
+                            $('#message').html(data.sch_reply);
+                            $('#viewName').text(data.employee);
+                        } else {
+                            $('#message').html('-');
+                            $('#viewName').text('-');
+                        };
+
                     } else {
                         $('#viewName').text('-');
                         $('#message').html('-');
@@ -257,7 +242,7 @@
                 <div class="form-group row">
                     <label for="nama" id="labelName" class="col-sm-4 col-form-label text-sm-right font-weight-bold">Nama Pemohon</label>
                     <div class="col-sm-8 text-primary text-lg my-auto" id="viewName">
-                        Imam Agustian Nugraha
+                        -
                     </div>
                 </div>
                 <hr>

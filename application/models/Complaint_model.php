@@ -2,9 +2,9 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Schedule_model extends CI_Model
+class Complaint_model extends CI_Model
 {
-    private $_table = "schedule";
+    private $_table = 'complaint';
 
     private function _get_datatables_query($where = NULL)
     {
@@ -18,8 +18,8 @@ class Schedule_model extends CI_Model
 
         $this->db->from($this->_table);
         // start datatables
-        $column_order = array(null, 'sch_code', 'sch_type', 'sch_date', 'responsible_person', null, null); //set column field database for datatable orderable
-        $column_search = array('sch_code', 'sch_type', 'sch_date', 'responsible_person'); //set column field database for datatable searchable
+        $column_order = array(null, 'comp_code', 'date_created', 'comp_title', null, 'status', 'date_update'); //set column field database for datatable orderable
+        $column_search = array('comp_code', 'comp_title', 'status', 'date_created'); //set column field database for datatable searchable
         $order = array('date_update' => 'desc'); // default order
 
         $i = 0;
@@ -83,16 +83,13 @@ class Schedule_model extends CI_Model
 
     function add()
     {
-        $data['applicant_id'] = $this->session->userdata('applicant_id');
-        $data['sch_code'] = $this->input->post('sch_code', TRUE);
-        $data['sch_title'] = $this->input->post('sch_title', TRUE);
-        $data['sch_type'] = $this->input->post('sch_type', TRUE);
-        $data['sch_date'] = $this->input->post('sch_date', TRUE);
-        $data['sch_message'] = $this->input->post('sch_message', FALSE);
-        $data['date_created'] = date("Y-m-d H:i:s");
-        $data['sch_status'] = 0;
-
-        $this->db->insert($this->_table, $data);
+        $object['applicant_id'] = $this->session->userdata('applicant_id');
+        $object['comp_title'] = $this->input->post('comp_title', TRUE);
+        $object['comp_code'] = codeRandom('CO');
+        $object['status'] = "diajukan";
+        $object['date_created'] = date("Y-m-d H:i:s");
+        $object['comp_message'] = $this->input->post('comp_message', FALSE);
+        $this->db->insert($this->_table, $object);
     }
 
     public function getField($select = NULL, $where = NULL)
@@ -108,25 +105,8 @@ class Schedule_model extends CI_Model
             $this->db->where($where);
         }
 
-
         return $this->db->get();
-    }
-
-    function cancel($id)
-    {
-        $user = $this->session->userdata('applicant_id');
-        $params['sch_status'] = 4;
-        $this->db->where(['sch_code' => $id, 'applicant_id' => $user]);
-        $this->db->update($this->_table, $params);
-    }
-
-    public function beranda()
-    {
-        $id = $this->session->userdata('applicant_id');
-        $this->db->where('applicant_id', $id);
-        $this->db->order_by('date_update', 'desc');
-        return $this->db->get($this->_table, 5)->result();
     }
 }
 
-/* End of file Schedule_model.php */
+/* End of file Complaint_model.php */

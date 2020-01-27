@@ -221,11 +221,31 @@ $schadd = [
     )
 ];
 
-
+//=======================================================
+// SET RULE COMPLAINT
+$compadd = [
+    array(
+        'field' => 'comp_title',
+        'label' => '<strong>Judul</strong>',
+        'rules' => 'trim|required',
+        'errors' => [
+            'required' => $required
+        ]
+    ),
+    array(
+        'field' => 'comp_message',
+        'label' => '<strong>Pesan</strong>',
+        'rules' => 'trim|required',
+        'errors' => [
+            'required' => $required
+        ]
+    )
+];
 
 //=======================================================
 // Set Rules
 $config = array(
+    'compadd' => $compadd,
     'schadd' => $schadd,
     'transadd' => $transadd,
     'employee' => $field,

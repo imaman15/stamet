@@ -8,25 +8,56 @@ class Transaction_model extends CI_Model
     private $_table = "transaction";
 
 
-    private function _get_datatables_query($where = NULL)
+    private function _get_datatables_query($where = NULL, $for = NULL, $list = NULL)
     {
 
         $user = $this->session->userdata('applicant_id');
 
-        $this->db->select('trans_code, date_created, payment_status, trans_status, trans_sum');
+        if ($for == "emp") {
+            if ($list == 'all') {
+                $this->db->select('trans_code,transcode_storage,' . $this->_table . '.date_created, payment_status, trans_status, trans_sum,CONCAT(applicant.first_name, " ", applicant.last_name) as fullname,institute,phone,email');
+            } else {
+                $this->db->select('trans_code,transcode_storage, apply_id, apply_name, apply_institute, apply_email, apply_phone,date_created, payment_status, trans_status, trans_sum');
+            }
+        } else {
+            //=====================================================================================
+            $this->db->select('trans_code, date_created, payment_status, trans_status, trans_sum');
+        }
+        //=====================================================================================
         if ($user) {
             $this->db->where(['apply_id' => $user]);
         }
-
+        //=====================================================================================
         if ($where != NULL) {
-            $this->db->where_in('trans_status', $where);
+            $this->db->where($where);
         }
 
-        $this->db->from($this->_table);
+
         // start datatables
-        $column_order = array(null, 'trans_code', 'date_created', null); //set column field database for datatable orderable
-        $column_search = array('trans_code', 'date_created'); //set column field database for datatable searchable
-        $order = array('date_update' => 'desc'); // default order
+
+        if ($for == "emp") {
+
+            if ($list == 'all') {
+                $this->db->join('applicant', 'applicant.applicant_id = ' . $this->_table . '.apply_id');
+                $this->db->from($this->_table);
+                //==============================================
+                $column_order = array(null, 'trans_code', 'fullname', 'transcode_storage', $this->_table . '.date_created', null, null, null);
+                $column_search = array('trans_code', 'CONCAT(applicant.first_name, " ", applicant.last_name)', 'transcode_storage', $this->_table . '.date_created', 'institute', 'phone', 'email');
+                $order = array($this->_table . '.date_update' => 'desc');
+            } else {
+                $this->db->join('applicant', 'applicant.applicant_id = ' . $this->_table . '.apply_id');
+                $this->db->from($this->_table);
+                //==============================================
+                $column_order = array(null, 'trans_code', 'transcode_storage', 'apply_name', $this->_table . '.date_created', null, null, null);
+                $column_search = array('trans_code', 'transcode_storage', 'apply_name', 'apply_institute', 'apply_email', 'apply_phone', $this->_table . '.date_created');
+                $order = array($this->_table . '.date_update' => 'desc');
+            }
+        } else {
+            $this->db->from($this->_table);
+            $column_order = array(null, 'trans_code', 'date_created', null, null, null); //set column field database for datatable orderable
+            $column_search = array('trans_code', 'date_created'); //set column field database for datatable searchable
+            $order = array('date_update' => 'desc'); // default order
+        }
 
         $i = 0;
 
@@ -58,24 +89,33 @@ class Transaction_model extends CI_Model
         }
     }
 
-    function get_datatables()
+    function get_datatables($where = NULL, $for = NULL, $list = NULL)
     {
-        $this->_get_datatables_query();
+        $this->_get_datatables_query($where, $for, $list);
         if ($_POST['length'] != -1)
             $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
 
-    function count_filtered()
+    function count_filtered($where = NULL, $for = NULL, $list = NULL)
     {
-        $this->_get_datatables_query();
+        $this->_get_datatables_query($where, $for, $list);
         $query = $this->db->get();
         return $query->num_rows();
     }
 
-    public function count_all()
+    public function count_all($where = NULL)
     {
+        $user = $this->session->userdata('applicant_id');
+
+        $this->db->select('*');
+        if ($user) {
+            $this->db->where(['apply_id' => $user]);
+        }
+        if ($where != NULL) {
+            $this->db->where($where);
+        }
         $this->db->from($this->_table);
         return $this->db->count_all_results();
     }
@@ -161,7 +201,10 @@ class Transaction_model extends CI_Model
         $user = $this->session->userdata('applicant_id');
         $params['payment_status'] = 5;
         $params['trans_status'] = 5;
-        $this->db->where(['trans_code' => $id, 'apply_id' => $user]);
+        if ($user) {
+            $this->db->where(['trans_code' => $id, 'apply_id' => $user]);
+        }
+        $this->db->where(['trans_code' => $id]);
         $this->db->update($this->_table, $params);
     }
 

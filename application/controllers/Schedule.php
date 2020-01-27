@@ -12,7 +12,7 @@ class Schedule extends CI_Controller
         //Load Dependencies
         app_not_login();
         $this->load->library(['form_validation', 'upload']);
-        $this->load->model(['schedule_model']);
+        $this->load->model(['schedule_model', 'employee_model', 'applicant_model']);
     }
 
     // List all your items
@@ -87,19 +87,30 @@ class Schedule extends CI_Controller
     public function schMessage($id = NULL)
     {
         $user = $this->session->userdata('applicant_id');
-        $where = ['sch_code' => $id, 's.applicant_id' => $user];
-        $select = 's.*,CONCAT(a.first_name, " ", a.last_name) as applicant,CONCAT(e.first_name, " ", e.last_name) as employee, e.phone as empphone';
-        $data = $this->schedule_model->getField($select, $where)->row();
+        $where = ['sch_code' => $id, 'applicant_id' => $user];
+        $data = $this->schedule_model->getField(NULL, $where)->row();
+
+        $employee = $this->employee_model->getDataBy($data->emp_id, 'emp_id')->row();
+        $applicant = $this->applicant_model->getDataBy($data->applicant_id, 'applicant_id')->row();
 
         if ((!isset($id)) || (!$data) || ($data->applicant_id !== $user)) {
             redirect(show_404());
         };
 
         if ($data && $data->applicant_id == $user) {
-            $data->date_created = timeIDN(date('Y-m-d', strtotime($data->date_created)), true);
-            $data->date_update = timeInfo($data->date_update);
-            $data->status = true;
-            echo json_encode($data);
+            $sch = new stdClass();
+            $sch->sch_type = $data->sch_type;
+            $sch->sch_title = $data->sch_title;
+            $sch->date_update = timeInfo($data->date_update);
+            $sch->date_created = timeIDN(date('Y-m-d', strtotime($data->date_created)), true);
+            if ($data->emp_id) {
+                $sch->employee = $employee->first_name . ' ' . $employee->last_name . ' - ' . $employee->pos_name;
+                $sch->sch_reply = $data->sch_reply;
+            }
+            $sch->applicant = $applicant->first_name . ' ' . $applicant->last_name;
+            $sch->sch_message = $data->sch_message;
+            $sch->status = true;
+            echo json_encode($sch);
         } else {
             echo json_encode(['status' => false]);
         }
