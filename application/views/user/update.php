@@ -5,10 +5,11 @@
     <h1 class="h3 mb-4 text-center text-gray-800 col-lg-10 offset-lg-1"><?= $title; ?></h1>
 
     <div class="col-lg-10 offset-lg-1">
+        <?= $this->session->flashdata('message');
+        ?>
         <div class="card shadow mb-3 animated zoomIn fast">
             <div class="card-body">
-                <?= $this->session->flashdata('message');
-                ?>
+
                 <?= form_open_multipart('edit-profil'); ?>
                 <div class="form-group row">
                     <label for="email" class="col-sm-3 col-form-label">Email</label>

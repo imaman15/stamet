@@ -19,103 +19,104 @@
 
                 <div class="d-print-flex" id="print">
                     <h4 class="d-none d-print-block text-center">Sistem Informasi Pelayanan Jasa Meteorologi</h4>
-
-                    <table class="table table-bordered">
-                        <tr>
-                            <th width="20%">Kode Transaksi </th>
-                            <th><?= $trans->trans_code; ?></th>
-                        </tr>
-                        <tr>
-                            <td>Tanggal Transaksi</td>
-                            <td><?= DateTime($trans->date_created); ?></td>
-                        </tr>
-                        <tr>
-                            <td>Jenis Informasi</td>
-                            <td>
-                                <?php
-                                if ((in_array($trans->trans_status, [2, 3, 4])) && (in_array($trans->payment_status, [3, 0])) && $trans->trans_request) {
-                                    echo $trans->trans_request;
-                                } else if ((in_array($trans->payment_status, [2, 1, 4, 5])) && (in_array($trans->trans_status, [1, 5])) && $trans->subtype_id) {
-                                    echo $request;
-                                } else {
-                                    echo "-";
-                                }
-                                ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Tarif - Satuan</td>
-                            <td>
-                                <?php
-                                if ((in_array($trans->trans_status, [2, 3, 4])) && (in_array($trans->payment_status, [3, 0])) && $trans->trans_rates && $trans->emp_posname) {
-                                    echo rupiah($trans->trans_rates) . " - " .  $trans->emp_posname;
-                                } else if ((in_array($trans->payment_status, [2, 1, 4, 5])) && (in_array($trans->trans_status, [1, 5])) && $trans->subtype_id) {
-                                    echo $rates;
-                                } else {
-                                    echo "-";
-                                }
-                                ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Jumlah</td>
-                            <td>
-                                <?php
-                                if (isset($trans->trans_unit)) {
-                                    echo $trans->trans_unit;
-                                } else {
-                                    echo "-";
-                                }
-                                ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Total</td>
-                            <td>
-                                <?php
-                                if (isset($trans->trans_sum)) {
-                                    echo rupiah($trans->trans_sum);
-                                } else {
-                                    echo "-";
-                                }
-                                ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Status Transaksi</td>
-                            <td>
-                                <?php
-                                if (isset($trans->trans_status)) {
-                                    echo statusTrans($trans->trans_status, 'transaction');
-                                } else {
-                                    echo "-";
-                                }
-                                ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Petugas Layanan</td>
-                            <td>
-                                <?php
-                                if ((in_array($trans->trans_status, [2, 3, 4])) && (in_array($trans->payment_status, [3, 0])) && $trans->emp_name && $trans->emp_posname) {
-                                    echo $trans->emp_name . " - " .  $trans->emp_posname;
-                                } else if ((in_array($trans->payment_status, [2, 1, 4, 5])) && (in_array($trans->trans_status, [1, 5])) && $trans->emp_id) {
-                                    echo $emp_name . " - " . $emp_posname;
-                                } else {
-                                    echo "-";
-                                }
-                                ?>
-                            </td>
-                        </tr>
-                        <tr class="text-center d-print-none">
-                            <td colspan="2">
-                                <button type="button" class="btn btn-secondary btn-sm rounded" onclick="applicantNote()">Lihat Catatan Anda</button>
-                                <?php if ($trans->trans_information) : ?>
-                                    <button type="button" class="btn btn-dark btn-sm rounded" onclick="employeeNote()">Lihat Catatan Petugas</button>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th width="20%">Kode Transaksi </th>
+                                <th><?= $trans->trans_code; ?></th>
+                            </tr>
+                            <tr>
+                                <td>Tanggal Transaksi</td>
+                                <td><?= DateTime($trans->date_created); ?></td>
+                            </tr>
+                            <tr>
+                                <td>Jenis Informasi</td>
+                                <td>
+                                    <?php
+                                    if ((in_array($trans->trans_status, [2, 3, 4])) && (in_array($trans->payment_status, [3, 0])) && $trans->trans_request) {
+                                        echo $trans->trans_request;
+                                    } else if ((in_array($trans->payment_status, [2, 1, 4, 5])) && (in_array($trans->trans_status, [1, 5])) && $trans->subtype_id) {
+                                        echo $request;
+                                    } else {
+                                        echo "-";
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tarif - Satuan</td>
+                                <td>
+                                    <?php
+                                    if ((in_array($trans->trans_status, [2, 3, 4])) && (in_array($trans->payment_status, [3, 0])) && $trans->trans_rates && $trans->trans_unit) {
+                                        echo rupiah($trans->trans_rates) . " - " .  $trans->trans_unit;
+                                    } else if ((in_array($trans->payment_status, [2, 1, 4, 5])) && (in_array($trans->trans_status, [1, 5])) && $trans->subtype_id) {
+                                        echo $rates;
+                                    } else {
+                                        echo "-";
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Jumlah</td>
+                                <td>
+                                    <?php
+                                    if (isset($trans->trans_amount)) {
+                                        echo $trans->trans_amount;
+                                    } else {
+                                        echo "-";
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td>
+                                    <?php
+                                    if (isset($trans->trans_sum)) {
+                                        echo rupiah($trans->trans_sum);
+                                    } else {
+                                        echo "-";
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Status Transaksi</td>
+                                <td>
+                                    <?php
+                                    if (isset($trans->trans_status)) {
+                                        echo statusTrans($trans->trans_status, 'transaction');
+                                    } else {
+                                        echo "-";
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Petugas Layanan</td>
+                                <td>
+                                    <?php
+                                    if ((in_array($trans->trans_status, [2, 3, 4])) && (in_array($trans->payment_status, [3, 0])) && $trans->emp_name && $trans->emp_posname) {
+                                        echo $trans->emp_name . " - " .  $trans->emp_posname;
+                                    } else if ((in_array($trans->payment_status, [2, 1, 4, 5])) && (in_array($trans->trans_status, [1, 5])) && $trans->emp_id) {
+                                        echo $emp_name . " - " . $emp_posname;
+                                    } else {
+                                        echo "-";
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr class="text-center d-print-none">
+                                <td colspan="2">
+                                    <button type="button" class="btn btn-secondary btn-sm rounded mb-1 mb-sm-0" onclick="applicantNote()">Lihat Catatan Anda</button>
+                                    <?php if ($trans->trans_information) : ?>
+                                        <button type="button" class="btn btn-dark btn-sm rounded" onclick="employeeNote()">Lihat Catatan Petugas</button>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -176,7 +177,18 @@
                 "className": 'text-center',
                 "orderable": false, //set not orderable
             }],
-
+            "oLanguage": {
+                "sInfo": "Total _TOTAL_ data, menampilkan data (_START_ sampai _END_)",
+                "sInfoFiltered": " - filtering from _MAX_ records",
+                "sSearch": "Pencarian :",
+                "sInfoEmpty": "Belum ada data untuk saat ini",
+                "sLengthMenu": "Menampilkan _MENU_",
+                "oPaginate": {
+                    "sPrevious": "Sebelumnya",
+                    "sNext": "Selanjutnya"
+                },
+                "sZeroRecords": "Tidak ada data"
+            }
         });
         // $.fn.dataTable.ext.errMode = 'throw';
 

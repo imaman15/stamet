@@ -136,6 +136,7 @@ define('UE_MANAGEFAQ', strtolower(UE_ADMIN . '/' . 'kelola-faq'));
 define('UE_REPORTTRANSRATE', strtolower(UE_ADMIN . '/' . 'report-transaction-rates'));
 define('UE_REPORTTRANSNONRATE', strtolower(UE_ADMIN . '/' . 'report-transaction-nonrates'));
 define('UE_REPORTRATINGS', strtolower(UE_ADMIN . '/' . 'report-ratings'));
-define('UE_ADD', strtolower('/add'));
+define('UE_ADD', strtolower('/tambah'));
+define('UE_UPDATE', strtolower('/edit'));
 define('UE_VERIFY', strtolower(UE_ADMIN . '/verify'));
 define('UE_CONFIGURATION', strtolower(UE_ADMIN . '/' . 'konfigurasi'));

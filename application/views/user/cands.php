@@ -19,7 +19,7 @@
                 <?= $this->session->flashdata('message');
                 ?>
 
-                <!-- <?= form_open_multipart('transaction/save'); ?> -->
+                <!-- <?= form_open(UA_CANDS); ?> -->
                 <div class="form-group row">
                     <label for="apply_name" class="col-sm-2 col-form-label text-left text-sm-right">Nama</label>
                     <div class="col-sm-10">

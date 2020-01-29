@@ -28,10 +28,19 @@ class Transaction_model extends CI_Model
             $this->db->where(['apply_id' => $user]);
         }
         //=====================================================================================
-        if ($where != NULL) {
+        if ($where == "new") {
+            //$this->db->where($where);
+        } else if ($where == "pay") {
+            //$this->db->where($where);
+        } else if ($where == "process") {
+            //$this->db->where($where);
+        } else if ($where == "done") {
+            //$this->db->where($where);
+        } else if ($where == "cancel") {
+            //$this->db->where($where);
+        } else if ($where != NULL) {
             $this->db->where($where);
         }
-
 
         // start datatables
 
@@ -193,6 +202,39 @@ class Transaction_model extends CI_Model
         }
 
         $this->db->where(['trans_code' => $id, 'apply_id' => $user]);
+        $this->db->update($this->_table, $params);
+    }
+
+    public function confirmTrans($req)
+    {
+        $post = $this->input->post(NULL, TRUE);
+        $user = dAdmin();
+        $id = $post["trans_code"];
+        $checkData = $post["checkData"];
+        if (!empty($checkData)) {
+            $params['emp_id'] = $user->emp_id;
+            $params['subtype_id'] = NULL;
+            $params['trans_status'] = $checkData;
+            $params['trans_request'] = NULL;
+            $params['trans_unit'] = NULL;
+            $params['trans_amount'] = NULL;
+            $params['trans_rates'] = NULL;
+            $params['trans_sum'] = NULL;
+            $params['payment_status'] = 5;
+        } else {
+            $params['emp_id'] = $user->emp_id;
+            $params['subtype_id'] = $post["trans_request"];
+            $params['trans_status'] = 1;
+            $params['trans_request'] = $req->description . "<li>" . $req->sub_description . "</li>";
+            $params['trans_unit'] = $req->unit;
+            $params['trans_amount'] = $post["trans_amount"];
+            $params['trans_rates'] = $post["trans_rates"];
+            $params['trans_sum'] = $post["trans_sum"];
+            $params['payment_status'] = 1;
+        }
+
+
+        $this->db->where(['trans_code' => $id]);
         $this->db->update($this->_table, $params);
     }
 

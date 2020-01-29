@@ -243,8 +243,70 @@ $compadd = [
 ];
 
 //=======================================================
+// SET RULE FAQS
+$faqadd = [
+    array(
+        'field' => 'faqs_questions',
+        'label' => '<strong>Judul Pertanyaan</strong>',
+        'rules' => 'trim|required',
+        'errors' => [
+            'required' => $required
+        ]
+    ),
+    array(
+        'field' => 'faqs_answers',
+        'label' => '<strong>Jawaban Pertanyaan</strong>',
+        'rules' => 'trim|required',
+        'errors' => [
+            'required' => $required
+        ]
+    )
+];
+
+//=======================================================
+// SET RULE CONFIGURATION
+$confadd = [
+    array(
+        'field' => 'bank_name',
+        'label' => '<strong>Bank</strong>',
+        'rules' => 'trim|required',
+        'errors' => [
+            'required' => $required
+        ]
+    ),
+    array(
+        'field' => 'account_number',
+        'label' => '<strong>No. Rekening</strong>',
+        'rules' => 'trim|required|numeric',
+        'errors' => [
+            'required' => $required,
+            'numeric' => '%s harus berupa angka'
+        ]
+    ),
+    array(
+        'field' => 'account_name',
+        'label' => '<strong>Atas nama</strong>',
+        'rules' => 'trim|required',
+        'errors' => [
+            'required' => $required
+        ]
+    ),
+    array(
+        'field' => 'email_reply',
+        'label' => '<strong>Email</strong>',
+        'rules' => 'trim|required|valid_email',
+        'errors' => [
+            'required' => $required,
+            'valid_email' => $valid_email
+        ]
+    )
+];
+
+//=======================================================
 // Set Rules
 $config = array(
+    'confadd' => $confadd,
+    'faqadd' => $faqadd,
     'compadd' => $compadd,
     'schadd' => $schadd,
     'transadd' => $transadd,

@@ -64,7 +64,18 @@
                     "className": 'text-center',
                 }
             ],
-
+            "oLanguage": {
+                "sInfo": "Total _TOTAL_ data, menampilkan data (_START_ sampai _END_)",
+                "sInfoFiltered": " - filtering from _MAX_ records",
+                "sSearch": "Pencarian :",
+                "sInfoEmpty": "Belum ada data untuk saat ini",
+                "sLengthMenu": "Menampilkan _MENU_",
+                "oPaginate": {
+                    "sPrevious": "Sebelumnya",
+                    "sNext": "Selanjutnya"
+                },
+                "sZeroRecords": "Tidak ada data"
+            }
         });
         // $.fn.dataTable.ext.errMode = 'throw';
 

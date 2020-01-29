@@ -16,10 +16,6 @@
             </button>
         </div>
         <div class="card-body">
-            <?php
-            // header("X-XSS-Protection: 0");
-            // echo $contents;
-            ?>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -81,7 +77,18 @@
                 "className": 'text-center',
                 "orderable": false, //set not orderable
             }],
-
+            "oLanguage": {
+                "sInfo": "Total _TOTAL_ data, menampilkan data (_START_ sampai _END_)",
+                "sInfoFiltered": " - filtering from _MAX_ records",
+                "sSearch": "Pencarian :",
+                "sInfoEmpty": "Belum ada data untuk saat ini",
+                "sLengthMenu": "Menampilkan _MENU_",
+                "oPaginate": {
+                    "sPrevious": "Sebelumnya",
+                    "sNext": "Selanjutnya"
+                },
+                "sZeroRecords": "Tidak ada data"
+            }
         });
         // $.fn.dataTable.ext.errMode = 'throw';
 

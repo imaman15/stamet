@@ -77,33 +77,164 @@ class Transaction extends CI_Controller
     {
         $trans = $this->transaction_model->getField('*', ['trans_code' => $id])->row();
         $req = $this->subtype_model->groupTrans($trans->subtype_id)->row();
-        if ($req && $trans->subtype_id) {
-            $request = $req->sub_description . " - " . $req->description;
-            $rates = rupiah($req->rates) . " - " . $req->unit;
-        } else {
-            $request = "Jenis permintaan tidak ditemukan";
-            $rates = "-";
-        }
-
         $emp = $this->employee_model->getDataBy($trans->emp_id, 'emp_id')->row();
-        if ($emp && $trans->emp_id) {
-            $emp_name = $emp->first_name . " " . $emp->last_name;
-            $emp_posname =  $emp->pos_name;
-        } else {
-            $emp_name = "";
-            $emp_posname = "";
-        }
+        $apply = $this->applicant_model->getDataBy($trans->apply_id, 'applicant_id')->row();
 
         if ((!isset($id)) || (!$trans)) redirect(show_404());
 
-        $data['user'] = dUser();
+
+        $data['type'] = $this->type_model->getData()->result_array();
+        $data['user'] = dAdmin();
         $data['trans'] = $trans;
-        $data['request'] =  $request;
-        $data['rates'] =  $rates;
-        $data['emp_name'] =  $emp_name;
-        $data['emp_posname'] =  $emp_posname;
+        $data['req'] =  $req;
+        $data['emp'] =  $emp;
+        $data['apply'] =  $apply;
         $data['title'] = 'Detail Transaksi';
         $this->template->loadadmin(UE_FOLDER . '/detail', $data);
+    }
+
+    public function detailAjax($id = NULL)
+    {
+        $trans = $this->transaction_model->getField('*', ['trans_code' => $id])->row();
+        if ((!isset($id)) || (!$trans)) redirect(show_404());
+
+        $req = $this->subtype_model->groupTrans($trans->subtype_id)->row();
+        $emp = $this->employee_model->getDataBy($trans->emp_id, 'emp_id')->row();
+        $apply = $this->applicant_model->getDataBy($trans->apply_id, 'applicant_id')->row();
+
+        if ($trans) {
+            //Kode Transaksi
+            $data['trans_code'] = $trans->trans_code;
+
+            //Kode Penyimpanan File
+            if ($trans->transcode_storage) {
+                $data['transcode_storage'] = $trans->transcode_storage;
+            } else {
+                $data['transcode_storage'] = '-';
+            }
+
+            //Tanggal Transaksi
+            if ($trans->date_created) {
+                $data['date_created'] = DateTime($trans->date_created);
+            }
+
+            //Identitas Pengguna
+            if ($trans->apply_id && $trans->apply_name && $trans->apply_institute && $trans->apply_email && $trans->apply_phone) {
+                $data['apply'] = '<ul class="applicant"><li>Nama : ' . $trans->apply_name . '</li><li>Instansi : ' . $trans->apply_institute . '</li><li>Email : ' . $trans->apply_email . '</li><li>No. Hp : ' . $trans->apply_phone . '</li></ul>';
+            } elseif ($apply) {
+                $data['apply'] = '<ul class="applicant"><li>Nama : ' . $apply->first_name . ' ' . $apply->last_name . '</li><li>Instansi : ' . $apply->institute . '</li><li>Email : ' . $apply->email . '</li><li>No. Hp : ' . $apply->phone . '</li></ul>';
+            } else {
+                $data['apply'] = '-';
+            }
+
+            //Jenis Informasi
+            if ((in_array($trans->trans_status, [2, 3, 4])) && (in_array($trans->payment_status, [3, 0])) && $trans->trans_request && $trans->trans_rates && $trans->trans_unit) {
+                $data['trans_request'] = $trans->trans_request;
+                $data['trans_rates'] =  rupiah($trans->trans_rates) . " - " .  $trans->trans_unit;
+            } elseif ((in_array($trans->payment_status, [2, 1, 4, 5])) && (in_array($trans->trans_status, [1, 5])) && $trans->subtype_id) {
+                if ($req) {
+                    $datareq = $req->description . "<li>" . $req->sub_description . "</li>";
+                    $datarates = rupiah($req->rates) . " - " . $req->unit;
+                } else {
+                    $datareq = 'Jenis permintaan tidak ada';
+                    $datarates = "--";
+                }
+                $data['trans_request'] = $datareq;
+                $data['trans_rates'] = $datarates;
+            } else {
+                $data['trans_request'] = '-';
+                $data['trans_rates'] = '-';
+            }
+
+            //Jumlah
+            if (isset($trans->trans_amount)) {
+                $data['trans_amount'] = $trans->trans_amount;
+            } else {
+                $data['trans_amount'] = '-';
+            }
+
+            //Total
+            if (isset($trans->trans_sum)) {
+                $data['trans_sum'] = $trans->trans_sum;
+            } else {
+                $data['trans_sum'] = '-';
+            }
+
+            //Status Pembayaran
+            if ($trans->payment_status) {
+                $array = ['trans_sum' => $trans->trans_sum];
+                $data['payment_status'] = payStatus($trans->payment_status, $array);
+            } else {
+                $data['payment_status'] = '-';
+            }
+
+            //Status Transaksi
+            if (isset($trans->trans_status)) {
+                $data['trans_status'] = statusTrans($trans->trans_status, 'transaction');
+            } else {
+                $data['trans_status'] = '-';
+            }
+
+            //Petugas Layanan
+            if ($trans->emp_id && $trans->emp_name && $trans->emp_posname && $trans->emp_csidn) {
+                $data['employ'] = '<ul class="applicant"><li>Nama : ' . $trans->emp_name . '</li><li>Jabatan : ' . $trans->emp_posname . '</li><li>NIP : ' . $trans->emp_csidn . '</li></ul>';
+            } elseif ($emp) {
+                $data['employ'] = '<ul class="applicant"><li>Nama : ' . $emp->first_name . ' ' . $emp->last_name . '</li><li>Jabatan : ' . $emp->pos_name . '</li><li>NIP : ' . $emp->csidn . '</li></ul>';
+            } else {
+                $data['employ'] = '-';
+            }
+
+            $data['status'] = TRUE;
+            echo json_encode($data);
+        } else {
+            echo json_encode(['status' => FALSE]);
+        }
+    }
+
+    public function addConfirmTrans()
+    {
+        $subtype_id = $this->input->post('trans_request');
+        $req = $this->subtype_model->groupTrans($subtype_id)->row();
+
+        //$this->_validPayment();
+        $this->transaction_model->confirmTrans($req);
+        echo json_encode(array("status" => TRUE));
+    }
+
+    private function _validPayment($method = NULL)
+    {
+        $data = array();
+        $data['inputerror'] = array();
+        $data['status'] = TRUE;
+
+        if ($this->input->post('trans_request') == '') {
+            $data['inputerror'][] = 'trans_request';
+            $data['error_string'][] = 'Jenis Permintaan tidak boleh kosong.';
+            $data['status'] = FALSE;
+        }
+
+        if ($this->input->post('trans_rates') == '') {
+            $data['inputerror'][] = 'trans_rates';
+            $data['error_string'][] = 'Tarif tidak boleh kosong.';
+            $data['status'] = FALSE;
+        }
+
+        if ($this->input->post('trans_amount') == '') {
+            $data['inputerror'][] = 'trans_amount';
+            $data['error_string'][] = 'Jumlah tidak boleh kosong.';
+            $data['status'] = FALSE;
+        }
+
+        if ($this->input->post('trans_sum') == '') {
+            $data['inputerror'][] = 'trans_sum';
+            $data['error_string'][] = 'Total tidak boleh kosong.';
+            $data['status'] = FALSE;
+        }
+
+        if ($data['status'] === FALSE) {
+            echo json_encode($data);
+            exit();
+        }
     }
 
     public function docList($id)
@@ -142,16 +273,6 @@ class Transaction extends CI_Controller
         echo json_encode($output);
     }
 
-    // Add a new item
-    public function add()
-    {
-    }
-
-    //Update one item
-    public function update($id = NULL)
-    {
-    }
-
     public function canceltransaction($id)
     {
         $this->transaction_model->cancelTransaction($id);
@@ -159,42 +280,15 @@ class Transaction extends CI_Controller
         echo json_encode(array("status" => TRUE));
     }
 
-    //Upload image summernote
-    function upload_image()
+    // summernote ==============================
+    public function upload_image()
     {
-        if (isset($_FILES["image"]["name"])) {
-            $config['upload_path'] = './assets/img-sn/';
-            $config['allowed_types'] = 'jpg|jpeg|png|gif';
-            $this->upload->initialize($config);
-            if (!$this->upload->do_upload('image')) {
-                $this->upload->display_errors();
-                return FALSE;
-            } else {
-                $data = $this->upload->data();
-                //Compress Image
-                $config['image_library'] = 'gd2';
-                $config['source_image'] = './assets/img-sn/' . $data['file_name'];
-                $config['create_thumb'] = FALSE;
-                $config['maintain_ratio'] = TRUE;
-                $config['quality'] = '60%';
-                $config['width'] = 800;
-                $config['height'] = 800;
-                $config['new_image'] = './assets/img-sn/' . $data['file_name'];
-                $this->load->library('image_lib', $config);
-                $this->image_lib->resize();
-                echo base_url() . 'assets/img-sn/' . $data['file_name'];
-            }
-        }
+        upload_image();
     }
 
-    //Delete image summernote
-    function delete_image()
+    public function delete_image()
     {
-        $src = $this->input->post('src');
-        $file_name = str_replace(base_url(), '', $src);
-        if (unlink($file_name)) {
-            echo 'File Delete Successfully';
-        }
+        delete_image();
     }
 }
 

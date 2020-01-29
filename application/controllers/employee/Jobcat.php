@@ -8,8 +8,8 @@ class Jobcat extends CI_Controller
 
     public function __construct()
     {
-        parent::__construct([2, 3]);
-        admin_not_login();
+        parent::__construct();
+        admin_not_login([2, 3]);
         //Load Dependencies
         $this->load->library(['form_validation', 'email']);
         $this->load->model(['jobcategory_model', 'applicant_model']);

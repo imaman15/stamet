@@ -18,3 +18,9 @@
 	width: 128px;
 	height: 128px;
 }
+
+ul.applicant {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}

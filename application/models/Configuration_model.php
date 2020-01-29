@@ -22,6 +22,17 @@ class Configuration_model extends CI_Model
         $this->db->from($this->_table);
         return $this->db->get();
     }
+
+    public function update()
+    {
+        $post = $this->input->post(NULL, TRUE);
+        $data['bank_name'] = $post['bank_name'];
+        $data['account_number'] = $post['account_number'];
+        $data['account_name'] = $post['account_name'];
+        $data['email_reply'] = $post['email_reply'];
+        $this->db->where('id', 1);
+        $this->db->update($this->_table, $data);
+    }
 }
 
 /* End of file Configuration_model.php */
