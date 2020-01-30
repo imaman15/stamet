@@ -113,7 +113,7 @@
                     $('#complaint .modal-body img').addClass('img-responsive img-thumbnail');
 
                 } else {
-                    $('#sch_type').html('-');
+                    $('#complaint .modal-body').html('-');
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {

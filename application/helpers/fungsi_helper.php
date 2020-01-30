@@ -460,5 +460,27 @@ function statusSch($data = NULL, $for = NULL, $array = NULL)
         } else {
             return "---";
         }
+    } else {
+        if ($data == 0) {
+            if (isset($array['beranda'])) {
+                return '<span class="small">Konfirmasi Jadwal</span>';
+            } else {
+                return '<span class="small">Konfirmasi Jadwal</span>';
+            }
+        } elseif ($data == 1) {
+            if (isset($array['beranda'])) {
+                return '<span class="small">Jadwal Disetujui</span>';
+            } else {
+                return '<span class="small">Jadwal Disetujui</span>';
+            }
+        } elseif ($data == 2) {
+            return '<span class="small">Berlangsung</span>';
+        } elseif ($data == 3) {
+            return '<span class="small">Selesai</span>';
+        } elseif ($data == 4) {
+            return '<span class="small">Dibatalkan</span>';
+        } else {
+            return "---";
+        }
     }
 }

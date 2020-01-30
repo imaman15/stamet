@@ -256,6 +256,19 @@ $compemp = [
 ];
 
 //=======================================================
+// SET RULE SCHEDULE
+$schemp = [
+    array(
+        'field' => 'sch_reply',
+        'label' => '<strong>Pesan</strong>',
+        'rules' => 'trim|required',
+        'errors' => [
+            'required' => $required
+        ]
+    )
+];
+
+//=======================================================
 // SET RULE FAQS
 $faqadd = [
     array(
@@ -318,6 +331,7 @@ $confadd = [
 //=======================================================
 // Set Rules
 $config = array(
+    'schemp' => $schemp,
     'compemp' => $compemp,
     'confadd' => $confadd,
     'faqadd' => $faqadd,

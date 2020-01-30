@@ -26,7 +26,7 @@
                             <th width="85px">Tanggal Pertemuan</th>
                             <th>Penanggung jawab</th>
                             <th>Status</th>
-                            <th width="50px">Pesan</th>
+                            <th width="7%" class="text-break">Pesan</th>
                         </tr>
 
                     <tbody>
@@ -244,7 +244,7 @@
                 </div>
                 <hr>
                 <div class="form-group row">
-                    <label for="sch_title" class="col-sm-4 col-form-label text-sm-right font-weight-bold">judul / Perihal</label>
+                    <label for="sch_title" class="col-sm-4 col-form-label text-sm-right font-weight-bold">Judul / Perihal</label>
                     <div class="col-sm-8 text-primary text-lg my-auto" id="sch_title">
                         Konsultasi data untuk pembangunan Hotel di Jakarta
                     </div>

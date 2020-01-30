@@ -93,6 +93,7 @@ $route[UE_MANAGEFAQ] = UE_FOLDER . '/faqs';
 $route[UE_MANAGEFAQ . UE_ADD] = UE_FOLDER . '/faqs/add';
 $route[UE_MANAGEFAQ . UE_UPDATE . '/(:num)'] = UE_FOLDER . '/faqs/update/$1';
 $route[UE_COMPLAINT . '/pesan/(:any)'] = UE_FOLDER . '/complaint/update/$1';
+$route[UE_SCHEDULE . '/pesan/(:any)'] = UE_FOLDER . '/schedule/update/$1';
 $route[UE_REPORTTRANSRATE] = UE_FOLDER . '/report/reportTransRate';
 $route[UE_REPORTTRANSNONRATE] = UE_FOLDER . '/report/reportTransNonRate';
 $route[UE_REPORTRATINGS] = UE_FOLDER . '/report/reportsurvey';
