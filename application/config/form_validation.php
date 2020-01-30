@@ -243,6 +243,19 @@ $compadd = [
 ];
 
 //=======================================================
+// SET RULE COMPLAINT
+$compemp = [
+    array(
+        'field' => 'reply_message',
+        'label' => '<strong>Pesan</strong>',
+        'rules' => 'trim|required',
+        'errors' => [
+            'required' => $required
+        ]
+    )
+];
+
+//=======================================================
 // SET RULE FAQS
 $faqadd = [
     array(
@@ -305,6 +318,7 @@ $confadd = [
 //=======================================================
 // Set Rules
 $config = array(
+    'compemp' => $compemp,
     'confadd' => $confadd,
     'faqadd' => $faqadd,
     'compadd' => $compadd,

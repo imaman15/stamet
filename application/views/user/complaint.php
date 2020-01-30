@@ -94,7 +94,7 @@
                                         <th>Status</th>
                                         <th>Diperbarui</th>
                                     </tr>
-
+                                </thead>
                                 <tbody>
 
                                 </tbody>
@@ -119,14 +119,14 @@
 
     function message(id) {
         $('#complaint').modal('show');
-        $('.modal-title').text('Pesan Anda');
+        $('#complaint .modal-title').text('Pesan Anda');
         method = 'applicant';
         compData(id);
     };
 
     function reply(id) {
         $('#complaint').modal('show');
-        $('.modal-title').text('Balasan Pesan Anda');
+        $('#complaint .modal-title').text('Balasan Pesan Anda');
         method = 'employee';
         compData(id);
     };
@@ -139,13 +139,13 @@
             success: function(data) {
                 if (data.status) {
                     if (method == 'applicant') {
-                        $('.modal-body').html(data.comp_message);
+                        $('#complaint .modal-body').html(data.comp_message);
                     } else if (method == 'employee') {
-                        $('.modal-body').html('<p>Petugas : </p><p class="mt-n3">' + data.employee + '</p>' + data.reply_message);
+                        $('#complaint .modal-body').html('<p>Petugas : </p><p class="mt-n3">' + data.employee + '</p>' + data.reply_message);
                     } else {
-                        $('.modal-body').text('-');
+                        $('#complaint .modal-body').text('-');
                     };
-                    $('.modal-body img').addClass('img-responsive img-thumbnail');
+                    $('#complaint .modal-body img').addClass('img-responsive img-thumbnail');
 
                 } else {
                     $('#sch_type').html('-');
@@ -319,7 +319,7 @@
                     console.log(data);
                 }
             });
-        }
+        };
 
         function deleteImage(src) {
             $.ajax({
@@ -333,7 +333,7 @@
                     console.log(response);
                 }
             });
-        }
+        };
 
     });
 </script>
