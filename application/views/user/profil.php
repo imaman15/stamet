@@ -108,7 +108,7 @@
               <thead class="thead-inverse">
                 <tr>
                   <th>Kode </th>
-                  <th>Tanggal Bertemu</th>
+                  <th>Tanggal Pertemuan</th>
                   <th>Penanggung jawab</th>
                   <th>Status</th>
                 </tr>

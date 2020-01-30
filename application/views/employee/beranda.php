@@ -141,7 +141,7 @@
           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
         </div>
         <div class="card-footer text-muted">
-          <a href="#" class="btn btn-primary">Lihat Transaksi</a>
+          <a href="<?= site_url(UE_TRANSACTION) ?>" class="btn btn-primary">Lihat Transaksi</a>
         </div>
       </div>
 
@@ -150,11 +150,43 @@
           Jadwal Pertemuan Hari ini
         </div>
         <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-inverse" width="100%" cellspacing="0">
+              <thead class="thead-inverse">
+                <tr>
+                  <th>Kode </th>
+                  <th>Tanggal Pertemuan</th>
+                  <th>Penanggung jawab</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                if ($schedule) {
+                  foreach ($schedule as $d) {
+                ?>
+                    <tr>
+                      <td><?= $d->sch_code ?></td>
+                      <td><?= DateTime($d->sch_date) ?></td>
+                      <td class="text-left">
+                        <?= $d->responsible_person ?>
+                      </td>
+                      <td>
+                        <?= statusSch($d->sch_status, 'applicant', ['beranda' => 1]) ?>
+                      </td>
+                    </tr>
+                  <?php }
+                } else { ?>
+                  <tr>
+                    <td colspan="4" class="dataTables_empty">Tidak ada jadwal hari ini.</td>
+                  </tr>
+                <?php }; ?>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="card-footer text-muted">
-          <a href="#" class="btn btn-primary">jadwal Pertemuan</a>
+          <a href="<?= site_url(UE_SCHEDULE) ?>" class="btn btn-primary">Jadwal Pertemuan</a>
         </div>
       </div>
 

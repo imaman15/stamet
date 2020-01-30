@@ -154,6 +154,14 @@ class Schedule_model extends CI_Model
         return $this->db->get($this->_table, 5)->result();
     }
 
+    public function employee()
+    {
+        $date = date('Y-m-d');
+        $this->db->like('sch_date', $date);
+        $this->db->order_by('date_update', 'desc');
+        return $this->db->get($this->_table, 5)->result();
+    }
+
     public function update($id)
     {
         $where = ['sch_code' => $id];
