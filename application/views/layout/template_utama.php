@@ -86,10 +86,10 @@
             </div>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item <?= ($this->uri->uri_string() == UA_CANDS) ? "active" : NULL; ?>">
-                <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UA_CANDS) ?>">
+            <li class="nav-item <?= ($this->uri->uri_string() == UA_RATINGS) ? "active" : NULL; ?>">
+                <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UA_RATINGS) ?>">
                     <i class="fas fa-fw fa-comment-dots"></i>
-                    <span>Kritik dan Saran</span></a>
+                    <span>Survey Kepuasan</span></a>
             </li>
 
             <li class="nav-item <?= ($this->uri->uri_string() == UA_COMPLAINT) ? "active" : NULL; ?>">

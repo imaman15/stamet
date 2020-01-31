@@ -68,7 +68,7 @@ $route[UA_TRANSACTIONDETAIL . '/(:any)'] = '/transaction/detail/$1';
 $route[UA_TRANSHISTORY] = '/transaction';
 $route[UA_SCHEDULE] = '/schedule/add';
 $route[UA_SCHEHISTORY] = '/schedule';
-$route[UA_CANDS] = '/cands';
+$route[UA_RATINGS] = '/ratings';
 $route[UA_COMPLAINT] = '/complaint';
 
 $route[UE_ADMIN] = UE_FOLDER . '/beranda';
@@ -87,7 +87,6 @@ $route[UE_SCHEDULE] = UE_FOLDER . '/schedule';
 $route[UE_REQTYPE] = UE_FOLDER . '/request/request';
 $route[UE_REQSUBTYPE] = UE_FOLDER . '/request/subrequest';
 $route[UE_RATINGS] = UE_FOLDER . '/ratings';
-$route[UE_CANDS] = UE_FOLDER . '/cands';
 $route[UE_COMPLAINT] = UE_FOLDER . '/complaint';
 $route[UE_MANAGEFAQ] = UE_FOLDER . '/faqs';
 $route[UE_MANAGEFAQ . UE_ADD] = UE_FOLDER . '/faqs/add';

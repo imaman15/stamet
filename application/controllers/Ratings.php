@@ -3,7 +3,7 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Cands extends CI_Controller
+class Ratings extends CI_Controller
 {
 
     public function __construct()
@@ -18,8 +18,8 @@ class Cands extends CI_Controller
     public function index($offset = 0)
     {
         $data['user'] = dUser();
-        $data['title'] = 'Form Kritik dan Saran';
-        $this->template->load('user/cands', $data);
+        $data['title'] = 'Pendapat Anda tentang pelayanan kami';
+        $this->template->load('user/ratings', $data);
     }
 
     // Add a new item
@@ -49,4 +49,4 @@ class Cands extends CI_Controller
     }
 }
 
-/* End of file Cands.php */
+/* End of file Ratings.php */

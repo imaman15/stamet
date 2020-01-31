@@ -110,7 +110,7 @@ define('UA_TRANSHISTORY', strtolower('transaksi'));
 define('UA_TRANSACTIONDETAIL', strtolower('detail-transaksi'));
 define('UA_SCHEDULE', strtolower('form-jadwal'));
 define('UA_SCHEHISTORY', strtolower('jadwal-pertemuan'));
-define('UA_CANDS', strtolower('kritik-saran'));
+define('UA_RATINGS', strtolower('survey-kepuasan'));
 define('UA_COMPLAINT', strtolower('komplain-pelanggan'));
 
 //URL Employee (UE)
