@@ -14,13 +14,13 @@
                     <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">Lihat Semua</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="new-tab" data-toggle="tab" href="#new" role="tab" aria-controls="new" aria-selected="false">Transaksi Baru <span class="badge badge-danger">4</span></a>
+                    <a class="nav-link" id="new-tab" data-toggle="tab" href="#new" role="tab" aria-controls="new" aria-selected="false">Transaksi Baru <span class="badge badge-danger"><?= $new; ?></span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pay-tab" data-toggle="tab" href="#pay" role="tab" aria-controls="pay" aria-selected="false">Konfirmasi Pembayaran <span class="badge badge-danger">4</span></a>
+                    <a class="nav-link" id="pay-tab" data-toggle="tab" href="#pay" role="tab" aria-controls="pay" aria-selected="false">Konfirmasi Pembayaran <span class="badge badge-danger"><?= $pay; ?></span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="process-tab" data-toggle="tab" href="#process" role="tab" aria-controls="process" aria-selected="false">Transaksi Diproses <span class="badge badge-danger">4</span></a>
+                    <a class="nav-link" id="process-tab" data-toggle="tab" href="#process" role="tab" aria-controls="process" aria-selected="false">Transaksi Diproses <span class="badge badge-danger"><?= $process; ?></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="done-tab" data-toggle="tab" href="#done" role="tab" aria-controls="done" aria-selected="false">Transaksi Selesai</a>
@@ -52,11 +52,101 @@
                         </table>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="new" role="tabpanel" aria-labelledby="new-tab">new</div>
-                <div class="tab-pane fade" id="pay" role="tabpanel" aria-labelledby="pay-tab">pay</div>
-                <div class="tab-pane fade" id="process" role="tabpanel" aria-labelledby="process-tab">process</div>
-                <div class="tab-pane fade" id="done" role="tabpanel" aria-labelledby="done-tab">done</div>
-                <div class="tab-pane fade" id="cancel" role="tabpanel" aria-labelledby="cancel-tab">cancel / tidak ada</div>
+                <div class="tab-pane fade" id="new" role="tabpanel" aria-labelledby="new-tab">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="dataNew" width="100%" cellspacing="0">
+                            <thead>
+                                <tr class="text-center">
+                                    <th width="5%">#</th>
+                                    <th>Kode Transaksi</th>
+                                    <th>Pemohon</th>
+                                    <th>Kode Penyimpanan</th>
+                                    <th>Tanggal</th>
+                                    <th width="7%" class="text-break">Aksi</th>
+                                </tr>
+
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pay" role="tabpanel" aria-labelledby="pay-tab">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="dataPay" width="100%" cellspacing="0">
+                            <thead>
+                                <tr class="text-center">
+                                    <th width="5%">#</th>
+                                    <th>Kode Transaksi</th>
+                                    <th>Pemohon</th>
+                                    <th>Kode Penyimpanan</th>
+                                    <th>Tanggal</th>
+                                    <th width="7%" class="text-break">Aksi</th>
+                                </tr>
+
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="process" role="tabpanel" aria-labelledby="process-tab">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="dataProcess" width="100%" cellspacing="0">
+                            <thead>
+                                <tr class="text-center">
+                                    <th width="5%">#</th>
+                                    <th>Kode Transaksi</th>
+                                    <th>Pemohon</th>
+                                    <th>Kode Penyimpanan</th>
+                                    <th>Tanggal</th>
+                                    <th width="7%" class="text-break">Aksi</th>
+                                </tr>
+
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="done" role="tabpanel" aria-labelledby="done-tab">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="dataDone" width="100%" cellspacing="0">
+                            <thead>
+                                <tr class="text-center">
+                                    <th width="5%">#</th>
+                                    <th>Kode Transaksi</th>
+                                    <th>Pemohon</th>
+                                    <th>Kode Penyimpanan</th>
+                                    <th>Tanggal</th>
+                                    <th width="7%" class="text-break">Aksi</th>
+                                </tr>
+
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="cancel" role="tabpanel" aria-labelledby="cancel-tab">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="dataCancel" width="100%" cellspacing="0">
+                            <thead>
+                                <tr class="text-center">
+                                    <th width="5%">#</th>
+                                    <th>Kode Transaksi</th>
+                                    <th>Pemohon</th>
+                                    <th>Kode Penyimpanan</th>
+                                    <th>Tanggal</th>
+                                    <th width="7%" class="text-break">Aksi</th>
+                                </tr>
+
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -65,11 +155,40 @@
 <!-- /.container-fluid -->
 
 <script type="text/javascript">
-    var allData, proses;
+    var allData, newData, payData, processData, doneData, cancelData;
     var base_url = '<?php echo base_url(); ?>';
     $(document).ready(function() {
         //datatables
-        allData = $('#dataAll').DataTable({
+
+        allData = tableTrans('dataAll', '');
+        newData = tableTrans('dataNew', '/new');
+        payData = tableTrans('dataPay', '/pay');
+        processData = tableTrans('dataProcess', '/process');
+        doneData = tableTrans('dataDone', '/done');
+        cancelData = tableTrans('dataCancel', '/cancel');
+        // $.fn.dataTable.ext.errMode = 'throw';
+
+        //set input/textarea/select event when change value, remove class error and remove text help block 
+        $("input").change(function() {
+            $(this).removeClass('is-invalid');
+        });
+        $("textarea").change(function() {
+            $(this).removeClass('is-invalid');
+        });
+        $("select").change(function() {
+            $(this).removeClass('is-invalid');
+        });
+        $(".invalid-feedback").change(function() {
+            $(this).empty();
+        });
+        $("#photo").change(function() {
+            $('#photo_error').empty();
+        });
+
+    });
+
+    function tableTrans(tab, url) {
+        $('#' + tab).DataTable({
 
             "processing": true, //Feature control the processing indicator.
             "serverSide": true, //Feature control DataTables' server-side processing mode.
@@ -77,7 +196,7 @@
 
             // Load data for the table's content from an Ajax source
             "ajax": {
-                "url": "<?php echo site_url('employee/transaction/listall') ?>",
+                "url": "<?php echo site_url('employee/transaction/listall') ?>" + url,
                 "type": "POST"
             },
 
@@ -103,29 +222,15 @@
                 "sZeroRecords": "Tidak ada data"
             }
         });
-        // $.fn.dataTable.ext.errMode = 'throw';
-
-        //set input/textarea/select event when change value, remove class error and remove text help block 
-        $("input").change(function() {
-            $(this).removeClass('is-invalid');
-        });
-        $("textarea").change(function() {
-            $(this).removeClass('is-invalid');
-        });
-        $("select").change(function() {
-            $(this).removeClass('is-invalid');
-        });
-        $(".invalid-feedback").change(function() {
-            $(this).empty();
-        });
-        $("#photo").change(function() {
-            $('#photo_error').empty();
-        });
-
-    });
+    };
 
     function reload_table() {
-        allData.ajax.reload(null, false); //reload datatable ajax 
+        allData.ajax.reload(null, false);
+        newData.ajax.reload(null, false);
+        payData.ajax.reload(null, false);
+        processData.ajax.reload(null, false);
+        doneData.ajax.reload(null, false);
+        cancelData.ajax.reload(null, false);
     };
 
     function view(id) {

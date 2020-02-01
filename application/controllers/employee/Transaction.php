@@ -18,18 +18,31 @@ class Transaction extends CI_Controller
     // List all your items
     public function index($offset = 0)
     {
+        $data['new'] = $this->transaction_model->count_all('new');
+        $data['pay'] = $this->transaction_model->count_all('pay');
+        $data['process'] = $this->transaction_model->count_all('process');
         $data['title'] = 'Transaksi Data Layanan';
         $this->template->loadadmin(UE_FOLDER . '/Transaction', $data);
     }
 
     //List All
-    public function listAll()
+    public function listAll($list = NULL)
     {
-        $where = [];
-        $for = 'emp';
-        $all = 'all';
-        $list = $this->transaction_model->get_datatables($where, $for, $all);
-        $user = $this->session->userdata('emp_id');
+        if ($list == 'new') {
+            $all = 'new';
+        } elseif ($list == 'pay') {
+            $all = 'pay';
+        } elseif ($list == 'process') {
+            $all = 'process';
+        } elseif ($list == 'done') {
+            $all = 'done';
+        } elseif ($list == 'cancel') {
+            $all = 'cancel';
+        } else {
+            $all = '';
+        }
+
+        $list = $this->transaction_model->get_datatables('emp', $all);
 
         $data = array();
         $no = $_POST['start'];
@@ -64,15 +77,15 @@ class Transaction extends CI_Controller
             }
 
             $row[] = '
-            <a title="Detail Transaksi" class="btn btn-info btn-circle btn-sm mb-2" href="javascript:void(0)" onclick="view(' . "'" . $d->trans_code . "'" . ')"><i class="fas fa-search-plus"></i></a>' . $btn;
+            <a title="Detail Transaksi" class="btn btn-info btn-circle btn-sm mb-1" href="javascript:void(0)" onclick="view(' . "'" . $d->trans_code . "'" . ')"><i class="fas fa-search-plus"></i></a><br>' . $btn;
 
             $data[] = $row;
         }
 
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" => $this->transaction_model->count_all($where),
-            "recordsFiltered" => $this->transaction_model->count_filtered($where, $for, $all),
+            "recordsTotal" => $this->transaction_model->count_all($all),
+            "recordsFiltered" => $this->transaction_model->count_filtered('emp', $all),
             "data" => $data,
         );
         //output to json format
@@ -209,7 +222,6 @@ class Transaction extends CI_Controller
 
     public function addConfirmTrans()
     {
-
         $this->_validConTrans();
         $this->transaction_model->confirmTrans();
         echo json_encode(array("status" => TRUE));

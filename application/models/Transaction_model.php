@@ -8,60 +8,37 @@ class Transaction_model extends CI_Model
     private $_table = "transaction";
 
 
-    private function _get_datatables_query($where = NULL, $for = NULL, $list = NULL)
+    private function _get_datatables_query($for = NULL, $list = NULL)
     {
 
         $user = $this->session->userdata('applicant_id');
 
         if ($for == "emp") {
-            if ($list == 'all') {
-                $this->db->select('trans_code,transcode_storage,' . $this->_table . '.date_created, payment_status, trans_status, trans_sum,CONCAT(applicant.first_name, " ", applicant.last_name) as fullname,institute,phone,email');
-            } else {
-                $this->db->select('trans_code,transcode_storage, apply_id, apply_name, apply_institute, apply_email, apply_phone,date_created, payment_status, trans_status, trans_sum');
+            $column_order = array(null, 'trans_code', 'fullname', 'transcode_storage', $this->_table . '.date_created', null, null, null);
+            $column_search = array('trans_code', 'CONCAT(applicant.first_name, " ", applicant.last_name)', 'transcode_storage', $this->_table . '.date_created', 'institute', 'phone', 'email');
+            $order = array($this->_table . '.date_update' => 'desc');
+
+            if ($list == 'new') {
+                $this->db->where('trans_status !=', 2);
+                $this->db->where_in('trans_status', [0, 1]);
+            } elseif ($list == 'pay') {
+                $this->db->where_in('payment_status', [2]);
+            } elseif ($list == 'process') {
+                $this->db->where_in('trans_status', [2, 3]);
+            } elseif ($list == 'done') {
+                $this->db->where_in('trans_status', [4]);
+            } elseif ($list == 'cancel') {
+                $this->db->where_in('trans_status', [5, 6]);
             }
+
+            $this->db->select('trans_code,transcode_storage,' . $this->_table . '.date_created, payment_status, trans_status, trans_sum,CONCAT(applicant.first_name, " ", applicant.last_name) as fullname,institute,phone,email');
+            $this->db->join('applicant', 'applicant.applicant_id = ' . $this->_table . '.apply_id');
+            $this->db->from($this->_table);
         } else {
-            //=====================================================================================
             $this->db->select('trans_code, date_created, payment_status, trans_status, trans_sum');
-        }
-        //=====================================================================================
-        if ($user) {
-            $this->db->where(['apply_id' => $user]);
-        }
-        //=====================================================================================
-        if ($where == "new") {
-            //$this->db->where($where);
-        } else if ($where == "pay") {
-            //$this->db->where($where);
-        } else if ($where == "process") {
-            //$this->db->where($where);
-        } else if ($where == "done") {
-            //$this->db->where($where);
-        } else if ($where == "cancel") {
-            //$this->db->where($where);
-        } else if ($where != NULL) {
-            $this->db->where($where);
-        }
-
-        // start datatables
-
-        if ($for == "emp") {
-
-            if ($list == 'all') {
-                $this->db->join('applicant', 'applicant.applicant_id = ' . $this->_table . '.apply_id');
-                $this->db->from($this->_table);
-                //==============================================
-                $column_order = array(null, 'trans_code', 'fullname', 'transcode_storage', $this->_table . '.date_created', null, null, null);
-                $column_search = array('trans_code', 'CONCAT(applicant.first_name, " ", applicant.last_name)', 'transcode_storage', $this->_table . '.date_created', 'institute', 'phone', 'email');
-                $order = array($this->_table . '.date_update' => 'desc');
-            } else {
-                $this->db->join('applicant', 'applicant.applicant_id = ' . $this->_table . '.apply_id');
-                $this->db->from($this->_table);
-                //==============================================
-                $column_order = array(null, 'trans_code', 'transcode_storage', 'apply_name', $this->_table . '.date_created', null, null, null);
-                $column_search = array('trans_code', 'transcode_storage', 'apply_name', 'apply_institute', 'apply_email', 'apply_phone', $this->_table . '.date_created');
-                $order = array($this->_table . '.date_update' => 'desc');
+            if ($user) {
+                $this->db->where(['apply_id' => $user]);
             }
-        } else {
             $this->db->from($this->_table);
             $column_order = array(null, 'trans_code', 'date_created', null, null, null); //set column field database for datatable orderable
             $column_search = array('trans_code', 'date_created'); //set column field database for datatable searchable
@@ -98,23 +75,23 @@ class Transaction_model extends CI_Model
         }
     }
 
-    function get_datatables($where = NULL, $for = NULL, $list = NULL)
+    function get_datatables($for = NULL, $list = NULL)
     {
-        $this->_get_datatables_query($where, $for, $list);
+        $this->_get_datatables_query($for, $list);
         if ($_POST['length'] != -1)
             $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
 
-    function count_filtered($where = NULL, $for = NULL, $list = NULL)
+    function count_filtered($for = NULL, $list = NULL)
     {
-        $this->_get_datatables_query($where, $for, $list);
+        $this->_get_datatables_query($for, $list);
         $query = $this->db->get();
         return $query->num_rows();
     }
 
-    public function count_all($where = NULL)
+    public function count_all($for = NULL)
     {
         $user = $this->session->userdata('applicant_id');
 
@@ -122,9 +99,20 @@ class Transaction_model extends CI_Model
         if ($user) {
             $this->db->where(['apply_id' => $user]);
         }
-        if ($where != NULL) {
-            $this->db->where($where);
+
+        if ($for == 'new') {
+            $this->db->where('trans_status !=', 2);
+            $this->db->where_in('trans_status', [0, 1]);
+        } elseif ($for == 'pay') {
+            $this->db->where_in('payment_status', [2]);
+        } elseif ($for == 'process') {
+            $this->db->where_in('trans_status', [2, 3]);
+        } elseif ($for == 'done') {
+            $this->db->where_in('trans_status', [4]);
+        } elseif ($for == 'cancel') {
+            $this->db->where_in('trans_status', [5, 6]);
         }
+
         $this->db->from($this->_table);
         return $this->db->count_all_results();
     }
