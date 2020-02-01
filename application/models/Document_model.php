@@ -115,6 +115,51 @@ class Document_model extends CI_Model
         $this->db->insert($this->_table, $params);
     }
 
+    public function getData($id)
+    {
+        $this->db->from($this->_table);
+        $this->db->where('doc_id', $id);
+        return $this->db->get();
+    }
+
+    public function deleteDocApply($id)
+    {
+        $old_file = $this->getData($id)->row()->doc_storage;
+        if ($old_file) {
+            unlink(FCPATH . 'assets/transfile/' . $old_file);
+        }
+        $uid = $this->session->userdata('applicant_id');
+        return $this->db->delete($this->_table, ["doc_id" => $id, "user_type" => "applicant", "user_id" => $uid]);
+    }
+
+    public function deleteDocEmploy($id)
+    {
+        $old_file = $this->getData($id)->row()->doc_storage;
+        if ($old_file) {
+            unlink(FCPATH . 'assets/transfile/' . $old_file);
+        }
+
+        $uid = $this->session->userdata('emp_id');
+        return $this->db->delete($this->_table, ["doc_id" => $id, "user_type" => "employee", "user_id" => $uid]);
+    }
+
+    public function docEmploy()
+    {
+        $post = $this->input->post(NULL, TRUE);
+        if (!empty($_FILES['doc_storage']['name'])) {
+            $upload = $this->_do_uploads();
+            $params["doc_storage"] = $upload;
+        }
+
+        $params['doc_name'] = $post['doc_name'];
+        $params['doc_information'] = $post['doc_information'];
+        $params['user_type'] = "employee";
+        $params['user_id'] = $this->session->userdata('emp_id');
+        $params['user_upload'] = dAdmin()->first_name . " " . dAdmin()->last_name . " - Petugas";
+        $params['trans_id'] = $post['trans_id'];
+        $this->db->insert($this->_table, $params);
+    }
+
     private function _do_uploads()
     {
         $config['upload_path']          = './assets/transfile/';

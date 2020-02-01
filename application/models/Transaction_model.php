@@ -205,16 +205,16 @@ class Transaction_model extends CI_Model
         $this->db->update($this->_table, $params);
     }
 
-    public function confirmTrans($req)
+    public function confirmTrans()
     {
         $post = $this->input->post(NULL, TRUE);
         $user = dAdmin();
-        $id = $post["trans_code"];
-        $checkData = $post["checkData"];
-        if (!empty($checkData)) {
+        $trans_request = $post["trans_request"];
+        $req = $this->subtype_model->groupTrans($trans_request)->row();
+        if (!empty($post["checkData"])) {
             $params['emp_id'] = $user->emp_id;
             $params['subtype_id'] = NULL;
-            $params['trans_status'] = $checkData;
+            $params['trans_status'] = $post["checkData"];
             $params['trans_request'] = NULL;
             $params['trans_unit'] = NULL;
             $params['trans_amount'] = NULL;
@@ -223,18 +223,84 @@ class Transaction_model extends CI_Model
             $params['payment_status'] = 5;
         } else {
             $params['emp_id'] = $user->emp_id;
-            $params['subtype_id'] = $post["trans_request"];
-            $params['trans_status'] = 1;
+            $params['subtype_id'] = $trans_request;
             $params['trans_request'] = $req->description . "<li>" . $req->sub_description . "</li>";
             $params['trans_unit'] = $req->unit;
             $params['trans_amount'] = $post["trans_amount"];
             $params['trans_rates'] = $post["trans_rates"];
             $params['trans_sum'] = $post["trans_sum"];
-            $params['payment_status'] = 1;
+            if (!empty($post["payStatus"])) {
+                if ($post["payStatus"] == 0) {
+                    $params['payment_status'] = 0;
+                    $params['trans_status'] = $post['trans_status'];
+                }
+            } else {
+                $params['payment_status'] = 1;
+                $params['trans_status'] = 1;
+            }
         }
 
+        $this->db->where(['trans_code' => $post["trans_code"]]);
+        $this->db->update($this->_table, $params);
+    }
 
-        $this->db->where(['trans_code' => $id]);
+    public function confirmPay()
+    {
+        $post = $this->input->post(NULL, TRUE);
+        $trans = $this->transaction_model->getField('*', ['trans_code' => $post["trans_code"]])->row();
+        $user = dAdmin();
+        $apply = $this->applicant_model->getDataBy($trans->apply_id, 'applicant_id')->row();
+        $emp = $this->employee_model->getDataBy($trans->emp_id, 'emp_id')->row();
+
+        $p = $post['forPay'];
+        $s = $post['forStatus'];
+
+        if ($p == 3) {
+            $params['payment_status'] = 3;
+            $params['apply_name'] = $apply->first_name . " " . $apply->last_name;
+            $params['apply_institute'] = $apply->institute;
+            $params['apply_email'] = $apply->email;
+            $params['apply_phone'] = $apply->phone;
+            $params['emp_name'] = $emp->first_name . " " . $emp->last_name;
+            $params['emp_posname'] = $emp->pos_name;
+            $params['emp_csidn'] = $emp->csidn;
+
+            if (!empty($s)) {
+                if ($s == 2) {
+                    $params['trans_status'] = 2;
+                } elseif ($s == 3) {
+                    $params['trans_status'] = 3;
+                }
+            }
+        } else if ($p == 4) {
+            $params['payment_status'] = 4;
+        }
+
+        $this->db->where(['trans_code' => $post["trans_code"]]);
+        $this->db->update($this->_table, $params);
+    }
+
+    public function changeStatusTrans()
+    {
+        $post = $this->input->post(NULL, TRUE);
+        $params['trans_status'] = $post['selectchangeStatusTrans'];
+        $this->db->where(['trans_code' => $post["trans_code"]]);
+        $this->db->update($this->_table, $params);
+    }
+
+    public function addTransInformation()
+    {
+        $post = $this->input->post(NULL, TRUE);
+        $params['trans_information'] = $post['inputTransInformation'];
+        $this->db->where(['trans_code' => $post["trans_code"]]);
+        $this->db->update($this->_table, $params);
+    }
+
+    public function saveTranStor()
+    {
+        $post = $this->input->post(NULL, TRUE);
+        $params['transcode_storage'] = $post['inputTranStor'];
+        $this->db->where(['trans_code' => $post["trans_code"]]);
         $this->db->update($this->_table, $params);
     }
 

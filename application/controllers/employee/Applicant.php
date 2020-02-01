@@ -8,7 +8,7 @@ class Applicant extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        admin_not_login([2,3]);
+        admin_not_login([2, 3]);
         $this->load->library(['form_validation', 'email']);
         $this->load->model(['applicant_model', 'jobcategory_model', 'usertoken_model']);
     }
@@ -206,10 +206,9 @@ class Applicant extends CI_Controller
         $check = $this->applicant_model->getDataBy($id, 'applicant_id')->row();
         if ((!isset($id)) or (!$check)) redirect(site_url(UE_ADMIN));
         //delete file
-        $applicant = $this->applicant_model->getDataBy($id, 'applicant_id')->row();
 
-        if ($applicant->photo != 'default.jpg')
-            unlink(FCPATH . 'assets/img/profil/' . $applicant->photo);
+        if ($check->photo != 'default.jpg')
+            unlink(FCPATH . 'assets/img/profil/' . $check->photo);
 
         $this->applicant_model->delete($id, 'applicant_id');
         echo json_encode(array("status" => TRUE));

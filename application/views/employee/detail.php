@@ -1,5 +1,8 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="<?= base_url('assets/vendor/bootstrap-select/') ?>css/bootstrap-select.min.css">
+<!-- Summernote -->
+<link rel="stylesheet" type="text/css" href="<?php echo base_url() . 'assets/vendor/summernote/summernote-bs4.min.css'; ?>">
+<!-- End of Summernote -->
 
 
 <!-- Begin Page Content -->
@@ -29,11 +32,11 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th width="20%">Kode Transaksi </th>
-                                <th id="trans_code">-</th>
+                                <th id="mod_code">-</th>
                             </tr>
                             <tr>
                                 <td>Kode Penyimpanan File </td>
-                                <td id="transcode_storage">-</td>
+                                <td id="modcode_storage"></td>
                             </tr>
                             <tr>
                                 <td>Tanggal Transaksi</td>
@@ -45,19 +48,19 @@
                             </tr>
                             <tr>
                                 <td>Jenis Informasi</td>
-                                <td id="trans_request">-</td>
+                                <td id="mod_request">-</td>
                             </tr>
                             <tr>
                                 <td>Tarif - Satuan</td>
-                                <td id="trans_rates">-</td>
+                                <td id="mod_rates">-</td>
                             </tr>
                             <tr>
                                 <td>Jumlah</td>
-                                <td id="trans_amount">-</td>
+                                <td id="mod_amount">-</td>
                             </tr>
                             <tr>
                                 <td>Total</td>
-                                <td id="trans_sum">-</td>
+                                <td id="mod_sum">-</td>
                             </tr>
                             <tr>
                                 <td>Status Pembayaran</td>
@@ -65,18 +68,35 @@
                             </tr>
                             <tr>
                                 <td>Status Transaksi</td>
-                                <td id="trans_status">-</td>
+                                <td id="mod_status">-</td>
                             </tr>
                             <tr>
                                 <td>Petugas Layanan</td>
                                 <td id="employ"></td>
                             </tr>
                             <tr class="text-center d-print-none">
-                                <td colspan="2">
-                                    <button type="button" class="btn btn-primary btn-sm rounded mb-1 mb-sm-0" onclick="confirmTrans()">Konfirmasi Transaksi</button>
-                                    <button type="button" class="btn btn-primary btn-sm rounded mb-1 mb-sm-0" onclick="editConfirmTrans()">Edit Transaksi</button>
-                                    <button type="button" class="btn btn-secondary btn-sm rounded mb-1 mb-sm-0" onclick="applicantNote()">Lihat Catatan Anda</button>
-                                    <button type="button" class="btn btn-dark btn-sm rounded mb-1 mb-sm-0" onclick="employeeNote()">Lihat Catatan Petugas</button>
+                                <td colspan="2" id="allbtn">
+                                    <button type="button" class="btn btn-primary btn-sm rounded mb-1 mb-sm-0 d-none" id="btnconfirmTrans" onclick="confirmTrans()">Konfirmasi Transaksi</button>
+                                    <button type="button" class="btn btn-primary btn-sm rounded mb-1 mb-sm-0 d-none" id="btnconfirmPay" onclick="confirmPay()">Konfirmasi Pembayaran</button>
+                                    <button type="button" class="btn btn-primary btn-sm rounded mb-1 mb-sm-0 d-none" id="btnchangeStatusTrans" data-toggle="modal" data-target="#modelchangeStatusTrans">Ganti Status Transaksi</button>
+                                    <button type="button" class="btn btn-secondary btn-sm rounded mb-1 mb-sm-0" id="btnapplicantNote" onclick="applicantNote()">Lihat Catatan Pemohon</button>
+                                    <button type="button" class="btn btn-dark btn-sm rounded mb-1 mb-sm-0 d-none" id="btnaddemployeeNote" onclick="addemployeeNote()">Tambah Catatan Petugas</button>
+                                    <form action="#" id="formTransInformation" class="d-none">
+                                        <br>
+                                        <div id="the-message-tranfo"></div>
+                                        <input type="hidden" name="trans_code" value="<?= $trans->trans_code ?>">
+                                        <div class="form-group text-left">
+                                            <textarea class="form-control" name="inputTransInformation" id="inputTransInformation"></textarea>
+                                            <div class="alert alert-warning py-1 mt-2 px-4" role="alert">
+                                                <div class="row align-items-center">
+                                                    <i class="fas fa-fw fa-exclamation-circle fa-1x mx-auto mx-sm-1"></i>
+                                                    <small class="ml-1"> Catatan : Jika ingin menghapus gambar silahkan klik gambar lalu pilih tombol "Hapus Gambar"</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" onclick="saveTransInformation()" class="btn btn-primary btn-sm rounded">Simpan</button>
+                                        <button type="button" onclick="cancelTransInformation()" class="btn btn-secondary btn-sm rounded">Tutup</button>
+                                    </form>
                                 </td>
                             </tr>
                         </table>
@@ -88,7 +108,7 @@
                 <div id="mesDocument"></div>
                 <?php //if (in_array($trans->trans_status, [2, 3])) : 
                 ?>
-                <button type="button" class="btn btn-primary rounded btn-sm my-3" onclick="addDocument()">Tambah Dokumen</button>
+                <button type="button" class="btn btn-primary rounded btn-sm my-3" id="addDocument" onclick="addDocument()">Tambah Dokumen</button>
                 <?php //endif; 
                 ?>
                 <div class="table-responsive">
@@ -118,12 +138,23 @@
 
 </div>
 
+<script type="text/javascript" src="<?php echo base_url() . 'assets/vendor/summernote/summernote-bs4.min.js'; ?>"></script>
+<script type="text/javascript" src="<?php echo base_url() . 'assets/vendor/summernote/lang/summernote-id-ID.min.js'; ?>"></script>
+
 
 <script type="text/javascript">
     var save_method; //for save method string
     var table;
     var base_url = '<?php echo base_url(); ?>';
     $(document).ready(function() {
+
+        $('#btnconfirmTrans').addClass('d-none');
+        $('#btnconfirmPay').addClass('d-none');
+        $('#btnaddemployeeNote').text('Tambah Catatan Petugas');
+        $('#formTransInformation').addClass('d-none');
+        $('#btnchangeStatusTrans').addClass('d-none');
+        $('#addDocument').removeClass('d-none');
+
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
             $('.selectpicker').selectpicker('mobile');
         }
@@ -181,6 +212,66 @@
             $('#doc_storage_error').empty();
         });
 
+        $('#inputTransInformation').summernote({
+            dialogsInBody: true,
+            minHeight: 200,
+            placeholder: 'Pesan',
+            lang: 'id-ID', // default: 'en-US'
+            callbacks: {
+                onImageUpload: function(image) {
+                    uploadImage(image[0]);
+                },
+                onMediaDelete: function(target) {
+                    deleteImage(target[0].src);
+                }
+            },
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline']],
+                ['font', ['clear', 'fontsize']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'hr']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
+        });
+
+        function uploadImage(image) {
+            var data = new FormData();
+            data.append("image", image);
+            $.ajax({
+                url: "<?php echo site_url('employee/transaction/upload_image') ?>",
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: data,
+                type: "POST",
+                success: function(url) {
+                    $('#inputTransInformation').summernote("insertImage", url);
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        };
+
+        function deleteImage(src) {
+            $.ajax({
+                data: {
+                    src: src
+                },
+                type: "POST",
+                url: "<?php echo site_url('employee/transaction/delete_image') ?>",
+                cache: false,
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        };
 
     });
 
@@ -196,17 +287,50 @@
             dataType: "JSON",
             success: function(data) {
                 if (data.status) {
-                    $('#trans_code').text(data.trans_code);
-                    $('#transcode_storage').text(data.transcode_storage);
+                    $('#mod_code').text(data.trans_code);
+                    $('#modcode_storage').text(data.transcode_storage);
                     $('#date_created').text(data.date_created);
                     $('#apply').html(data.apply);
-                    $('#trans_request').html(data.trans_request);
-                    $('#trans_rates').text(data.trans_rates);
-                    $('#trans_amount').text(data.trans_amount);
-                    $('#trans_sum').text(data.trans_sum);
+                    $('#mod_request').html(data.trans_request);
+                    $('#mod_rates').text(data.trans_rates);
+                    $('#mod_amount').text(data.trans_amount);
+                    $('#mod_sum').text(data.trans_sum);
                     $('#payment_status').html(data.payment_status);
-                    $('#trans_status').html(data.trans_status);
+                    $('#mod_status').html(data.trans_status);
                     $('#employ').html(data.employ);
+                    $('[name="selectchangeStatusTrans"]').val(data.trastat);
+                    $("#inputTransInformation").summernote("code", data.trans_information);
+
+                    if (data.trastat == 0) {
+                        $('#btnconfirmTrans').removeClass('d-none');
+                    }
+
+                    if (data.trastat == 4) {
+                        $('#addDocument').addClass('d-none');
+                    } else {
+                        $('#addDocument').removeClass('d-none');
+                    }
+
+                    if (data.paystat == 2) {
+                        if (data.user == data.userses) {
+                            $('#btnconfirmPay').removeClass('d-none');
+                        }
+                    }
+
+                    if ((data.trastat == 2) || (data.trastat == 3)) {
+                        if (data.user == data.userses) {
+                            $('#btnchangeStatusTrans').removeClass('d-none');
+                        }
+                    }
+
+                    if (data.trans_information) {
+                        $('#btnaddemployeeNote').text('Lihat Catatan Petugas').removeClass('d-none');
+                    } else {
+                        if (data.user == data.userses) {
+                            $('#btnaddemployeeNote').text('Tambah Catatan Petugas').removeClass('d-none');
+                        }
+                    }
+
                 } else {
                     $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert">Data Transaksi anda tidak ada.</div>');
                     // close the message after seconds
@@ -228,6 +352,47 @@
                 });
             }
         });
+    };
+
+    function addemployeeNote() {
+        $('#formTransInformation').removeClass('d-none');
+    }
+
+    function cancelTransInformation() {
+        $('#formTransInformation').addClass('d-none');
+    }
+
+    function saveTransInformation() {
+        var formData = new FormData($('#formTransInformation')[0]);
+        $.ajax({
+            url: "<?php echo site_url('employee/transaction/addTransInformation') ?>",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "JSON",
+            success: function(data) {
+                $('#the-message-tranfo').html('<div class="alert alert-success animated zoomIn fast" role="alert">Catatan Anda berhasil di perbarui.</div>');
+                // close the message after seconds
+                $('.alert-success').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+                reload_table();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#confirmPay').modal('hide');
+                reload_table();
+                $('#the-message-tranfo').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Catatan Anda gagal di perbarui.</div>');
+                // close the message after seconds
+                $('.alert-danger').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+            }
+        });
     }
 
     // Tambah Data
@@ -241,14 +406,51 @@
         $('#doc_storage_error').empty();
 
         $('#documentModal').modal('show');
+    };
 
-    }
+    function delete_doc(id) {
+        $('#deleteData').modal('show'); // show bootstrap modal
+        // ajax delete data to database
+        $('#btn-delete').attr('onclick', 'delConfirm(' + id + ')');
+    };
+
+    function delConfirm(id) {
+        $.ajax({
+            url: "<?php echo site_url('employee/document/deleteDocEmploy') ?>/" + id,
+            type: "POST",
+            dataType: "JSON",
+            success: function(data) {
+                //if success reload ajax table
+                $('#mesDocument').html('<div class="alert alert-success animated zoomIn fast" role="alert"><strong>Selamat! </strong> Data berhasil dihapus.</div>');
+                // close the message after seconds
+                $('.alert-success').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+                $('#deleteData').modal('hide');
+                $('#modal_form').modal('hide');
+                reload_table();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#mesDocument').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Anda gagal menghapus Data.</div>');
+                // close the message after seconds
+                $('.alert-danger').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+                $('#deleteData').modal('hide');
+                reload_table();
+            }
+        });
+    };
 
     //Tambah Data
     function save() {
         $('#btnSave').text('Mengirim...'); //change button text
         $('#btnSave').attr('disabled', true); //set button disable 
-        var url = "<?php echo site_url('employee/document/docapply') ?>";
+        var url = "<?php echo site_url('employee/document/docEmploy') ?>";
 
         // ajax adding data to database
         var formData = new FormData($('#form')[0]);
@@ -336,29 +538,19 @@
         $('#formConfirm')[0].reset();
         $('.form-control').removeClass('is-invalid'); // clear error class
         $('.invalid-feedback').empty();
-        $('#confirmTrans .modal-title').text('Konfirmasi Transaksi <?= $trans->trans_code ?>');
         $('#request').show();
-        $('#trareq').selectpicker('refresh')
-        reload_table();
-    };
-
-    function editConfirmTrans(id) {
-        $('#formConfirm')[0].reset();
-        $('#confirmTrans').modal('show');
-        $('.form-control').removeClass('is-invalid'); // clear error class
-        $('.invalid-feedback').empty();
-        $('#confirmTrans .modal-title').text('Edit Konfirmasi Transaksi <?= $trans->trans_code ?>');
+        $('#trareq').selectpicker('refresh');
+        $('#chtranstat').hide();
     };
 
     function saveTrans() {
         $('#btnTrans').text('Mengirim...'); //change button text
         $('#btnTrans').attr('disabled', true); //set button disable 
-        var url = "<?php echo site_url('employee/transaction/addConfirmTrans') ?>";
 
         // ajax adding data to database
         var formData = new FormData($('#formConfirm')[0]);
         $.ajax({
-            url: url,
+            url: "<?php echo site_url('employee/transaction/addConfirmTrans') ?>",
             type: "POST",
             data: formData,
             contentType: false,
@@ -404,6 +596,138 @@
         });
 
     };
+
+    function confirmPay() {
+        $('#confirmPay').modal('show');
+        $('.form-control').removeClass('is-invalid'); // clear error class
+        $('.invalid-feedback').empty();
+        $('#viewforStatus').hide();
+
+        $.ajax({
+            url: "<?php echo site_url('employee/transaction/viewpay/') . $trans->trans_code ?>",
+            type: "GET",
+            dataType: "JSON",
+            success: function(data) {
+
+                if (data.status) {
+                    $('#view_payment_to').text(data.payment_to);
+                    $('#view_payment_date').text(data.payment_dateConvert);
+                    $('#view_payment_bank').text(data.payment_bank);
+                    $('#view_payment_number').text(data.payment_number);
+                    $('#view_payment_from').text(data.payment_from);
+                    $('#view_payment_amount').text(data.payment_amountConvert);
+                    $('#payment_img').attr('src', '<?= base_url("assets/img/img-bukti/") ?>' + data.payment_img);
+                } else {
+                    $('#view_payment_to').text("-");
+                    $('#view_payment_date').text("-");
+                    $('#view_payment_bank').text("-");
+                    $('#view_payment_number').text("-");
+                    $('#view_payment_from').text("-");
+                    $('#view_payment_amount').text("-");
+                    $('#payment_img').attr('src', '#');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert">Kesalahan mendapatkan data dari ajax.</div>');
+                // close the message after seconds
+                $('.alert-danger').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+                $('#confirmPay').modal('hide');
+            }
+        });
+    };
+
+    function addconfirmPay() {
+        var formData = new FormData($('#forChangeTrans')[0]);
+        $.ajax({
+            url: "<?php echo site_url('employee/transaction/addConfirmPay') ?>",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "JSON",
+            success: function(data) {
+
+                if (data.status) //if success close modal and reload ajax table
+                {
+                    $('#confirmPay').modal('hide');
+                    $('#the-message').html('<div class="alert alert-success animated zoomIn fast" role="alert">Pembayaran <?= $trans->trans_code ?> berhasil di perbarui.</div>');
+                    // close the message after seconds
+                    $('.alert-success').delay(500).show(10, function() {
+                        $(this).delay(3000).hide(10, function() {
+                            $(this).remove();
+                        });
+                    });
+                    reload_table();
+                } else {
+                    for (var i = 0; i < data.inputerror.length; i++) {
+                        $('#' + data.inputerror[i]).addClass('is-invalid');
+                        $('#' + data.inputerror[i] + '_error').text(data.error_string[i]);
+                    }
+                }
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#confirmPay').modal('hide');
+                reload_table();
+                $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Pembayaran <?= $trans->trans_code ?> gagal di perbarui.</div>');
+                // close the message after seconds
+                $('.alert-danger').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+            }
+        });
+    };
+
+    function changeStatusTrans() {
+        var formData = new FormData($('#formchangeStatusTrans')[0]);
+        $.ajax({
+            url: "<?php echo site_url('employee/transaction/changeStatusTrans') ?>",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "JSON",
+            success: function(data) {
+
+                if (data.status) //if success close modal and reload ajax table
+                {
+                    $('#modelchangeStatusTrans').modal('hide');
+                    $('#btnchangeStatusTrans').hide();
+                    $('#the-message').html('<div class="alert alert-success animated zoomIn fast" role="alert">Pembayaran <?= $trans->trans_code ?> berhasil di perbarui.</div>');
+                    // close the message after seconds
+                    $('.alert-success').delay(500).show(10, function() {
+                        $(this).delay(3000).hide(10, function() {
+                            $(this).remove();
+                        });
+                    });
+                    reload_table();
+                } else {
+                    for (var i = 0; i < data.inputerror.length; i++) {
+                        $('#' + data.inputerror[i]).addClass('is-invalid');
+                        $('#' + data.inputerror[i] + '_error').text(data.error_string[i]);
+                    }
+                }
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#modelchangeStatusTrans').modal('hide');
+                reload_table();
+                $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Pembayaran <?= $trans->trans_code ?> gagal di perbarui.</div>');
+                // close the message after seconds
+                $('.alert-danger').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+            }
+        });
+    };
 </script>
 
 <!-- Latest compiled and minified JavaScript -->
@@ -412,7 +736,57 @@
 <!-- (Optional) Latest compiled and minified JavaScript translation files -->
 <script src="<?= base_url('assets/vendor/bootstrap-select/') ?>js/i18n/defaults-id_ID.min.js"></script>
 
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteData" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Anda yakin ingin menghapus data ini?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="mesDelete">
+                Data yang dihapus tidak akan bisa dikembalikan.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button id="btn-delete" type="button" class="btn btn-primary">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal -->
+<div class="modal fade" id="modelchangeStatusTrans" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ganti Status<br><?= $trans->trans_code; ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="#" id="formchangeStatusTrans">
+                <input type="hidden" name="trans_code" value="<?= $trans->trans_code; ?>">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <select class="custom-select" name="selectchangeStatusTrans" aria-describedby="helpId">
+                            <option value="2">Lengkapi Persyaratan</option>
+                            <option value="3">Proses</option>
+                            <option value="4">Selesai</option>
+                        </select>
+                        <small id="helpId" class="form-text text-muted">*Jika merubah status menjadi "Selesai". Anda tidak akan bisa menambah atau menghapus dokumen</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="changeStatusTrans()">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="documentModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
@@ -454,7 +828,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                     <button id="btnSave" onclick="save()" type="button" class="btn btn-primary">Kirim</button>
                 </div>
             </form>
@@ -475,7 +849,7 @@
                 Body
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 <!-- <button type="button" class="btn btn-primary">Save</button> -->
             </div>
         </div>
@@ -495,6 +869,7 @@
             <div class="modal-body">
                 <form action="#" id="formConfirm">
                     <input type="hidden" value="<?= $trans->trans_code ?>" name="trans_code" id="trans_code" />
+                    <input type="hidden" name="trans_request" id="trans_request" />
                     <div class="custom-control custom-checkbox my-1 mr-sm-2">
                         <input type="checkbox" class="custom-control-input" name="checkData" id="checkData" value="6">
                         <label class="custom-control-label" for="checkData">Data Tidak Tersedia</label>
@@ -504,7 +879,7 @@
                         <div class="form-group">
                             <label class="font-weight-bolder text-primary" for="trareq">Jenis Permintaan</label>
                             <select data-header="Pilih Jenis Permintaan" class="form-control selectpicker show-tick" data-live-search="true" name="trareq" id="trareq" required>
-                                <option>Pilih...</option>
+                                <option value="0">Pilih...</option>
                                 <?php
                                 foreach ($type as $t) :
                                 ?>
@@ -527,14 +902,14 @@
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bolder text-primary" for="trans_rates">Tarif</label>
-                            <input type="number" class="form-control" name="trans_rates" id="trans_rates" placeholder="Tarif" readonly>
+                            <input type="text" class="form-control" name="trans_rates" id="trans_rates" placeholder="Tarif" readonly>
                             <div id="trans_rates_error" class="invalid-feedback">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="font-weight-bolder text-primary" for="trans_amount">Jumlah</label>
                             <div class="form-inline">
-                                <input type="number" min="1" value="1" class="form-control" name="trans_amount" id="trans_amount" placeholder="Jumlah" aria-describedby="amountHelpInline" required>
+                                <input onkeyup="countTrans()" onchange="countTrans()" type="number" min="1" value="1" class="form-control" name="trans_amount" id="trans_amount" placeholder="Jumlah" aria-describedby="amountHelpInline" required>
                                 <small id="amountHelpInline" class="text-muted ml-2"> - </small>
                             </div>
                             <div id="trans_amount_error" class="invalid-feedback">
@@ -550,6 +925,16 @@
                             <div id="trans_sum_error" class="invalid-feedback">
                             </div>
                         </div>
+                        <div class="form-group" id="chtranstat">
+                            <label for="trans_status">Status Transaksi</label>
+                            <select class="custom-select" name="trans_status" id="trans_status" required>
+                                <option value="0" selected>Pilih...</option>
+                                <option value="2">Lengkapi Persyaratan</option>
+                                <option value="3">Proses</option>
+                            </select>
+                            <div id="trans_status_error" class="invalid-feedback">
+                            </div>
+                        </div>
                     </div>
             </div>
             <div class="modal-footer">
@@ -561,13 +946,93 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="confirmPay" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pembayaran <?= $trans->trans_code ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-break">
+                <div class="form-group row">
+                    <label for="view_payment_to" class="col-sm-4 col-form-label text-sm-right font-weight-bold">Pembayaran ke Rekening</label>
+                    <div class="col-sm-8 my-auto" id="view_payment_to">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                    <label for="view_payment_date" class="col-sm-4 col-form-label text-sm-right font-weight-bold">Tanggal Bayar</label>
+                    <div class="col-sm-8 my-auto" id="view_payment_date">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                    <label for="view_payment_bank" class="col-sm-4 col-form-label text-sm-right font-weight-bold">Nama Bank</label>
+                    <div class="col-sm-8 my-auto" id="view_payment_bank">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                    <label for="view_payment_number" class="col-sm-4 col-form-label text-sm-right font-weight-bold">No. Rekening</label>
+                    <div class="col-sm-8 my-auto" id="view_payment_number">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                    <label for="view_payment_from" class="col-sm-4 col-form-label text-sm-right font-weight-bold">Atas Nama</label>
+                    <div class="col-sm-8 my-auto" id="view_payment_from">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                    <label for="view_payment_amount" class="col-sm-4 col-form-label text-sm-right font-weight-bold">Jumlah Bayar</label>
+                    <div class="col-sm-8 my-auto" id="view_payment_amount">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group text-center">
+                    <div class="col-form-label font-weight-bold">Bukti Bayar</div>
+                    <img id="payment_img" class="img-fluid rounded w-75" alt="Bukti Bayar">
+                </div>
+                <hr>
+                <form action="#" id="forChangeTrans">
+                    <input type="hidden" value="<?= $trans->trans_code ?>" name="trans_code" id="trans_code" />
+                    <div class="form-group">
+                        <label for="forPay">Status Pembayaran</label>
+                        <select class="custom-select" name="forPay" id="forPay">
+                            <option value="p">Pilih...</option>
+                            <option value="3">Pembayaran Diterima</option>
+                            <option value="4">Pembayaran Tidak Sesuai</option>
+                        </select>
+                        <div id="forPay_error" class="invalid-feedback">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="viewforStatus">
+                        <label for="forStatus">Status Transaksi</label>
+                        <select class="custom-select" name="forStatus" id="forStatus">
+                            <option>Pilih...</option>
+                            <option value="2">Lengkapi Persyaratan</option>
+                            <option value="3">Proses</option>
+                        </select>
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="button" onclick="addconfirmPay()" class="btn btn-primary">Simpan</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     var sum, amount, rates;
     var nontarif = 1;
-
-    $('select#trareq').on('change', function() {
-        alert(this.value);
-    });
 
     function countTrans() {
         rates = $("#trans_rates").val();
@@ -575,6 +1040,37 @@
         sum = (rates * amount) * nontarif; //a kali b
         $("#trans_sum").val(sum);
     }
+
+    $('#forPay').change(function() {
+        var id = $(this).val();
+        if (id == 3) {
+            $('#viewforStatus').show();
+        } else {
+            $('#viewforStatus').hide();
+        }
+    });
+
+    $('#trareq').change(function() {
+        var id = $(this).val();
+
+        $.ajax({
+            url: "<?= site_url('employee/transaction/viewSubRequest') ?>",
+            data: "id=" + id,
+            dataType: 'json',
+            success: function(data) {
+                $('#trans_request').val(data.subtype_id);
+                $('#trans_rates').val(data.rates);
+                $('#amountHelpInline').text(data.unit);
+                countTrans();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#trans_request').val('data.subtype_id');
+                $('#trans_rates').val(0);
+                $('#amountHelpInline').text('-');
+                countTrans();
+            }
+        });
+    });
 
     $('#checkData').click(function() {
         if ($(this).is(':checked')) {
@@ -587,10 +1083,12 @@
     $('#payStatus').click(function() {
         if ($(this).is(':checked')) {
             nontarif = 0;
-            countTrans()
+            countTrans();
+            $('#chtranstat').show();
         } else {
             nontarif = 1;
-            countTrans()
+            countTrans();
+            $('#chtranstat').hide();
         }
     });
 </script>

@@ -40,7 +40,7 @@
             <div class="card-body">
                 <div class="alert alert-secondary text-center text-xs py-2" role="alert">
                     <b>Mohon kesediaan Anda untuk memberikan
-                        penilaian dan masukan kepada GraPari Telkomsel, dimana hal ini sangat bermanfaat
+                        penilaian dan masukan kepada kami, dimana hal ini sangat bermanfaat
                         untuk meningkatkan kualitas layanan kami.<br>
                     </b><i>Silahkan diisi dengan mengklik option radio
                         serta keterangan sesuai dengan penilaian Anda

@@ -316,9 +316,66 @@
             $('#note .modal-body').text('-');
         }
     };
+
+    function delete_doc(id) {
+        $('#deleteData').modal('show'); // show bootstrap modal
+        // ajax delete data to database
+        $('#btn-delete').attr('onclick', 'delConfirm(' + id + ')');
+    };
+
+    function delConfirm(id) {
+        $.ajax({
+            url: "<?php echo site_url('employee/document/deleteDocApply') ?>/" + id,
+            type: "POST",
+            dataType: "JSON",
+            success: function(data) {
+                //if success reload ajax table
+                $('#mesDocument').html('<div class="alert alert-success animated zoomIn fast" role="alert"><strong>Selamat! </strong> Data berhasil dihapus.</div>');
+                // close the message after seconds
+                $('.alert-success').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+                $('#deleteData').modal('hide');
+                $('#modal_form').modal('hide');
+                reload_table();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#mesDocument').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Anda gagal menghapus Data.</div>');
+                // close the message after seconds
+                $('.alert-danger').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+                $('#deleteData').modal('hide');
+                reload_table();
+            }
+        });
+    };
 </script>
 
-<!-- Modal -->
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteData" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Anda yakin ingin menghapus data ini?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="mesDelete">
+                Data yang dihapus tidak akan bisa dikembalikan.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button id="btn-delete" type="button" class="btn btn-primary">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="documentModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">

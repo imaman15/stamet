@@ -12,7 +12,7 @@ class Request extends CI_Controller
         //Load Dependencies
         admin_not_login([2]);
         $this->load->library(['form_validation']);
-        $this->load->model(['type_model', 'subtype_model']);
+        $this->load->model(['type_model', 'subtype_model', 'transaction_model', 'applicant_model', 'employee_model']);
     }
 
     // List all your items
@@ -52,7 +52,6 @@ class Request extends CI_Controller
         //output to json format
         echo json_encode($output);
     }
-
 
     // Add a new item
     public function addRequest()
@@ -189,6 +188,24 @@ class Request extends CI_Controller
         //delete file
         $this->subtype_model->delete($id);
         echo json_encode(array("status" => TRUE));
+    }
+
+    //Delete one item
+    public function viewdeleteSubRequest($id = NULL)
+    {
+        $check = $this->subtype_model->getData(["subtype_id" => $id])->row();
+        if ((!isset($id)) or (!$check)) redirect(site_url(UE_ADMIN));
+
+        $trans = $this->transaction_model->getField('subtype_id', ['subtype_id' => $id])->num_rows();
+
+        if ($trans > 0) {
+            $message = "Mohon maaf data ini sudah di gunakan tabel Transaksi berjumlah " . $trans . " data. Silahkan ganti terlebih dahulu untuk menghapus data ini.";
+            echo json_encode(array("status" => FALSE, "message" => $message));
+        } else {
+            $message = "Data yang dihapus tidak akan bisa dikembalikan.";
+            //delete file
+            echo json_encode(array("status" => TRUE, "message" => $message));
+        }
     }
 
     public function viewSubRequest($id = NULL)

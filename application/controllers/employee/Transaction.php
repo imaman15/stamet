@@ -11,7 +11,7 @@ class Transaction extends CI_Controller
         parent::__construct();
         //Load Dependencies
         admin_not_login([2]);
-        $this->load->library(['form_validation']);
+        $this->load->library(['form_validation', 'upload']);
         $this->load->model(['transaction_model', 'applicant_model', 'employee_model', 'subtype_model', 'type_model', 'document_model']);
     }
 
@@ -45,7 +45,13 @@ class Transaction extends CI_Controller
             $group .= $d->phone;
             $row[] = $group;
 
-            $row[] = ($d->transcode_storage) ? $d->transcode_storage : "-";
+            if ($d->transcode_storage) {
+                $transcodeStor = '<span id="' . $d->trans_code . '">' . $d->transcode_storage . '</span><hr class="my-2"><button type="button" class="btn btn-primary btn-sm rounded py-1" onclick="addTransStor(' . "'" . $d->trans_code . "'" . ')">Edit Kode</button>';
+            } else {
+                $transcodeStor = '<button type="button" class="btn btn-primary btn-sm rounded py-1" onclick="addTransStor(' . "'" . $d->trans_code . "'" . ')">Tambah Kode</button>';
+            }
+
+            $row[] = $transcodeStor;
             $row[] = timeIDN(date('Y-m-d', strtotime($d->date_created)), true);
 
             // $row[] = statusTrans($d->trans_status, 'transaction');
@@ -76,21 +82,22 @@ class Transaction extends CI_Controller
     public function detail($id = NULL)
     {
         $trans = $this->transaction_model->getField('*', ['trans_code' => $id])->row();
-        $req = $this->subtype_model->groupTrans($trans->subtype_id)->row();
-        $emp = $this->employee_model->getDataBy($trans->emp_id, 'emp_id')->row();
-        $apply = $this->applicant_model->getDataBy($trans->apply_id, 'applicant_id')->row();
 
         if ((!isset($id)) || (!$trans)) redirect(show_404());
-
 
         $data['type'] = $this->type_model->getData()->result_array();
         $data['user'] = dAdmin();
         $data['trans'] = $trans;
-        $data['req'] =  $req;
-        $data['emp'] =  $emp;
-        $data['apply'] =  $apply;
         $data['title'] = 'Detail Transaksi';
         $this->template->loadadmin(UE_FOLDER . '/detail', $data);
+    }
+
+    public function viewSubRequest()
+    {
+        $id = $this->input->get('id');
+        $data = $this->subtype_model->getData(["subtype_id" => $id])->row();
+        if ((!isset($id)) or (!$data)) redirect(site_url(UE_ADMIN));
+        echo json_encode($data);
     }
 
     public function detailAjax($id = NULL)
@@ -155,7 +162,7 @@ class Transaction extends CI_Controller
 
             //Total
             if (isset($trans->trans_sum)) {
-                $data['trans_sum'] = $trans->trans_sum;
+                $data['trans_sum'] = rupiah($trans->trans_sum);
             } else {
                 $data['trans_sum'] = '-';
             }
@@ -184,6 +191,15 @@ class Transaction extends CI_Controller
                 $data['employ'] = '-';
             }
 
+
+            $user = $this->session->userdata('emp_id');
+            $data['userses'] = $user;
+            $data['user'] = $trans->emp_id;
+
+            $data['trastat'] = $trans->trans_status;
+            $data['paystat'] = $trans->payment_status;
+            $data['trans_information'] = $trans->trans_information;
+
             $data['status'] = TRUE;
             echo json_encode($data);
         } else {
@@ -193,15 +209,91 @@ class Transaction extends CI_Controller
 
     public function addConfirmTrans()
     {
-        $subtype_id = $this->input->post('trans_request');
-        $req = $this->subtype_model->groupTrans($subtype_id)->row();
 
-        //$this->_validPayment();
-        $this->transaction_model->confirmTrans($req);
+        $this->_validConTrans();
+        $this->transaction_model->confirmTrans();
         echo json_encode(array("status" => TRUE));
     }
 
-    private function _validPayment($method = NULL)
+    public function addConfirmPay()
+    {
+        $this->_validConPay();
+        $this->transaction_model->confirmPay();
+        echo json_encode(array("status" => TRUE));
+    }
+
+    public function changeStatusTrans()
+    {
+        $this->transaction_model->changeStatusTrans();
+        echo json_encode(array("status" => TRUE));
+    }
+
+    public function addTransInformation()
+    {
+        $this->transaction_model->addTransInformation();
+        echo json_encode(array("status" => TRUE));
+    }
+
+    public function saveTranStor()
+    {
+        $data = array();
+        $data['inputerror'] = array();
+        $data['status'] = TRUE;
+
+        if ($this->input->post('inputTranStor') == '') {
+            $data['inputerror'][] = 'inputTranStor';
+            $data['error_string'][] = 'Kode Penyimpanan harus di isi.';
+            $data['status'] = FALSE;
+        }
+
+        if ($data['status'] === FALSE) {
+            echo json_encode($data);
+            exit();
+        }
+
+        $this->transaction_model->saveTranStor();
+        echo json_encode(array("status" => TRUE));
+    }
+
+    private function _validConPay()
+    {
+        $data = array();
+        $data['inputerror'] = array();
+        $data['status'] = TRUE;
+
+        if ($this->input->post('forPay') == 'p') {
+            $data['inputerror'][] = 'forPay';
+            $data['error_string'][] = 'Status Pembayaran harus di isi.';
+            $data['status'] = FALSE;
+        }
+
+        if ($data['status'] === FALSE) {
+            echo json_encode($data);
+            exit();
+        }
+    }
+
+    public function viewPay($id = NULL)
+    {
+        $select = 'apply_id,payment_to,payment_date,payment_bank,payment_number,payment_from,payment_amount,payment_img,payment_status';
+        $where = ['trans_code' => $id];
+        $data = $this->transaction_model->getField($select, $where)->row();
+
+        if ((!isset($id)) || (!$data)) {
+            redirect(show_404());
+        };
+
+        if ($data) {
+            $data->payment_dateConvert = DateTime($data->payment_date);
+            $data->payment_amountConvert = rupiah($data->payment_amount);
+            $data->status = true;
+            echo json_encode($data);
+        } else {
+            echo json_encode(['status' => false]);
+        }
+    }
+
+    private function _validConTrans($method = NULL)
     {
         $data = array();
         $data['inputerror'] = array();
@@ -231,6 +323,15 @@ class Transaction extends CI_Controller
             $data['status'] = FALSE;
         }
 
+        if ($this->input->post('trans_status')) {
+            if ($this->input->post('trans_status') == '0') {
+                $data['inputerror'][] = 'trans_status';
+                $data['error_string'][] = 'Status Transaksi tidak boleh kosong.';
+                $data['status'] = FALSE;
+            }
+        }
+
+
         if ($data['status'] === FALSE) {
             echo json_encode($data);
             exit();
@@ -258,7 +359,16 @@ class Transaction extends CI_Controller
             } else {
                 $btn = '<a title="Download Berkas" class="btn btn-success btn-circle btn-sm mb-1" href="' . $url . '" target="_blank"><i class="fas fa-download"></i></a>';
             }
-            $row[] = $btn;
+
+            $trans = $this->transaction_model->getField('trans_status', ['trans_id' => $id])->row();
+
+            $user = $this->session->userdata('emp_id');
+            if (($user == $d->user_id) && ($d->user_type == 'employee') && ($trans->trans_status != 4)) {
+                $btndel = '<a title="Download Berkas" class="btn btn-danger btn-circle btn-sm mb-1" href="javascript:void(0)" onclick="delete_doc(' . "'" . $d->doc_id . "'" . ')"><i class="fas fa-trash"></i></a>';
+            } else {
+                $btndel = '';
+            }
+            $row[] = $btn . '<br>' . $btndel;
 
             $data[] = $row;
         }

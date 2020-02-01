@@ -118,6 +118,7 @@ class Transaction extends CI_Controller
             if ($trans && $trans->apply_id == $user) {
                 $trans->convertDate = date('Y-m-d\TH:i:s', strtotime($trans->payment_date));
                 $trans->status = 1;
+                $trans->sumrup = rupiah($trans->trans_sum);
                 echo json_encode($trans);
             } else {
                 echo json_encode(['status' => false]);
@@ -211,7 +212,16 @@ class Transaction extends CI_Controller
             } else {
                 $btn = '<a title="Download Berkas" class="btn btn-success btn-circle btn-sm mb-1" href="' . $url . '" target="_blank"><i class="fas fa-download"></i></a>';
             }
-            $row[] = $btn;
+
+            $trans = $this->transaction_model->getField('trans_status', ['trans_id' => $id])->row();
+
+            $user = $this->session->userdata('applicant_id');
+            if (($user == $d->user_id) && ($d->user_type == 'applicant') && (in_array($trans->trans_status, [0, 2]))) {
+                $btndel = '<a title="Download Berkas" class="btn btn-danger btn-circle btn-sm mb-1" href="javascript:void(0)" onclick="delete_doc(' . "'" . $d->doc_id . "'" . ')"><i class="fas fa-trash"></i></a>';
+            } else {
+                $btndel = '';
+            }
+            $row[] = $btn . '<br>' . $btndel;
 
             $data[] = $row;
         }

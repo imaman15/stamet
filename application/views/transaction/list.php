@@ -146,15 +146,10 @@
             type: "GET",
             dataType: "JSON",
             success: function(data) {
-                // var now = data.payment_date;
-                // var day = ("0" + now.getDate()).slice(-2);
-                // var month = ("0" + (now.getMonth() + 1)).slice(-2);
-                // var today = now.getFullYear() + "-" + (month) + "-" + (day);
 
-                // ('yyyy-MM-ddThh:mm');
 
                 if (data.status == 1) {
-                    $('#paybefore').html('<b>' + data.payment_to + '</b>');
+                    $('#paybefore').html('<b>' + data.payment_to + '</b><p><b>Total : ' + data.sumrup + '</b></p>');
                     $('#trans_code').val(id);
                     $('#preview').show();
                     var urlimg = '<?= base_url("assets/img/img-bukti/") ?>' + data.payment_img;

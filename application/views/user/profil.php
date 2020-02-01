@@ -73,25 +73,34 @@
               </thead>
               <tbody>
 
-                <?php foreach ($transaction as $d) { ?>
+                <?php
+                if ($transaction) {
+                  foreach ($transaction as $d) { ?>
+                    <tr>
+                      <td><?= $d->trans_code ?></td>
+                      <td><?= DateTime($d->date_created) ?></td>
+                      <td class="text-left">
+                        <?php
+                        $emp = $this->employee_model->getDataBy($d->emp_id, 'emp_id')->row();
+                        if ($d->emp_name && $d->emp_posname) {
+                          echo $d->emp_name . " - " . $d->emp_posname;
+                        } else if ($d->emp_id) {
+                          echo $emp->first_name . " " . $emp->last_name . " - " . $emp->pos_name;
+                        }
+                        ?>
+                      </td>
+                      <td>
+                        <a target="_blank" href="<?= site_url(UA_TRANSACTIONDETAIL . '/' . $d->trans_code) ?>">
+                          <?= statusTrans($d->trans_status, 'transaction') ?>
+                        </a>
+                      </td>
+                    </tr>
+                  <?php };
+                } else { ?>
                   <tr>
-                    <td><?= $d->trans_code ?></td>
-                    <td><?= DateTime($d->date_created) ?></td>
-                    <td class="text-left">
-                      <?php
-                      if (isset($d->emp_name) && isset($d->emp_posname)) {
-                        echo $d->emp_name . " - " . $d->emp_posname;
-                      }
-                      ?>
-                    </td>
-                    <td>
-
-                      <a target="_blank" href="<?= site_url(UA_TRANSACTIONDETAIL . '/' . $d->trans_code) ?>">
-                        <?= statusTrans($d->trans_status, 'transaction') ?>
-                      </a>
-                    </td>
+                    <td colspan="4" class="dataTables_empty">Tidak ada transaksi.</td>
                   </tr>
-                <?php }; ?>
+                <?php } ?>
               </tbody>
             </table>
           </div>
@@ -114,16 +123,23 @@
                 </tr>
               </thead>
               <tbody>
-                <?php foreach ($schedule as $d) { ?>
+                <?php
+                if ($schedule) {
+                  foreach ($schedule as $d) { ?>
+                    <tr>
+                      <td><?= $d->sch_code ?></td>
+                      <td><?= DateTime($d->sch_date) ?></td>
+                      <td class="text-left">
+                        <?= $d->responsible_person ?>
+                      </td>
+                      <td>
+                        <?= statusSch($d->sch_status, 'applicant', ['beranda' => 1]) ?>
+                      </td>
+                    </tr>
+                  <?php };
+                } else { ?>
                   <tr>
-                    <td><?= $d->sch_code ?></td>
-                    <td><?= DateTime($d->sch_date) ?></td>
-                    <td class="text-left">
-                      <?= $d->responsible_person ?>
-                    </td>
-                    <td>
-                      <?= statusSch($d->sch_status, 'applicant', ['beranda' => 1]) ?>
-                    </td>
+                    <td colspan="4" class="dataTables_empty">Tidak ada jadwal pertemuan.</td>
                   </tr>
                 <?php } ?>
               </tbody>

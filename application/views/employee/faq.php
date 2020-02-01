@@ -186,7 +186,7 @@
                 }
             });
         });
-    }
+    };
 </script>
 
 <!-- Modal Lihat FAQS-->

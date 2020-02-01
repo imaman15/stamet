@@ -20,7 +20,29 @@ class Document extends CI_Controller
         app_not_login();
         $this->_validPayment();
         $this->document_model->docApply();
-        // if ($this->db->affected_rows() > 0) {}
+        echo json_encode(array("status" => TRUE));
+    }
+
+    public function deleteDocApply($id)
+    {
+        app_not_login();
+        $this->document_model->deleteDocApply($id);
+        echo json_encode(array("status" => TRUE));
+    }
+
+    // Add a new item
+    public function docEmploy()
+    {
+        admin_not_login([2]);
+        $this->_validPayment();
+        $this->document_model->docEmploy();
+        echo json_encode(array("status" => TRUE));
+    }
+
+    public function deleteDocEmploy($id)
+    {
+        admin_not_login([2]);
+        $this->document_model->deleteDocEmploy($id);
         echo json_encode(array("status" => TRUE));
     }
 

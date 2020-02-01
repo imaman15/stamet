@@ -86,6 +86,9 @@
                 "targets": [-2, -1, 0],
                 "className": 'text-center',
                 "orderable": false, //set not orderable
+            }, {
+                "targets": [3],
+                "className": 'text-center'
             }],
             "oLanguage": {
                 "sInfo": "Total _TOTAL_ data, menampilkan data (_START_ sampai _END_)",
@@ -172,7 +175,86 @@
             });
         });
     };
+
+    function addTransStor(id) {
+        $('#tranStor').modal('show');
+        $('#btnTranStor').attr('onclick', 'saveTranStor()');
+        $('#inputTranStor').val($('#' + id).text());
+        $('#trans_code').val(id);
+    }
+
+    function saveTranStor() {
+        var formData = new FormData($('#formTranStor')[0]);
+        $.ajax({
+            url: "<?php echo site_url('employee/transaction/saveTranStor') ?>",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "JSON",
+            success: function(data) {
+
+                if (data.status) //if success close modal and reload ajax table
+                {
+                    $('#tranStor').modal('hide');
+                    $('#the-message').html('<div class="alert alert-success animated zoomIn fast" role="alert">Kode Penyimpanan berhasil di perbarui.</div>');
+                    // close the message after seconds
+                    $('.alert-success').delay(500).show(10, function() {
+                        $(this).delay(3000).hide(10, function() {
+                            $(this).remove();
+                        });
+                    });
+                    reload_table();
+                } else {
+                    for (var i = 0; i < data.inputerror.length; i++) {
+                        $('#' + data.inputerror[i]).addClass('is-invalid');
+                        $('#' + data.inputerror[i] + '_error').text(data.error_string[i]);
+                    }
+                }
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#tranStor').modal('hide');
+                reload_table();
+                $('#the-message').html('<div class="alert alert-danger animated zoomIn fast" role="alert"><strong>Maaf!</strong> Kode Penyimpanan gagal di perbarui.</div>');
+                // close the message after seconds
+                $('.alert-danger').delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                        $(this).remove();
+                    });
+                });
+            }
+        });
+    };
 </script>
+
+<!-- Modal -->
+<div class="modal fade" id="tranStor" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Kode Penyimpanan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="#" id="formTranStor">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" name="trans_code" id="trans_code">
+                        <input type="text" class="form-control" name="inputTranStor" id="inputTranStor" placeholder="Kode Penyimpanan">
+                        <div id="inputTranStor_error" class="invalid-feedback">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" id="btnTranStor" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">

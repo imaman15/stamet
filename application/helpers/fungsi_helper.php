@@ -411,16 +411,16 @@ function statusTrans($data = NULL, $for = NULL, $array = NULL)
     }
 }
 
-function payStatus($data = NULL, $array = NULL)
+function payStatus($data = NULL)
 {
     if ($data == NULL) {
         return '<span class="small">Belum Dikonfirmasi</span>';
     } elseif ($data == 0) {
         return 'Non Tarif';
     } elseif ($data == 1) {
-        return '<span class="small">Tarif : ' . rupiah($array['trans_sum']) . '</span>';
+        return '<span class="small">Tarif - Menunggu Pembayaran</span>';
     } elseif ($data == 2) {
-        return '<span class="small">Menunggu Konfirmasi Pembayaran</span>';
+        return '<span class="small">Sudah Bayar</span>';
     } elseif ($data == 3) {
         return '<span class="small">Pembayaran Diterima</span>';
     } elseif ($data == 4) {

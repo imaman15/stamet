@@ -220,10 +220,7 @@
 
                 if (data.status) {
                     $('#mesDelete').text(data.message);
-                    $('#btn-delete').show();
-                    $('#btn-delete').click(function() {
-                        deleteBtn(id);
-                    });
+                    $('#btn-delete').show().attr('onclick', 'deleteBtn(' + id + ')');
                 } else {
                     $('#mesDelete').text(data.message);
                 }
@@ -241,7 +238,7 @@
             }
         });
 
-    }
+    };
 
     function deleteBtn(id) {
         // ajax delete data to database
@@ -273,7 +270,7 @@
                 $('#deleteData').modal('hide');
             }
         });
-    }
+    };
 </script>
 
 <!-- Modal Add/Update -->
