@@ -51,7 +51,7 @@
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Total Transaksi</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $countTransAll ?></div>
             </div>
             <div class="col-auto">
               <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -68,7 +68,7 @@
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Transaksi Selesai</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">10</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $countTransDone ?></div>
             </div>
             <div class="col-auto">
               <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
@@ -137,8 +137,49 @@
           Transaksi Data Hari ini
         </div>
         <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-inverse" width="100%" cellspacing="0">
+              <thead class="thead-inverse">
+                <tr>
+                  <th>Kode </th>
+                  <th>Tanggal Transaksi</th>
+                  <th>Petugas Layanan</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <?php
+                if ($transaction) {
+                  foreach ($transaction as $d) { ?>
+                    <tr>
+                      <td><?= $d->trans_code ?></td>
+                      <td><?= DateTime($d->date_created) ?></td>
+                      <td class="text-left">
+                        <?php
+                        $emp = $this->employee_model->getDataBy($d->emp_id, 'emp_id')->row();
+                        if ($d->emp_name && $d->emp_posname) {
+                          echo $d->emp_name . " - " . $d->emp_posname;
+                        } else if ($d->emp_id) {
+                          echo $emp->first_name . " " . $emp->last_name . " - " . $emp->pos_name;
+                        }
+                        ?>
+                      </td>
+                      <td>
+                        <a target="_blank" href="<?= site_url(UE_TRANSACTIONDETAIL . '/' . $d->trans_code) ?>">
+                          <?= statusTrans($d->trans_status, 'transaction') ?>
+                        </a>
+                      </td>
+                    </tr>
+                  <?php };
+                } else { ?>
+                  <tr>
+                    <td colspan="4" class="dataTables_empty">Tidak ada transaksi.</td>
+                  </tr>
+                <?php } ?>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="card-footer text-muted">
           <a href="<?= site_url(UE_TRANSACTION) ?>" class="btn btn-primary">Lihat Transaksi</a>

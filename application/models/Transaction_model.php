@@ -311,6 +311,12 @@ class Transaction_model extends CI_Model
         $this->db->order_by('date_update', 'desc');
         return $this->db->get($this->_table, 5)->result();
     }
+    public function berandaAdmin()
+    {
+        $this->db->like('date_created', date('Y-m-d'));
+        $this->db->order_by('date_update', 'desc');
+        return $this->db->get($this->_table, 5)->result();
+    }
 }
 
 /* End of file Transaction_model.php */

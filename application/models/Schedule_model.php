@@ -156,8 +156,7 @@ class Schedule_model extends CI_Model
 
     public function employee()
     {
-        $date = date('Y-m-d');
-        $this->db->like('sch_date', $date);
+        $this->db->like('sch_date', date('Y-m-d'));
         $this->db->order_by('date_update', 'desc');
         return $this->db->get($this->_table, 5)->result();
     }

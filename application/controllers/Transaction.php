@@ -71,7 +71,7 @@ class Transaction extends CI_Controller
         } else {
             $this->transaction_model->apply();
             if ($this->db->affected_rows() > 0) {
-                $this->session->set_flashdata('message', '<div class="alert alert-success animated zoomIn fast" role="alert"><strong>Selamat!</strong> Formulir permintaan data Anda berhasil di kirim. Cek Riwayat Transaksi atau Email Anda secara berkala.</div>');
+                $this->session->set_flashdata('message', '<div class="alert alert-success animated zoomIn fast" role="alert"><strong>Selamat!</strong> Formulir permintaan data Anda berhasil di kirim. Cek Riwayat Transaksi Anda secara berkala.</div>');
                 redirect(UA_TRANSHISTORY);
             } else {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger animated zoomIn" role="alert">

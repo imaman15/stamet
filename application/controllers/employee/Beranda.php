@@ -13,7 +13,7 @@ class Beranda extends CI_Controller
         admin_not_login();
 
         $this->load->library(['form_validation']);
-        $this->load->model(['employee_model', 'applicant_model', 'position_model', 'schedule_model']);
+        $this->load->model(['employee_model', 'applicant_model', 'position_model', 'schedule_model', 'transaction_model']);
     }
 
     // List all your items
@@ -22,7 +22,10 @@ class Beranda extends CI_Controller
         $data['user'] = dAdmin();
         $data['countApplicant'] = $this->applicant_model->count_all();
         $data['countEmployee'] = $this->employee_model->count_all();
+        $data['countTransAll'] = $this->transaction_model->count_all('');
+        $data['countTransDone'] = $this->transaction_model->count_all('done');
         $data['schedule'] = $this->schedule_model->employee();
+        $data['transaction'] = $this->transaction_model->berandaAdmin();
         $data['title'] = 'Beranda';
         $this->template->loadadmin(UE_FOLDER . '/beranda', $data);
     }
