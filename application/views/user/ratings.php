@@ -12,12 +12,13 @@
         <?= $this->session->flashdata('message');
         ?>
         <?php
-        if (date('m-Y', strtotime($this->cands_model->lastAnswer()->date_created)) == date('m-Y')) :
+        $report = $this->cands_model->lastAnswer();
+        if ($report->num_rows() > 0) :
         ?>
-            <div class="alert alert-info text-center" role="alert">
+            <div class="alert alert-warning text-center" role="alert">
                 Anda sudah mengisi survey Bulan ini <br>
                 Tanggal pengisian survey terakhir :
-                <?= timeIDN(date('Y-m-d')) ?>
+                <?= timeIDN(date('Y-m-d', strtotime($report->row()->date_created))) ?>
             </div>
         <?php else : ?>
             <div class="card shadow mb-3 animated zoomIn fast">

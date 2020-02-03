@@ -85,7 +85,7 @@ class Answer_model extends CI_Model
         }
         if ($this->db->affected_rows() > 0) {
             $this->session->set_flashdata('message', '<div class="alert alert-success animated zoomIn fast" role="alert"><strong>' . dUser()->first_name . ' ' . dUser()->last_name . '</strong> Terima kasih atas waktu yang telah diluangkan untuk melengkapi survey yang kami sediakan. <br>Pendapat Anda sangat berarti bagi kami untuk meningkatkan pelayanan.</div>');
-            redirect(UA_RATINGS);
+            redirect(site_url());
         }
         $this->session->set_flashdata('message', '<div class="alert alert-danger animated zoomIn" role="alert">
         <strong>Maaf!</strong> Anda gagal mengisi survey. Silahkan coba kembali.</div>');
