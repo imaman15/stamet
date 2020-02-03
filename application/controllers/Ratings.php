@@ -11,41 +11,57 @@ class Ratings extends CI_Controller
         parent::__construct();
         //Load Dependencies
         app_not_login();
-        $this->load->library(['form_validation', 'upload']);
+        $this->load->library(['form_validation']);
+        $this->load->model(['questions_model', 'answer_model', 'cands_model']);
     }
 
     // List all your items
-    public function index($offset = 0)
+    public function index()
     {
-        $data['user'] = dUser();
-        $data['title'] = 'Pendapat Anda tentang pelayanan kami';
-        $this->template->load('user/ratings', $data);
-    }
 
-    // Add a new item
-    public function add()
-    {
-    }
+        $que = $this->questions_model->getData()->result_array();
+        $i = 1;
+        foreach ($que as $d) {
+            $this->form_validation->set_rules(
+                'answer' . $i . $d['ratque_id'],
+                '<strong>Pertanyaan</strong>',
+                'trim|required',
+                array('required' => '%s ini belum diisi.')
+            );
+            $i++;
+        }
+        $required = '%s harus diisi.';
+        $this->form_validation->set_rules(
+            'applicant_name',
+            '<strong>Nama</strong>',
+            'trim|required',
+            array('required' => $required)
+        );
 
-    //Update one item
-    public function update($id = NULL)
-    {
-    }
+        $this->form_validation->set_rules(
+            'applicant_email',
+            '<strong>Email</strong>',
+            'trim|required',
+            array('required' => $required)
+        );
 
-    //Delete one item
-    public function delete($id = NULL)
-    {
-    }
+        $this->form_validation->set_rules(
+            'applicant_phone',
+            '<strong>No. Handphone</strong>',
+            'trim|required',
+            array('required' => $required)
+        );
 
-    //Upload image summernote
-    public function upload_image()
-    {
-        upload_image();
-    }
-
-    public function delete_image()
-    {
-        delete_image();
+        if ($this->form_validation->run() == FALSE) {
+            $data['user'] = dUser();
+            $data['question'] = $que;
+            $data['title'] = 'Pendapat Anda tentang pelayanan kami';
+            $this->template->load('user/ratings', $data);
+        } else {
+            $this->cands_model->add();
+            $cands_id = $this->db->insert_id();
+            $this->answer_model->add($cands_id, $que);
+        }
     }
 }
 

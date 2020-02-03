@@ -87,10 +87,16 @@
                     Hubungan Pengguna
                 </div>
 
-                <li class="nav-item <?= ($this->uri->uri_string() == UE_CANDS) ? "active" : NULL; ?>">
-                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_CANDS) ?>">
-                        <i class="fas fa-fw fa-comment-alt"></i>
-                        <span>Kritik & Saran</span></a>
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_QUESTIONS) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_QUESTIONS) ?>">
+                        <i class="fas fa-fw fa-question"></i>
+                        <span>Pertanyaan Survey</span></a>
+                </li>
+
+                <li class="nav-item <?= ($this->uri->uri_string() == UE_RATINGS) ? "active" : NULL; ?>">
+                    <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_RATINGS) ?>">
+                        <i class="fas fa-fw fa-poll"></i>
+                        <span>Hasil Survey</span></a>
                 </li>
 
                 <li class="nav-item <?= ($this->uri->uri_string() == UE_COMPLAINT) ? "active" : NULL; ?>">

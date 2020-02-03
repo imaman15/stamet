@@ -500,3 +500,37 @@ function PdfGenerator($html, $filename, $paper, $orientation)
     // Output the generated PDF to Browser
     $dompdf->stream($filename, array('Attachment' => 0));
 }
+
+function sResults()
+{
+    $CI = &get_instance();
+    $data = $CI->answer_model->total()->row();
+    $sum = $data->A + $data->B + $data->C + $data->D + $data->E;
+    $pa = ROUND(($data->A / $sum) * 100);
+    $pb = ROUND(($data->B / $sum) * 100);
+    $pc = ROUND(($data->C / $sum) * 100);
+    $pd = ROUND(($data->D / $sum) * 100);
+    $pe = ROUND(($data->E / $sum) * 100);
+    $result['alpha'] = [
+        ['Sangat Baik', '(A)'],
+        ['Baik', '(B)'],
+        ['Cukup', '(C)'],
+        ['Buruk', '(D)'],
+        ['Sangat Buruk', '(E)']
+    ];
+    $result['number'] = [
+        "A" => $data->A,
+        "B" => $data->B,
+        "C" => $data->C,
+        "D" => $data->D,
+        "E" => $data->E
+    ];
+    $result['persen'] = [
+        "A" => $pa,
+        "B" => $pb,
+        "C" => $pc,
+        "D" => $pd,
+        "E" => $pe
+    ];
+    return $result;
+}

@@ -3,11 +3,19 @@ Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,Bli
 Chart.defaults.global.defaultFontColor = '#858796';
 
 // Bar Chart Example
-var ctx = document.getElementById("myBarChart");
+var myVar = '<?php echo "love"; ?>';
+var ctx = document.getElementById("myBarChart").getContext('2d');
 var myBarChart = new Chart(ctx, {
 	type: 'bar',
 	data: {
-		labels: ["Jawaban A", "Jawaban B", "Jawaban C", "Jawaban D", "Jawaban E"],
+		// labels: [
+		// 	['A', 'Sangat Baik'],
+		// 	['B', 'Baik'],
+		// 	['C', 'Cukup'],
+		// 	['D', 'Buruk'],
+		// 	['E', 'Sangat Buruk']
+		// ]
+		labels: [myVar],
 		datasets: [{
 			label: "Persentase",
 			backgroundColor: "#4e73df",
@@ -23,14 +31,11 @@ var myBarChart = new Chart(ctx, {
 				left: 10,
 				right: 25,
 				top: 25,
-				bottom: 0
+				bottom: 16
 			}
 		},
 		scales: {
 			xAxes: [{
-				time: {
-					unit: 'Jawaban'
-				},
 				gridLines: {
 					display: false,
 					drawBorder: false
@@ -42,12 +47,10 @@ var myBarChart = new Chart(ctx, {
 			}],
 			yAxes: [{
 				ticks: {
-					min: 0,
-					max: 100,
-					maxTicksLimit: 20,
+					beginAtZero: true,
 					padding: 5,
 					// Include a dollar sign in the ticks
-					callback: function (value, index, values) {
+					callback: function (value) {
 						return value + '%';
 					}
 				},
