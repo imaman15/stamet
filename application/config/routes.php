@@ -82,6 +82,7 @@ $route[UE_VERIFY] = UE_FOLDER . '/auth/verify';
 $route[UE_EDITPROFILE] = UE_FOLDER . '/beranda/update';
 $route[UE_CHANGEPASSWORD] = UE_FOLDER . '/beranda/changepassword';
 $route[UE_TRANSACTION] = UE_FOLDER . '/transaction';
+$route[UE_TRANSACTION . '/download/(:any)/(:any)'] = UE_FOLDER . '/transaction/download/$1/$2';
 $route[UE_TRANSACTIONDETAIL . '/(:any)'] = UE_FOLDER . '/transaction/detail/$1';
 $route[UE_SCHEDULE] = UE_FOLDER . '/schedule';
 $route[UE_REQTYPE] = UE_FOLDER . '/request/request';

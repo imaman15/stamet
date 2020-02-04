@@ -11,8 +11,9 @@ class Transaction extends CI_Controller
         parent::__construct();
         //Load Dependencies
         app_not_login();
-        $this->load->library(['form_validation', 'upload', 'email']);
+        $this->load->library(['form_validation', 'upload', 'encryption']);
         $this->load->model(['transaction_model', 'type_model', 'subtype_model', 'document_model', 'configuration_model', 'employee_model', 'applicant_model']);
+        $this->load->helper('download');
     }
 
     public function index()
@@ -205,7 +206,10 @@ class Transaction extends CI_Controller
             $row[] = DateTime($d->date_update);
             $row[] = $d->doc_information;
 
-            $url = base_url("assets/transfile/") . $d->doc_storage;
+            //$url = base_url("assets/transfile/") . $d->doc_storage;
+
+            $enc = $this->encryption->encrypt($d->doc_id);
+            $url = site_url('transaction/download/' . urlencode($enc) . '/' . $d->doc_storage);
 
             if ($_SERVER['HTTP_HOST'] !== "localhost") {
                 $btn = '<a title="Download Berkas" class="btn btn-success btn-circle btn-sm mb-1" href="https://docs.google.com/viewerng/viewer?url=' . $url . '" target="_blank"><i class="fas fa-download"></i></a>';
@@ -234,6 +238,33 @@ class Transaction extends CI_Controller
         );
         //output to json format
         echo json_encode($output);
+    }
+
+    public function download($enc, $id)
+    {
+        $dec = $this->encryption->decrypt(urldecode($enc));
+        $query = $this->document_model->checkDownload(['doc_storage' => $id, 'doc_id' => $dec]);
+        if ($query->num_rows() == 0) {
+            return show_404();
+        }
+        $result = $query->row_array();
+        $path = FCPATH . 'assets/transfile/';
+
+        $stored_file_name = $result['doc_name'];
+        $namefile = str_replace(' ', '_', $stored_file_name);
+
+        $original = $result['doc_storage'];
+        $file_parts = pathinfo($original);
+
+        if ($file_parts['extension'] == "docx") {
+            $ext = '.docx';
+        } elseif ($file_parts['extension'] == "doc") {
+            $ext = '.doc';
+        } elseif ($file_parts['extension'] == "pdf") {
+            $ext = '.pdf';
+        }
+
+        force_download($namefile . '_' . date('d-m-Y') . $ext, file_get_contents($path . $original));
     }
 
     // summernote ==============================

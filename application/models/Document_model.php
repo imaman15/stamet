@@ -162,10 +162,11 @@ class Document_model extends CI_Model
 
     private function _do_uploads()
     {
-        $config['upload_path']          = './assets/transfile/';
-        $config['allowed_types']        = 'docx|pdf|doc';
-        $config['file_name']            = round(microtime(true) * 1000); //just milisecond timestamp fot unique name
-        $config['max_size']             = 10048; // 10MB
+        $config['upload_path']      = './assets/transfile/';
+        $config['allowed_types']    = 'docx|pdf|doc';
+        $config['file_name']        = round(microtime(true) * 1000); //just milisecond timestamp fot unique name
+        $config['max_size']         = 20480; // 20MB
+        $config['encrypt_name']     = TRUE;
 
         $this->upload->initialize($config);
         if (!$this->upload->do_upload('doc_storage')) //upload and validate
@@ -175,6 +176,13 @@ class Document_model extends CI_Model
             redirect(site_url(UA_TRANSACTION));
         }
         return $this->upload->data('file_name');
+    }
+
+    public function checkDownload($where)
+    {
+        $this->db->where($where);
+        $this->db->from($this->_table);
+        return $this->db->get();
     }
 }
 

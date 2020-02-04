@@ -1,3 +1,8 @@
+<?php
+$url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+$url .= "://" . $_SERVER['HTTP_HOST'];
+header("Location: " . $url . "/sipjamet/error_page");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,7 +54,6 @@
 			border: 1px solid #D0D0D0;
 			box-shadow: 0 0 8px #D0D0D0;
 		}
-
 	</style>
 </head>
 

@@ -94,6 +94,7 @@ class Cands_model extends CI_Model
         $this->db->select('date_created');
         $this->db->where('applicant_id', dUser()->applicant_id);
         $this->db->where('MONTH(date_created) = MONTH(CURRENT_DATE())');
+        $this->db->where('YEAR(date_created) = YEAR(CURRENT_DATE())');
         $this->db->order_by('cands_id', 'desc');
         return $this->db->get($this->_table, 1);
     }
