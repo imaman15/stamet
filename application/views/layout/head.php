@@ -27,4 +27,3 @@
 <script src="<?= base_url('assets'); ?>/vendor/jquery/jquery.min.js"></script>
 
 <!-- <script src="https://js.pusher.com/5.0/pusher.min.js"></script> -->
-

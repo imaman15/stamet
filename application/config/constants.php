@@ -92,6 +92,11 @@ defined('EXIT__AUTO_MAX')      or define('EXIT__AUTO_MAX', 125); // highest auto
 |
 */
 // URL Umum
+
+define('META_DESCRIPTION', ucfirst('Sistem Layanan Informasi dan Jasa Meteorologi | Stasiun Meteorologi Kelas I  Maritim Serang'));
+define('META_KEYWORDS', ucfirst('Informasi Cuaca, Layanan Informasi, Layanan Jasa, Layanan Informasi dan Jasa, Meteorologi, Informasi Meteorologi, Jasa Meteorologi, sipjamet'));
+define('META_AUTHOR', ucfirst('Stasiun Meteorologi Kelas I Maritim Serang'));
+
 define('FAQ', strtolower('frequently-asked-questions'));
 define('CHECKSTATUS', strtolower('checkstatus'));
 

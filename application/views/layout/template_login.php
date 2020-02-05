@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- meta SEO -->
-    <meta name="description" content="Sistem Layanan Informasi dan Jasa Meteorologi | Stasiun Meteorologi Kelas I  Maritim Serang">
-    <meta name="keywords" content="Informasi Cuaca, Layanan Informasi, Layanan Jasa, Layanan Informasi dan Jasa, Meteorologi, Informasi Meteorologi, Jasa Meteorologi">
-    <meta name="author" content="Stasiun Meteorologi Klas I Maritim Serang">
+    <meta name="description" content="<?= META_DESCRIPTION ?>">
+    <meta name="keywords" content="<?= META_KEYWORDS ?>">
+    <meta name="author" content="<?= META_AUTHOR ?>">
     <!-- favicon -->
     <link rel="shortcut icon" href="<?= base_url('') ?>assets/img/favicon.ico" type="image/x-icon">
 
@@ -19,7 +19,7 @@
         echo $var . "Sistem Informasi Pelayanan Jasa Meteorologi";
         ?>
     </title>
-    
+
     <!-- favicon -->
     <link rel="shortcut icon" href="<?= base_url('assets') ?>/img/favicon.ico" type="image/x-icon">
 

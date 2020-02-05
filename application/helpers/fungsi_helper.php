@@ -166,7 +166,7 @@ function level($data)
     if ($data == 1) {
         return "Administrator";
     } elseif ($data == 2) {
-        return "Petugas CS";
+        return "Kasi Datin";
     } elseif ($data == 3) {
         return "Petugas Layanan";
     }
@@ -178,7 +178,7 @@ function dataLevel($level = NULL)
     $level2 = ($level == 2) ? "selected" : null;
     $level3 = ($level == 3) ? "selected" : null;
     $data = '<option value="1" ' . $level1 . '>Administrator</option>';
-    $data .= '<option value="2" ' . $level2 . '>Petugas CS</option>';
+    $data .= '<option value="2" ' . $level2 . '>Kasi Datin</option>';
     $data .= '<option value="3" ' . $level3 . '>Petugas Layanan</option>';
     return $data;
 }

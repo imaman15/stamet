@@ -10,7 +10,7 @@ class Applicant extends CI_Controller
         parent::__construct();
         admin_not_login([2, 3]);
         $this->load->library(['form_validation', 'email']);
-        $this->load->model(['applicant_model', 'jobcategory_model', 'usertoken_model']);
+        $this->load->model(['applicant_model', 'jobcategory_model', 'usertoken_model', 'cands_model', 'transaction_model', 'complaint_model', 'schedule_model']);
     }
 
     public function index()
@@ -229,6 +229,27 @@ class Applicant extends CI_Controller
         // $data['message'] = 'success';
         // $pusher->trigger('my-channel', 'my-event', $data);
         // ===============================================
+    }
+
+    //Delete one item
+    public function viewdelete($id = NULL)
+    {
+        $check = $this->applicant_model->getDataBy($id, 'applicant_id')->row();
+        if ((!isset($id)) or (!$check)) redirect(site_url(UE_ADMIN));
+
+        $cands = $this->cands_model->getData("applicant_id", $id)->num_rows();
+        $complaint = $this->complaint_model->getField(NULL, ['applicant_id' => $id])->num_rows();
+        $schedule = $this->schedule_model->getField(NULL, ['applicant_id' => $id])->num_rows();
+        $transaction = $this->transaction_model->getField(NULL, ['apply_id' => $id])->num_rows();
+
+        if ($cands > 0 ||  $complaint > 0 || $schedule > 0 || $transaction > 0) {
+            $message = "Mohon maaf data ini sudah di gunakan tabel lain.";
+            echo json_encode(array("status" => FALSE, "message" => $message));
+        } else {
+            $message = "Data yang dihapus tidak akan bisa dikembalikan.";
+            //delete file
+            echo json_encode(array("status" => TRUE, "message" => $message));
+        }
     }
 
     public function list()

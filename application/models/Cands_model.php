@@ -98,6 +98,15 @@ class Cands_model extends CI_Model
         $this->db->order_by('cands_id', 'desc');
         return $this->db->get($this->_table, 1);
     }
+
+    public function getData($where = NULL)
+    {
+        $this->db->from($this->_table);
+        if ($where != NULL) {
+            $this->db->where($where);
+        }
+        return $this->db->get();
+    }
 }
 
 /* End of file Cands_model.php */

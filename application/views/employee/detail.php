@@ -561,6 +561,7 @@
                 if (data.status) //if success close modal and reload ajax table
                 {
                     $('#confirmTrans').modal('hide');
+                    $('#btnconfirmTrans').addClass('d-none');
                     $('#the-message').html('<div class="alert alert-success animated zoomIn fast" role="alert">Transaksi <?= $trans->trans_code ?> berhasil di kirim.</div>');
                     // close the message after seconds
                     $('.alert-success').delay(500).show(10, function() {

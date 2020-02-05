@@ -256,8 +256,7 @@
                 $('#deleteData').modal('hide');
             }
         });
-
-    }
+    };
 
     function deleteBtn(id) {
         // ajax delete data to database

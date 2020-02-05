@@ -29,7 +29,7 @@
             <li class="nav-item <?= ($this->uri->uri_string() ==  UE_ADMIN) ? "active" : NULL; ?>">
                 <a class="nav-link hvr-wobble-horizontal" href="<?= site_url(UE_ADMIN) ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboardss</span></a>
+                    <span>Dashboards</span></a>
             </li>
 
             <!-- Divider -->

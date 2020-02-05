@@ -208,8 +208,7 @@ class Transaction extends CI_Controller
 
             //$url = base_url("assets/transfile/") . $d->doc_storage;
 
-            $enc = $this->encryption->encrypt($d->doc_id);
-            $url = site_url('transaction/download/' . urlencode($enc) . '/' . $d->doc_storage);
+            $url = site_url(UA_TRANSHISTORY . '/download' . '/' . $d->doc_storage);
 
             if ($_SERVER['HTTP_HOST'] !== "localhost") {
                 $btn = '<a title="Download Berkas" class="btn btn-success btn-circle btn-sm mb-1" href="https://docs.google.com/viewerng/viewer?url=' . $url . '" target="_blank"><i class="fas fa-download"></i></a>';
@@ -240,10 +239,9 @@ class Transaction extends CI_Controller
         echo json_encode($output);
     }
 
-    public function download($enc, $id)
+    public function download($id)
     {
-        $dec = $this->encryption->decrypt(urldecode($enc));
-        $query = $this->document_model->checkDownload(['doc_storage' => $id, 'doc_id' => $dec]);
+        $query = $this->document_model->checkDownload(['doc_storage' => $id]);
         if ($query->num_rows() == 0) {
             return show_404();
         }

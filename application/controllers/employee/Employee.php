@@ -11,7 +11,7 @@ class Employee extends CI_Controller
         parent::__construct();
         admin_not_login([2, 3]);
         $this->load->library(['form_validation', 'recaptcha', 'email']);
-        $this->load->model(['employee_model', 'position_model', 'usertoken_model']);
+        $this->load->model(['employee_model', 'position_model', 'usertoken_model', 'transaction_model', 'complaint_model', 'schedule_model']);
     }
 
     public function index()
@@ -199,23 +199,26 @@ class Employee extends CI_Controller
 
         $this->employee_model->delete($id, 'emp_id');
         echo json_encode(array("status" => TRUE));
+    }
 
-        // Koneksi ke Pusher.com agar menjadi relatime
-        // require_once(APPPATH . 'views/vendor/autoload.php');
-        // $options = array(
-        //     'cluster' => 'ap1',
-        //     'useTLS' => true
-        // );
-        // $pusher = new Pusher\Pusher(
-        //     'a96aa6ae29173426fb71',
-        //     'a711eb79b8901c8563cf',
-        //     '928472',
-        //     $options
-        // );
+    //Delete one item
+    public function viewdelete($id = NULL)
+    {
+        $check = $this->employee_model->getDataBy($id, 'emp_id')->row();
+        if ((!isset($id)) or (!$check)) redirect(site_url(UE_ADMIN));
 
-        // $data['message'] = 'success';
-        // $pusher->trigger('my-channel', 'my-event', $data);
-        // ===============================================
+        $complaint = $this->complaint_model->getField(NULL, ['emp_id' => $id])->num_rows();
+        $schedule = $this->schedule_model->getField(NULL, ['emp_id' => $id])->num_rows();
+        $transaction = $this->transaction_model->getField(NULL, ['emp_id' => $id])->num_rows();
+
+        if ($complaint > 0 || $schedule > 0 || $transaction > 0) {
+            $message = "Mohon maaf data ini sudah di gunakan tabel lain.";
+            echo json_encode(array("status" => FALSE, "message" => $message));
+        } else {
+            $message = "Data yang dihapus tidak akan bisa dikembalikan.";
+            //delete file
+            echo json_encode(array("status" => TRUE, "message" => $message));
+        }
     }
 
     public function list()
